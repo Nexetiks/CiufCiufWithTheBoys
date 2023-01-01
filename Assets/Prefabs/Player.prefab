@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 611144010183597283}
   - component: {fileID: 611144010183597282}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,8 @@ GameObject:
   - component: {fileID: 611144010902140065}
   - component: {fileID: 611144010902140066}
   - component: {fileID: 1976575272}
-  m_Layer: 7
+  - component: {fileID: 1976575277}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,9 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd85a462cfdf0243a4e10a1fe9bbae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 15
-  force: 1.5
-  rotationSpeed: 0.3
 --- !u!114 &1976575272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,3 +190,16 @@ MonoBehaviour:
   Color: {r: 1, g: 1, b: 1, a: 1}
   Size: {x: 1, y: 1}
   Delay: 0
+--- !u!114 &1976575277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611144010902140067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: febff11261914634aa3872591a0305fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsScriptableObject: {fileID: 11400000, guid: 44f0fd988c680ef4a8c911c102982730, type: 2}
