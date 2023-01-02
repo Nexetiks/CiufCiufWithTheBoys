@@ -9,7 +9,9 @@ namespace Entities.Abilities
         }
 
         protected override TriggeredEffect<UseItemAbilityArgs> DefaultTriggeredEffect { get; }
-        
+        protected override ContinuousEffect<UseItemAbilityArgs> DefaultEffectInUpdate { get; }
+        protected override ContinuousEffect<UseItemAbilityArgs> DefaultEffectInFixedUpdate { get; }
+
         public class UseItemAbilityArgs: DefaultTargetAbilityArgs
         {
             public int Power { get; private set; }

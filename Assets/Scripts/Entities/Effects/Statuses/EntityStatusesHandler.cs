@@ -7,55 +7,50 @@ namespace Entities.Effects.Statuses
     {
         public event Action<EntityStatus> OnStatusRemoved;
         public event Action<EntityStatus> OnStatusAdded;
-        
-        private Dictionary<Type, EntityStatus> appliedStatuses = new Dictionary<Type, EntityStatus>();
-        private EntityStatusArgs statusArgs;
 
+        private ContinuousEffectsUpdater<EntityStatusArgs> statusesUpdater;
+        private EntityStatusArgs statusArgs;
         public Entity Target { get; set; }
 
         public EntityStatusesHandler(Entity target)
         {
             Target = target;
             statusArgs = new EntityStatusArgs(target);
+            statusesUpdater = new ContinuousEffectsUpdater<EntityStatusArgs>();
+            
+            statusesUpdater.OnEffectAdded += StatusesUpdater_OnEffectAdded;
+            statusesUpdater.OnEffectRemoved += StatusesUpdater_OnEffectRemoved;
+        }
+
+        ~EntityStatusesHandler()
+        {
+            statusesUpdater.OnEffectAdded -= StatusesUpdater_OnEffectAdded;
+            statusesUpdater.OnEffectRemoved -= StatusesUpdater_OnEffectRemoved;
+        }
+
+        private void StatusesUpdater_OnEffectRemoved(ContinuousEffect<EntityStatusArgs> effect)
+        {
+            OnStatusRemoved?.Invoke(effect as EntityStatus);
+        }
+
+        private void StatusesUpdater_OnEffectAdded(ContinuousEffect<EntityStatusArgs> effect)
+        {
+            OnStatusAdded?.Invoke(effect as EntityStatus);
         }
 
         public void UpdateStatuses()
         {
-            foreach (EntityStatus status in appliedStatuses.Values)
-            {
-                status.Perform(statusArgs);
-                if (status.IsInfinite || !status.ExpirationConditions)
-                {
-                    continue;
-                }
-                
-                appliedStatuses.Remove(status.GetType());
-                OnStatusRemoved?.Invoke(status);
-            }
+            statusesUpdater.UpdateEffects(statusArgs);
         }
         
         public void AddStatus(EntityStatus status)
         {
-            if (appliedStatuses.ContainsKey(status.GetType()))
-            {
-                //refresh status
-                appliedStatuses[status.GetType()].Duration = status.Duration;
-            }
-            else
-            {
-                appliedStatuses.Add(status.GetType(), status);
-                OnStatusAdded?.Invoke(status);
-            }
+            statusesUpdater.AddEffect(status);
         }
         
         public void RemoveStatus<T>() where T: EntityStatus
         {
-            if (appliedStatuses.ContainsKey(typeof(T)))
-            {
-                EntityStatus status = appliedStatuses[typeof(T)];
-                appliedStatuses.Remove(typeof(T));
-                OnStatusRemoved?.Invoke(status);
-            }
+            statusesUpdater.RemoveEffect<T>();
         }
     }
 }

@@ -33,9 +33,10 @@ namespace Entities.Abilities
         }
         
         // Adds an Ability to the abilities dictionary
-        public void AddAbility(IAmAbility ability)
+        public void AddAbility(IAmAbility ability, Entity abilityOwner)
         {
             abilities.Add(ability.GetType(), ability);
+            ability.Initialize(abilityOwner);
         }
 
         // Removes an Ability from the abilities dictionary
@@ -50,7 +51,23 @@ namespace Entities.Abilities
         {
             if (abilities.ContainsKey(typeof(T)))
             {
-                abilities[typeof(T)].Perform(effectArgs);
+                abilities[typeof(T)].TriggerPerform(effectArgs);
+            }
+        }
+
+        public void UpdateAbilities()
+        {
+            foreach (IAmAbility ability in abilities.Values)
+            {
+                ability.UpdateContinuous();
+            }
+        }
+
+        public void FixedUpdateAbilities()
+        {
+            foreach (IAmAbility ability in abilities.Values)
+            {
+                ability.FixedUpdateContinuous();
             }
         }
     }

@@ -9,9 +9,21 @@ namespace Entities.Abilities
     [System.Serializable]
     public abstract class Ability<T> : IAmAbility where T:  DefaultAbilityEffectArgs
     {
-        public event Action OnAbilityPerformed;
+        public event Action OnTriggerAbilityPerformed;
+
+        /// <summary>
+        /// Remember to initialize args in the ability constructor, gather necessary references and so on
+        /// </summary>
+        protected T args;
+
+        protected Entity abilityOwner;
         private EffectTrigger<T> entityAbilityEffectTrigger;
+        private ContinuousEffectsUpdater<T> abilityEffectsInUpdate;
+        private ContinuousEffectsUpdater<T> abilityEffectsInFixedUpdate;
+        
         protected abstract TriggeredEffect<T> DefaultTriggeredEffect { get; }
+        protected abstract ContinuousEffect<T> DefaultEffectInUpdate { get; }
+        protected abstract ContinuousEffect<T> DefaultEffectInFixedUpdate { get; }
 
         // The name of the Ability
         public string Name { get; protected set; }
@@ -21,34 +33,67 @@ namespace Entities.Abilities
         {
             Name = name;
             entityAbilityEffectTrigger = new EffectTrigger<T>();
+            abilityEffectsInUpdate = new ContinuousEffectsUpdater<T>();
+            abilityEffectsInFixedUpdate = new ContinuousEffectsUpdater<T>();
+        }
+
+        /// <summary>
+        /// You must override this to provide ability with required references in args
+        /// </summary>
+        /// <param name="abilityOwner"></param>
+        public virtual void Initialize(Entity abilityOwner)
+        {
+            this.abilityOwner = abilityOwner;
             if (DefaultTriggeredEffect != null)
             {
                 entityAbilityEffectTrigger.Add(DefaultTriggeredEffect);
             }
+
+            if (DefaultEffectInUpdate != null)
+            {
+                abilityEffectsInUpdate.AddEffect(DefaultEffectInUpdate);
+            }
+
+            if (DefaultEffectInFixedUpdate != null)
+            {
+                abilityEffectsInFixedUpdate.AddEffect(DefaultEffectInFixedUpdate);
+            }
         }
 
-        public void AddEffect(TriggeredEffect<T> triggeredEffect)
+        public void AddTriggeredEffect(TriggeredEffect<T> triggeredEffect)
         {
             entityAbilityEffectTrigger.Add(triggeredEffect);
         }
 
-        public void RemoveEffect(TriggeredEffect<T> triggeredEffect)
+        public void RemoveTriggeredEffect(TriggeredEffect<T> triggeredEffect)
         {
             entityAbilityEffectTrigger.Remove(triggeredEffect);
         }
         
-        // Abstract method that must be implemented by subclasses to perform the
-        // ability and affect the given Entity or another separate Entity.
-        public virtual void Perform(EffectArgs args)
+        public void TriggerPerform(EffectArgs args)
         {
+            this.args = args as T;
             entityAbilityEffectTrigger.TriggerEffects(args as T);
-            OnAbilityPerformed?.Invoke();
+            OnTriggerAbilityPerformed?.Invoke();
             Debug.Log($"Performed {Name}");
+        }
+
+        public void UpdateContinuous()
+        {
+            abilityEffectsInUpdate.UpdateEffects(args);
+        }
+
+        public void FixedUpdateContinuous()
+        {
+            abilityEffectsInFixedUpdate.UpdateEffects(args);
         }
     }
 
     public interface IAmAbility
     {
-        public void Perform(EffectArgs args);
+        public void TriggerPerform(EffectArgs args);
+        public void UpdateContinuous();
+        public void FixedUpdateContinuous();
+        public void Initialize(Entity abilityOwner);
     }
 }

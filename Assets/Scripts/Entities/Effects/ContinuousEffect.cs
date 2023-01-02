@@ -52,7 +52,7 @@ namespace Entities.Effects
 
         protected override void OnPerform(TriggerArgs args)
         {
-            if (Duration <= 0)
+            if (Duration <= 0 || IsInfinite)
             {
                 return;
             }

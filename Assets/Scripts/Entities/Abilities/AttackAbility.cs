@@ -9,5 +9,7 @@ namespace Entities.Abilities
         }
 
         protected override TriggeredEffect<DefaultTargetAbilityArgs> DefaultTriggeredEffect => new DamageTriggeredEffect();
+        protected override ContinuousEffect<DefaultTargetAbilityArgs> DefaultEffectInUpdate { get; }
+        protected override ContinuousEffect<DefaultTargetAbilityArgs> DefaultEffectInFixedUpdate { get; }
     }
 }

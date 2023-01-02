@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: DefaultEngineEntity
   m_EditorClassIdentifier: 
   <EntityDefaultData>k__BackingField:
-    <StartingAbilities>k__BackingField: []
+    <StartingAbilities>k__BackingField:
+    - rid: 1118481560939003904
     <Components>k__BackingField:
     - rid: 1118481545141157890
     - rid: 1118481545141157891
@@ -35,3 +36,5 @@ MonoBehaviour:
       type: {class: WagonComponent, ns: EarthEater.RailwaySystem, asm: Assembly-CSharp}
       data:
         <Weight>k__BackingField: 5
+    - rid: 1118481560939003904
+      type: {class: MoveEngineAbility, ns: EarthEater.Abilities.MoveEngine, asm: Assembly-CSharp}
