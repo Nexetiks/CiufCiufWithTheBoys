@@ -25,6 +25,11 @@ namespace Entities.Abilities
         protected abstract ContinuousEffect<T> DefaultEffectInUpdate { get; }
         protected abstract ContinuousEffect<T> DefaultEffectInFixedUpdate { get; }
 
+        public virtual bool IsPerforming => abilityEffectsInUpdate?.ActiveEffects.Count > 0 ||
+                                            abilityEffectsInFixedUpdate?.ActiveEffects.Count > 0;
+
+        public virtual bool CanPerform => true;
+
         // The name of the Ability
         public string Name { get; protected set; }
 
@@ -72,6 +77,8 @@ namespace Entities.Abilities
         
         public void TriggerPerform(EffectArgs args)
         {
+            if(!CanPerform) return;
+            
             this.args = args as T;
             entityAbilityEffectTrigger.TriggerEffects(args as T);
             OnTriggerAbilityPerformed?.Invoke();

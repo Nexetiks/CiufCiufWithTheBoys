@@ -12,6 +12,8 @@ namespace Entities.Effects
         
         private Dictionary<Type, ContinuousEffect<TriggerArgs>> activeEffects = new Dictionary<Type, ContinuousEffect<TriggerArgs>> ();
 
+        public Dictionary<Type, ContinuousEffect<TriggerArgs>> ActiveEffects => activeEffects;
+
         public void UpdateEffects(TriggerArgs statusArgs)
         {
             foreach (ContinuousEffect<TriggerArgs> effect in activeEffects.Values)
