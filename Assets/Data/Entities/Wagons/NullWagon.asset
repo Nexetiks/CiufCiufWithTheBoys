@@ -24,7 +24,7 @@ MonoBehaviour:
     - rid: 1118481545141157888
       type: {class: WagonComponent, ns: EarthEater.RailwaySystem, asm: Assembly-CSharp}
       data:
-        <Weight>k__BackingField: 5
+        <Weight>k__BackingField: 2.5
         <WagonEffects>k__BackingField:
         - rid: 1118481566548885504
     - rid: 1118481545141157889

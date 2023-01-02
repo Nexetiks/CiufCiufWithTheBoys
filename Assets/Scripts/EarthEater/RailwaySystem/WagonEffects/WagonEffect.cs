@@ -1,9 +1,10 @@
+using System;
 using Entities;
 
 namespace EarthEater.RailwaySystem.WagonEffects
 {
     [System.Serializable]
-    public abstract class WagonEffect
+    public abstract class WagonEffect : ICloneable
     {
         public WagonComponent MyWagonComponent { get; private set; }
         public abstract void OnAttach(Entity entity);
@@ -12,6 +13,12 @@ namespace EarthEater.RailwaySystem.WagonEffects
         public virtual void Initialize(WagonComponent myWagonComponent)
         {
             this.MyWagonComponent = myWagonComponent;
+        }
+
+        public object Clone()
+        {
+            WagonEffect copy = (WagonEffect)this.MemberwiseClone();
+            return copy;
         }
     }
 }
