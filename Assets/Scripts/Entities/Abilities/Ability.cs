@@ -6,6 +6,8 @@ using UnityEngine;
 // affects an Entity by changing its parameters or affecting its Components.
 namespace Entities.Abilities
 {
+    //TODO: Add initialization args for gathering references and UpdateArgs i.e. when something changes, for TriggerEffects,
+    // like a direction in the MoveEngineTriggerEffect
     [System.Serializable]
     public abstract class Ability<T> : IAmAbility where T:  DefaultAbilityEffectArgs
     {
