@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Entities
@@ -11,6 +12,11 @@ namespace Entities
         private void Awake()
         {
             Entity = new Entity(entityDefaultDataSo.EntityDefaultData);
+        }
+
+        private void Update()
+        {
+            Entity.Update();
         }
     }
 }

@@ -47,5 +47,10 @@ namespace Entities
             component.Initialize(this);
             components.Add(component.GetType(), component);
         }
+
+        public void Update()
+        {
+            StatusesHandler.UpdateStatuses();
+        }
     }
 }

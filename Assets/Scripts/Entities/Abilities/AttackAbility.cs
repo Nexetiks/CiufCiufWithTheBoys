@@ -8,6 +8,6 @@ namespace Entities.Abilities
         {
         }
 
-        protected override Effect<DefaultTargetAbilityArgs> DefaultEffect => new DamageEffect();
+        protected override TriggeredEffect<DefaultTargetAbilityArgs> DefaultTriggeredEffect => new DamageTriggeredEffect();
     }
 }

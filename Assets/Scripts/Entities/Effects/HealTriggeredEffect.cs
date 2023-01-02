@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Entities.Effects
 {
-    public class HealEffect : Effect<UseItemAbility.UseItemAbilityArgs>
+    public class HealTriggeredEffect : TriggeredEffect<UseItemAbility.UseItemAbilityArgs>
     {
-        public HealEffect() : base("Heal", -1)
+        public HealTriggeredEffect() : base("Heal", -1)
         {
         }
 
-        protected override void OnTrigger(UseItemAbility.UseItemAbilityArgs args)
+        protected override void OnPerform(UseItemAbility.UseItemAbilityArgs args)
         {
             if (args.AbilityTarget.TryGetComponent(out DamageableComponent damageableComponent))
             {

@@ -8,6 +8,6 @@ namespace Entities.Abilities
         {
         }
 
-        protected override Effect<MoveEffectArgs> DefaultEffect => new MoveEffect();
+        protected override TriggeredEffect<MoveEffectArgs> DefaultTriggeredEffect => new MoveTriggeredEffect();
     }
 }

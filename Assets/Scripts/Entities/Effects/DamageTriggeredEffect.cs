@@ -3,13 +3,13 @@ using Entities.Components;
 
 namespace Entities.Effects
 {
-    public class DamageEffect : Effect<DefaultTargetAbilityArgs>
+    public class DamageTriggeredEffect : TriggeredEffect<DefaultTargetAbilityArgs>
     {
-        public DamageEffect(int startingDuration = -1) : base("normal damage", startingDuration)
+        public DamageTriggeredEffect(int startingDuration = -1) : base("normal damage", startingDuration)
         {
         }
 
-        protected override void OnTrigger(DefaultTargetAbilityArgs args)
+        protected override void OnPerform(DefaultTargetAbilityArgs args)
         {
             if (!args.AbilityTarget.TryGetComponent(out DamageableComponent otherDamageableComponent)) return;
             otherDamageableComponent.Hp -= 1; //args.AbilityOwner.EntityStatsModel.Strength.Value;

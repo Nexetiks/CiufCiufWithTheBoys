@@ -9,7 +9,6 @@ namespace Entities.Effects.Statuses
         public event Action<EntityStatus> OnStatusAdded;
         
         private Dictionary<Type, EntityStatus> appliedStatuses = new Dictionary<Type, EntityStatus>();
-        private Dictionary<Type, EntityStatus> statusesToTrigger = new Dictionary<Type, EntityStatus>();
         private EntityStatusArgs statusArgs;
 
         public Entity Target { get; set; }
@@ -20,22 +19,21 @@ namespace Entities.Effects.Statuses
             statusArgs = new EntityStatusArgs(target);
         }
 
-        public void TriggerStatuses()
+        public void UpdateStatuses()
         {
-            foreach (EntityStatus status in statusesToTrigger.Values)
+            foreach (EntityStatus status in appliedStatuses.Values)
             {
-                status.Trigger(statusArgs);
-                if (status.Duration == 0)
+                status.Perform(statusArgs);
+                if (status.IsInfinite || !status.ExpirationConditions)
                 {
-                    appliedStatuses.Remove(status.GetType());
-                    statusesToTrigger.Remove(status.GetType());
-                    OnStatusRemoved?.Invoke(status);
+                    continue;
                 }
+                
+                appliedStatuses.Remove(status.GetType());
+                OnStatusRemoved?.Invoke(status);
             }
         }
-
-        // If status duration is set to Instant (0) it will be triggered immediately and will not be triggered using
-        // the TriggerStatuses method
+        
         public void AddStatus(EntityStatus status)
         {
             if (appliedStatuses.ContainsKey(status.GetType()))
@@ -46,11 +44,6 @@ namespace Entities.Effects.Statuses
             else
             {
                 appliedStatuses.Add(status.GetType(), status);
-                if (status.Duration != EntityStatus.INSTANT)
-                {
-                    statusesToTrigger.Add(status.GetType(), status);
-                    status.Trigger(statusArgs);
-                }
                 OnStatusAdded?.Invoke(status);
             }
         }

@@ -8,7 +8,7 @@ namespace Entities.Abilities
         {
         }
 
-        protected override Effect<UseItemAbilityArgs> DefaultEffect { get; }
+        protected override TriggeredEffect<UseItemAbilityArgs> DefaultTriggeredEffect { get; }
         
         public class UseItemAbilityArgs: DefaultTargetAbilityArgs
         {

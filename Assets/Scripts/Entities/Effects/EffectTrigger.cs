@@ -3,38 +3,58 @@ using System.Collections.Generic;
 
 namespace Entities.Effects
 {
-  public class EffectTrigger<TriggerArgs> where TriggerArgs : EffectArgs
-  {
-    private List<Effect<TriggerArgs>> _effects;
-    public EffectTrigger() => this._effects = new List<Effect<TriggerArgs>>();
+    public class EffectTrigger<TriggerArgs> where TriggerArgs : EffectArgs
+    {
+        private List<TriggeredEffect<TriggerArgs>> effects;
 
-    public IReadOnlyList<Effect<TriggerArgs>> Effects => (IReadOnlyList<Effect<TriggerArgs>>) this._effects.AsReadOnly();
-    
-    public virtual void Add(Effect<TriggerArgs> effect)
-    {
-      if (effect.Duration == 0)
-        throw new ArgumentException("Tried to add effect " + effect.Name + " to an EffectTrigger, but it has duration 0!", nameof (effect));
-      this._effects.Add(effect);
-    }
-    
-    public virtual void Remove(Effect<TriggerArgs> effect) => this._effects.Remove(effect);
-    
-    
-    public void TriggerEffects(TriggerArgs args)
-    {
-      foreach (Effect<TriggerArgs> effect in this._effects)
-      {
-        if (effect.Duration != 0)
+        public EffectTrigger()
         {
-          effect.Trigger(args);
-          if ((object) args != null)
-          {
-            if (args.CancelTrigger)
-              break;
-          }
+            effects = new List<TriggeredEffect<TriggerArgs>>();
         }
-      }
-      this._effects.RemoveAll((Predicate<Effect<TriggerArgs>>) (eff => eff.Duration == 0));
+
+        public virtual void Add(TriggeredEffect<TriggerArgs> triggeredEffect)
+        {
+            if (triggeredEffect.Duration == 0)
+            {
+                throw new ArgumentException(
+                    "Tried to add effect " + triggeredEffect.Name + " to an EffectTrigger, but it has duration 0!",
+                    nameof(triggeredEffect));
+            }
+
+            effects.Add(triggeredEffect);
+        }
+
+        public virtual void Remove(TriggeredEffect<TriggerArgs> triggeredEffect)
+        {
+            effects.Remove(triggeredEffect);
+        }
+
+        public void TriggerEffects(TriggerArgs args)
+        {
+            List<int> effectIndexesToRemove = new List<int>();
+            
+            for (int i = 0; i < effects.Count; i++)
+            {
+                TriggeredEffect<TriggerArgs> triggeredEffect = effects[i];
+                if (triggeredEffect.Duration != 0)
+                {
+                    triggeredEffect.Perform(args);
+                    if (args != null)
+                    {
+                        if (args.CancelTrigger)
+                            break;
+                    }
+                }
+                else if (triggeredEffect.Duration == 0)
+                {
+                    effectIndexesToRemove.Add(i);
+                }
+            }
+
+            for (int i = effectIndexesToRemove.Count-1; i >= 0; i--)
+            {
+                effects.RemoveAt(effectIndexesToRemove[i]);
+            }
+        }
     }
-  }
 }

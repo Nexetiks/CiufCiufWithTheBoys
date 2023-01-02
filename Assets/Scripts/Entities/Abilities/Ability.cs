@@ -11,7 +11,7 @@ namespace Entities.Abilities
     {
         public event Action OnAbilityPerformed;
         private EffectTrigger<T> entityAbilityEffectTrigger;
-        protected abstract Effect<T> DefaultEffect { get; }
+        protected abstract TriggeredEffect<T> DefaultTriggeredEffect { get; }
 
         // The name of the Ability
         public string Name { get; protected set; }
@@ -21,20 +21,20 @@ namespace Entities.Abilities
         {
             Name = name;
             entityAbilityEffectTrigger = new EffectTrigger<T>();
-            if (DefaultEffect != null)
+            if (DefaultTriggeredEffect != null)
             {
-                entityAbilityEffectTrigger.Add(DefaultEffect);
+                entityAbilityEffectTrigger.Add(DefaultTriggeredEffect);
             }
         }
 
-        public void AddEffect(Effect<T> effect)
+        public void AddEffect(TriggeredEffect<T> triggeredEffect)
         {
-            entityAbilityEffectTrigger.Add(effect);
+            entityAbilityEffectTrigger.Add(triggeredEffect);
         }
 
-        public void RemoveEffect(Effect<T> effect)
+        public void RemoveEffect(TriggeredEffect<T> triggeredEffect)
         {
-            entityAbilityEffectTrigger.Remove(effect);
+            entityAbilityEffectTrigger.Remove(triggeredEffect);
         }
         
         // Abstract method that must be implemented by subclasses to perform the
