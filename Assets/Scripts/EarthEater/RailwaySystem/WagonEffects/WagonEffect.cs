@@ -2,6 +2,7 @@ using Entities;
 
 namespace EarthEater.RailwaySystem.WagonEffects
 {
+    [System.Serializable]
     public abstract class WagonEffect
     {
         public WagonComponent MyWagonComponent { get; private set; }

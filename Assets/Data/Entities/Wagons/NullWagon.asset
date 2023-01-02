@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: NullWagon
   m_EditorClassIdentifier: 
   <EntityDefaultData>k__BackingField:
-    <StartingAbilities>k__BackingField: []
+    <StartingAbilities>k__BackingField:
+    - rid: 1118481566548885505
     <Components>k__BackingField:
     - rid: 1118481545141157888
     - rid: 1118481545141157889
@@ -24,7 +25,13 @@ MonoBehaviour:
       type: {class: WagonComponent, ns: EarthEater.RailwaySystem, asm: Assembly-CSharp}
       data:
         <Weight>k__BackingField: 5
+        <WagonEffects>k__BackingField:
+        - rid: 1118481566548885504
     - rid: 1118481545141157889
       type: {class: DamageableComponent, ns: Entities.Components, asm: Assembly-CSharp}
       data:
         startVitality: 10
+    - rid: 1118481566548885504
+      type: {class: AddWagonWeightEffect, ns: EarthEater.RailwaySystem.WagonEffects, asm: Assembly-CSharp}
+    - rid: 1118481566548885505
+      type: {class: FollowWagonAbility, ns: EarthEater.Abilities.FollowWagon, asm: Assembly-CSharp}

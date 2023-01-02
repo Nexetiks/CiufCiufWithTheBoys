@@ -100,9 +100,15 @@ namespace Entities.Abilities
         {
             abilityEffectsInFixedUpdate.UpdateEffects(Args);
         }
+
+        public virtual object Clone()
+        {
+            Ability<T> copy = (Ability<T>)this.MemberwiseClone();
+            return copy;
+        }
     }
 
-    public interface IAmAbility
+    public interface IAmAbility : ICloneable
     {
         public void TriggerPerform(EffectArgs args);
         public void TriggerPerform();

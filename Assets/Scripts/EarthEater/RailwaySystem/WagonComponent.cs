@@ -7,26 +7,38 @@ namespace EarthEater.RailwaySystem
     [System.Serializable]
     public class WagonComponent : BaseComponent
     {
-        [field: SerializeField]
-        public float Weight { get; private set; }
-        
+        [field: SerializeField] public float Weight { get; private set; }
+
         [field: SerializeReference, ReferencePicker(TypeGrouping = TypeGrouping.ByFlatName), ReorderableList]
-        public WagonEffect[] wagonEffects;
+        public WagonEffect[] WagonEffects { get; private set; }
+
+        public WagonComponent PreviousWagon { get; set; }
+        public WagonComponent NextWagon { get; set; }
 
         public void OnAttached()
         {
-            foreach (WagonEffect wagonEffect in wagonEffects)
-            {
-                wagonEffect.OnAttach(MyEntity);
-            }
+            if (WagonEffects != null)
+                foreach (WagonEffect wagonEffect in WagonEffects)
+                {
+                    wagonEffect.OnAttach(MyEntity);
+                }
         }
 
         public void OnDetach()
         {
-            foreach (WagonEffect wagonEffect in wagonEffects)
-            {
-                wagonEffect.OnDetach(MyEntity);
-            }
+            if (WagonEffects != null)
+                foreach (WagonEffect wagonEffect in WagonEffects)
+                {
+                    wagonEffect.OnDetach(MyEntity);
+                }
+        }
+
+        public override object Clone()
+        {
+            WagonComponent clone = (WagonComponent) base.Clone();
+            clone.WagonEffects = WagonEffects;
+
+            return clone;
         }
     }
 }

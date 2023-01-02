@@ -24,12 +24,12 @@ namespace Entities
 
             foreach (BaseComponent component in defaultData.Components)
             {
-                AddComponent(component);
+                AddComponent((BaseComponent)component.Clone());
             }
             
             foreach (IAmAbility ability in defaultData.StartingAbilities)
             {
-                AbilitiesHandler.AddAbility(ability, this);
+                AbilitiesHandler.AddAbility((IAmAbility)ability.Clone(), this);
             }
         }
 
