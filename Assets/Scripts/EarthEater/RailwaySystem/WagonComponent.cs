@@ -32,13 +32,5 @@ namespace EarthEater.RailwaySystem
                     wagonEffect.OnDetach(MyEntity);
                 }
         }
-
-        public override object Clone()
-        {
-            WagonComponent clone = (WagonComponent) base.Clone();
-            clone.WagonEffects = WagonEffects;
-
-            return clone;
-        }
     }
 }
