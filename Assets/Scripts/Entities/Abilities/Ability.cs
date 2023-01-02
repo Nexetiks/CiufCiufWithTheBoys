@@ -14,7 +14,7 @@ namespace Entities.Abilities
         /// <summary>
         /// Remember to initialize args in the ability constructor, gather necessary references and so on
         /// </summary>
-        protected T args;
+        public T Args { get; protected set; }
 
         protected Entity abilityOwner;
         private EffectTrigger<T> entityAbilityEffectTrigger;
@@ -77,28 +77,33 @@ namespace Entities.Abilities
         
         public void TriggerPerform(EffectArgs args)
         {
+            this.Args = args as T;
+            TriggerPerform();
+        }
+
+        public void TriggerPerform()
+        {
             if(!CanPerform) return;
-            
-            this.args = args as T;
-            entityAbilityEffectTrigger.TriggerEffects(args as T);
+            entityAbilityEffectTrigger.TriggerEffects(Args as T);
             OnTriggerAbilityPerformed?.Invoke();
             Debug.Log($"Performed {Name}");
         }
 
         public void UpdateContinuous()
         {
-            abilityEffectsInUpdate.UpdateEffects(args);
+            abilityEffectsInUpdate.UpdateEffects(Args);
         }
 
         public void FixedUpdateContinuous()
         {
-            abilityEffectsInFixedUpdate.UpdateEffects(args);
+            abilityEffectsInFixedUpdate.UpdateEffects(Args);
         }
     }
 
     public interface IAmAbility
     {
         public void TriggerPerform(EffectArgs args);
+        public void TriggerPerform();
         public void UpdateContinuous();
         public void FixedUpdateContinuous();
         public void Initialize(Entity abilityOwner);

@@ -8,22 +8,23 @@ namespace EarthEater.Abilities.MoveEngine
 {
     public class MoveEngineAbility : Ability<MoveEngineAbilityArgs>
     {
-        private MoveEngineEffect moveEngineEffect;
+        private MoveEngineContinuousEffect moveEngineContinuousEffect;
+        private MoveEngineTriggerEffect moveEngineTriggerEffect;
 
-        protected override TriggeredEffect<MoveEngineAbilityArgs> DefaultTriggeredEffect { get; }
+        protected override TriggeredEffect<MoveEngineAbilityArgs> DefaultTriggeredEffect => moveEngineTriggerEffect;
         protected override ContinuousEffect<MoveEngineAbilityArgs> DefaultEffectInUpdate { get; }
-        protected override ContinuousEffect<MoveEngineAbilityArgs> DefaultEffectInFixedUpdate => moveEngineEffect;
-
-
+        protected override ContinuousEffect<MoveEngineAbilityArgs> DefaultEffectInFixedUpdate => moveEngineContinuousEffect;
+        
         public MoveEngineAbility() : base("Move Engine Ability")
         {
-            moveEngineEffect = new MoveEngineEffect();
+            moveEngineContinuousEffect = new MoveEngineContinuousEffect();
+            moveEngineTriggerEffect = new MoveEngineTriggerEffect();
         }
 
         public override void Initialize(Entity abilityOwner)
         {
             base.Initialize(abilityOwner);
-            args = new MoveEngineAbilityArgs(abilityOwner, abilityOwner.GameObject.GetComponent<Rigidbody2D>(),
+            Args = new MoveEngineAbilityArgs(abilityOwner, abilityOwner.GameObject.GetComponent<Rigidbody2D>(),
                 abilityOwner.GetComponent<EngineComponent>(), abilityOwner.GameObject.transform);
         }
     }

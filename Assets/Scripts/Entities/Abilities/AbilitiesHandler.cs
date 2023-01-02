@@ -55,6 +55,14 @@ namespace Entities.Abilities
             }
         }
 
+        public void PerformAbility<T>() where T : IAmAbility
+        {
+            if (abilities.ContainsKey(typeof(T)))
+            {
+                abilities[typeof(T)].TriggerPerform();
+            }
+        }
+
         public void UpdateAbilities()
         {
             foreach (IAmAbility ability in abilities.Values)
