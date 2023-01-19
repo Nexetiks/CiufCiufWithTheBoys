@@ -12,10 +12,10 @@ namespace Entities
         private Dictionary<Type, BaseComponent> components;
         public EntityStatusesHandler StatusesHandler { get; private set; }
         public AbilitiesHandler AbilitiesHandler { get; private set; }
-        
+
         public GameObject GameObject { get; private set; }
 
-        public Entity(EntityDefaultData defaultData, GameObject gameObject) 
+        public Entity(EntityDefaultData defaultData, GameObject gameObject)
         {
             StatusesHandler = new EntityStatusesHandler(this);
             AbilitiesHandler = new AbilitiesHandler(this);
@@ -26,17 +26,17 @@ namespace Entities
             {
                 AddComponent((BaseComponent)component.Clone());
             }
-            
+
             foreach (IAmAbility ability in defaultData.StartingAbilities)
             {
                 AbilitiesHandler.AddAbility((IAmAbility)ability.Clone(), this);
             }
         }
 
-        public bool TryGetComponent<T>(out T component) where T: BaseComponent
+        public bool TryGetComponent<T>(out T component) where T : BaseComponent
         {
             component = null;
-            
+
             if (components.TryGetValue(typeof(T), out BaseComponent returnComponent))
             {
                 component = (T)returnComponent;
@@ -44,8 +44,8 @@ namespace Entities
 
             return component != null;
         }
-        
-        public T GetComponent<T>() where T: BaseComponent
+
+        public T GetComponent<T>() where T : BaseComponent
         {
             return (T)components[typeof(T)];
         }

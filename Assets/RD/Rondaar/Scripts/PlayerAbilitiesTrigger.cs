@@ -14,7 +14,7 @@ public class PlayerAbilitiesTrigger : MonoBehaviour
             context = GetComponent<EntityContext>();
         }
     }
-    
+
     void Update()
     {
         int dir = 0;

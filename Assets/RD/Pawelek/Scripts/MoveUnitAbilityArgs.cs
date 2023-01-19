@@ -2,14 +2,17 @@ using Entities;
 using Entities.Effects;
 using UnityEngine;
 
-public class MoveUnitAbilityArgs : DefaultAbilityEffectArgs
+namespace Pawelek.Testing.ItWillBeChangeLater
 {
-    public Rigidbody2D Rb { get; private set; }
-    public Transform Transform { get; private set; }
-
-    public MoveUnitAbilityArgs(Entity abilityOwner, Rigidbody2D rb, Transform transform) : base(abilityOwner)
+    public class MoveUnitAbilityArgs : DefaultAbilityEffectArgs
     {
-        Rb = rb;
-        Transform = transform;
+        public Rigidbody2D Rb { get; private set; }
+        public Transform Transform { get; private set; }
+
+        public MoveUnitAbilityArgs(Entity abilityOwner, Rigidbody2D rb, Transform transform) : base(abilityOwner)
+        {
+            Rb = rb;
+            Transform = transform;
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace Entities.Abilities
 
         // Abilities owner
         private Entity myEntity;
-        
+
         public AbilitiesHandler(Entity myEntity)
         {
             abilities = new Dictionary<Type, IAmAbility>();
@@ -22,7 +22,7 @@ namespace Entities.Abilities
 
         public bool TryGetAbility<T>(out T ability) where T : IAmAbility
         {
-            if(abilities.TryGetValue(typeof(T), out IAmAbility searchedAbilityInterface))
+            if (abilities.TryGetValue(typeof(T), out IAmAbility searchedAbilityInterface))
             {
                 ability = (T)searchedAbilityInterface;
                 return true;
@@ -31,7 +31,7 @@ namespace Entities.Abilities
             ability = default(T);
             return false;
         }
-        
+
         // Adds an Ability to the abilities dictionary
         public void AddAbility(IAmAbility ability, Entity abilityOwner)
         {
@@ -47,7 +47,7 @@ namespace Entities.Abilities
 
         // Performs the ability with the given type, affecting the given Entity or
         // another separate Entity.
-        public void PerformAbility<T>(EffectArgs effectArgs) where T: IAmAbility
+        public void PerformAbility<T>(EffectArgs effectArgs) where T : IAmAbility
         {
             if (abilities.ContainsKey(typeof(T)))
             {

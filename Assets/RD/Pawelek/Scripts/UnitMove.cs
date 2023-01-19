@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class UnitMove : MonoBehaviour
+namespace Pawelek.Testing.ItWillBeChangeLater
 {
+    public class UnitMove : MonoBehaviour
+    {
+    }
 }

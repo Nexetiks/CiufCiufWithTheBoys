@@ -17,10 +17,11 @@ namespace EarthEater.Abilities.MoveEngine
         public MoveEngineContinuousEffect() : base("MoveEngineEffect")
         {
         }
-        
+
         protected override void OnPerform(MoveEngineAbilityArgs args)
         {
             base.OnPerform(args);
+
             if (!CanMove)
             {
                 args.Rb.velocity = Vector3.zero;
