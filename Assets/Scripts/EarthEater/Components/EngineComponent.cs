@@ -14,6 +14,8 @@ namespace EarthEater.Components
         public Stat ForwardForce { get; private set; }
         public Stat RotationSpeed { get; private set; }
 
+        public int LastDir { get; set; } = 0;
+
         public override void Initialize(Entity myEntity)
         {
             base.Initialize(myEntity);
