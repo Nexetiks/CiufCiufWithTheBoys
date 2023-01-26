@@ -8,8 +8,8 @@ namespace Entities.Abilities
 {
     //TODO: Add initialization args for gathering references and UpdateArgs i.e. when something changes, for TriggerEffects,
     // like a direction in the MoveEngineTriggerEffect
-    [System.Serializable]
-    public abstract class Ability<T> : IAmAbility where T:  DefaultAbilityEffectArgs
+    [Serializable]
+    public abstract class Ability<T> : IAmAbility where T : DefaultAbilityEffectArgs
     {
         public event Action OnTriggerAbilityPerformed;
 
@@ -22,13 +22,12 @@ namespace Entities.Abilities
         private EffectTrigger<T> entityAbilityEffectTrigger;
         private ContinuousEffectsUpdater<T> abilityEffectsInUpdate;
         private ContinuousEffectsUpdater<T> abilityEffectsInFixedUpdate;
-        
+
         protected abstract TriggeredEffect<T> DefaultTriggeredEffect { get; }
         protected abstract ContinuousEffect<T> DefaultEffectInUpdate { get; }
         protected abstract ContinuousEffect<T> DefaultEffectInFixedUpdate { get; }
 
-        public virtual bool IsPerforming => abilityEffectsInUpdate?.ActiveEffects.Count > 0 ||
-                                            abilityEffectsInFixedUpdate?.ActiveEffects.Count > 0;
+        public virtual bool IsPerforming => abilityEffectsInUpdate?.ActiveEffects.Count > 0 || abilityEffectsInFixedUpdate?.ActiveEffects.Count > 0;
 
         public virtual bool CanPerform => true;
 
@@ -36,7 +35,7 @@ namespace Entities.Abilities
         public string Name { get; protected set; }
 
         // Constructor that sets the name of the Ability
-        public Ability(string name)
+        protected Ability(string name)
         {
             Name = name;
             entityAbilityEffectTrigger = new EffectTrigger<T>();
@@ -51,6 +50,7 @@ namespace Entities.Abilities
         public virtual void Initialize(Entity abilityOwner)
         {
             this.abilityOwner = abilityOwner;
+
             if (DefaultTriggeredEffect != null)
             {
                 entityAbilityEffectTrigger.Add(DefaultTriggeredEffect);
@@ -76,7 +76,7 @@ namespace Entities.Abilities
         {
             entityAbilityEffectTrigger.Remove(triggeredEffect);
         }
-        
+
         public void TriggerPerform(EffectArgs args)
         {
             this.Args = args as T;
@@ -85,7 +85,7 @@ namespace Entities.Abilities
 
         public void TriggerPerform()
         {
-            if(!CanPerform) return;
+            if (!CanPerform) return;
             entityAbilityEffectTrigger.TriggerEffects(Args as T);
             OnTriggerAbilityPerformed?.Invoke();
             Debug.Log($"Performed {Name}");

@@ -1,5 +1,3 @@
-using System;
-
 namespace Entities.Effects
 {
     public abstract class TriggeredEffect<TriggerArgs> : EffectBase<TriggerArgs> where TriggerArgs : EffectArgs
@@ -10,10 +8,7 @@ namespace Entities.Effects
 
         public override bool ExpirationConditions
         {
-            get
-            {
-                return Duration == 0;
-            }
+            get { return Duration == 0; }
         }
 
         public int Duration

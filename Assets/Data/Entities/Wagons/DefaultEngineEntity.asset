@@ -36,5 +36,6 @@ MonoBehaviour:
       type: {class: WagonComponent, ns: EarthEater.RailwaySystem, asm: Assembly-CSharp}
       data:
         <Weight>k__BackingField: 5
+        <WagonEffects>k__BackingField: []
     - rid: 1118481560939003904
       type: {class: MoveEngineAbility, ns: EarthEater.Abilities.MoveEngine, asm: Assembly-CSharp}
