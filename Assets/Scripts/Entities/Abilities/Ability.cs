@@ -1,6 +1,5 @@
 using System;
 using Entities.Effects;
-using UnityEngine;
 
 // The Ability class represents a single ability that can be performed and
 // affects an Entity by changing its parameters or affecting its Components.
@@ -11,7 +10,7 @@ namespace Entities.Abilities
     [Serializable]
     public abstract class Ability<T> : IAmAbility where T : DefaultAbilityArgs
     {
-        public event Action OnTriggerAbilityPerformed;
+        public event Action OnAbilityPerformed;
 
         protected Entity abilityOwner;
 
@@ -19,7 +18,7 @@ namespace Entities.Abilities
         /// Remember to initialize args in the ability constructor, gather necessary references and so on
         /// </summary>
         public T Args { get; protected set; }
-        
+
         public virtual bool IsPerforming => true;
         public virtual bool CanPerform => true;
 
@@ -49,9 +48,9 @@ namespace Entities.Abilities
             {
                 Args = args as T;
             }
-            
+
             OnPerform();
-            OnTriggerAbilityPerformed?.Invoke();
+            OnAbilityPerformed?.Invoke();
         }
 
         public virtual void UpdateAbility()
@@ -61,7 +60,7 @@ namespace Entities.Abilities
         public virtual void FixedUpdateAbility()
         {
         }
-        
+
         protected virtual void OnPerform()
         {
         }

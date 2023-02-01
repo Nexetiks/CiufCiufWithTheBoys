@@ -34,7 +34,6 @@ public class PlayerAbilitiesTrigger : MonoBehaviour
         {
             if (context.Entity.TryGetComponent(out AbilitiesHandler abilitiesHandler))
             {
-                abilitiesHandler.TryGetAbility(out MoveEngineAbility moveEngineAbility);
                 abilitiesHandler.PerformAbility<MoveEngineAbility>(new MoveEngineAbilityArgs(-dir));
             }
         }

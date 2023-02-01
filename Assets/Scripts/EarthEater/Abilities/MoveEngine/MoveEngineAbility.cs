@@ -1,7 +1,6 @@
 using EarthEater.Components;
 using Entities;
 using Entities.Abilities;
-using Entities.Effects;
 using UnityEngine;
 
 namespace EarthEater.Abilities.MoveEngine
@@ -25,6 +24,7 @@ namespace EarthEater.Abilities.MoveEngine
             if (Args.Dir != 0 && lastDir != Args.Dir) rb.angularVelocity = 0;
 
             rb.AddTorque(Args.Dir * engineComponent.RotationSpeed.Value, ForceMode2D.Impulse);
+
             rb.AddForce(transform.up * (Mathf.Max(engineComponent.ForwardForce.Value, 0) * Mathf.Abs(Args.Dir)),
                 ForceMode2D.Impulse);
 
@@ -37,6 +37,7 @@ namespace EarthEater.Abilities.MoveEngine
         public override void FixedUpdateAbility()
         {
             base.FixedUpdateAbility();
+
             if (!CanMove)
             {
                 rb.velocity = Vector3.zero;

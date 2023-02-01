@@ -1,7 +1,4 @@
-using EarthEater.Components;
-using Entities;
 using Entities.Effects;
-using UnityEngine;
 
 namespace EarthEater.Abilities.MoveEngine
 {
