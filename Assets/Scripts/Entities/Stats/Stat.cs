@@ -6,22 +6,24 @@ namespace Entities
     public class Stat
     {
         public Action<float> OnModifiersChanged;
-        
-        private float baseValue;
+
         private HashSet<StatModifier> modifiers;
+
+        public float BaseValue { get; private set; }
 
         public Stat(float baseValue)
         {
-            this.baseValue = baseValue;
-            this.modifiers = new HashSet <StatModifier>();
+            this.BaseValue = baseValue;
+            this.modifiers = new HashSet<StatModifier>();
         }
-        
+
         public float Value
         {
             get
             {
                 // Calculate the total value of the stat by applying all the modifiers
-                float finalValue = baseValue;
+                float finalValue = BaseValue;
+
                 foreach (StatModifier modifier in modifiers)
                 {
                     finalValue += modifier.Value;
