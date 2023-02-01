@@ -21,9 +21,9 @@ namespace Pawelek.Testing.ItWillBeChangeLater
         public override void FixedUpdateAbility()
         {
             base.FixedUpdateAbility();
-            if (Vector2.Distance(Args.Transform.position, Args.player.position) < Args.DistanceToAttackPlayer)
+            if (Vector2.Distance(args.Transform.position, args.player.position) < args.DistanceToAttackPlayer)
             {
-                Args.Chasing = true;
+                args.Chasing = true;
                 if (abilityOwner.TryGetComponent(out AbilitiesHandler abilitiesHandler))
                 {
                     abilitiesHandler.PerformAbility<MoveUnitAbility>(null);
@@ -36,7 +36,7 @@ namespace Pawelek.Testing.ItWillBeChangeLater
         {
             base.Initialize(abilityOwner);
 
-            Args = new MoveUnitAbilityArgs(abilityOwner, abilityOwner.GameObject.GetComponent<Rigidbody2D>(), abilityOwner.GameObject.transform, Vector2.zero, 100f, default); // TODO change
+            args = new MoveUnitAbilityArgs(abilityOwner, abilityOwner.GameObject.GetComponent<Rigidbody2D>(), abilityOwner.GameObject.transform, Vector2.zero, 100f, default); // TODO change
         }
     }
 }

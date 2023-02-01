@@ -12,7 +12,7 @@ namespace Entities.Abilities
         protected override void OnPerform()
         {
             base.OnPerform();
-            if (!Args.AbilityTarget.TryGetComponent(out DamageableComponent otherDamageableComponent)) return;
+            if (!args.AbilityTarget.TryGetComponent(out DamageableComponent otherDamageableComponent)) return;
             otherDamageableComponent.Hp -= 1; //args.AbilityOwner.EntityStatsModel.Strength.Value;
         }
     }

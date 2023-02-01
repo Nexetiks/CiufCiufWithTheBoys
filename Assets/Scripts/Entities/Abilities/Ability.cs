@@ -17,7 +17,7 @@ namespace Entities.Abilities
         /// <summary>
         /// Remember to initialize args in the ability constructor, gather necessary references and so on
         /// </summary>
-        public T Args { get; protected set; }
+        protected T args;
 
         public virtual bool IsPerforming => true;
         public virtual bool CanPerform => true;
@@ -46,7 +46,7 @@ namespace Entities.Abilities
 
             if (args != null)
             {
-                Args = args as T;
+                this.args = args as T;
             }
 
             OnPerform();
