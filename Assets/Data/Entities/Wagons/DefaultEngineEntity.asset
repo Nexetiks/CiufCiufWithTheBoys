@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: DefaultEngineEntity
   m_EditorClassIdentifier: 
   <EntityDefaultData>k__BackingField:
-    <StartingAbilities>k__BackingField:
-    - rid: 1118481560939003904
     <Components>k__BackingField:
     - rid: 1118481545141157890
     - rid: 1118481545141157891
     - rid: 1118481545141157892
+    - rid: 8908244349059858432
   references:
     version: 2
     RefIds:
@@ -37,5 +36,10 @@ MonoBehaviour:
       data:
         <Weight>k__BackingField: 5
         <WagonEffects>k__BackingField: []
-    - rid: 1118481560939003904
+    - rid: 8908244349059858432
+      type: {class: AbilitiesHandler, ns: Entities.Abilities, asm: Assembly-CSharp}
+      data:
+        startingAbilities:
+        - rid: 8908244349059858433
+    - rid: 8908244349059858433
       type: {class: MoveEngineAbility, ns: EarthEater.Abilities.MoveEngine, asm: Assembly-CSharp}

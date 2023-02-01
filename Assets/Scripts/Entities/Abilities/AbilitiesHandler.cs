@@ -1,23 +1,30 @@
 using System;
 using System.Collections.Generic;
+using Entities.Components;
 using Entities.Effects;
+using UnityEngine;
 
 namespace Entities.Abilities
 {
 // The AbilitiesHandler class manages a collection of Ability classes and allows
 // for performing abilities that affect Entities.
-    public class AbilitiesHandler
+    public class AbilitiesHandler : BaseComponent
     {
+        [SerializeReference, ReferencePicker(TypeGrouping = TypeGrouping.ByFlatName), ReorderableList]
+        private IAmAbility[] startingAbilities;
+        
         // A dictionary mapping Ability types to the Ability objects
         private Dictionary<Type, IAmAbility> abilities;
 
-        // Abilities owner
-        private Entity myEntity;
-
-        public AbilitiesHandler(Entity myEntity)
+        public override void Initialize(Entity myEntity)
         {
+            base.Initialize(myEntity);
             abilities = new Dictionary<Type, IAmAbility>();
-            this.myEntity = myEntity;
+            
+            foreach (IAmAbility ability in startingAbilities)
+            {
+                AddAbility((IAmAbility)ability.Clone(), myEntity);
+            }
         }
 
         public bool TryGetAbility<T>(out T ability) where T : IAmAbility
@@ -47,35 +54,28 @@ namespace Entities.Abilities
 
         // Performs the ability with the given type, affecting the given Entity or
         // another separate Entity.
-        public void PerformAbility<T>(EffectArgs effectArgs) where T : IAmAbility
+        public void PerformAbility<T>(DefaultAbilityArgs args) where T : IAmAbility
         {
             if (abilities.ContainsKey(typeof(T)))
             {
-                abilities[typeof(T)].TriggerPerform(effectArgs);
+                abilities[typeof(T)].Perform(args);
             }
         }
 
-        public void PerformAbility<T>() where T : IAmAbility
+        public override void UpdateComponent()
         {
-            if (abilities.ContainsKey(typeof(T)))
+            base.UpdateComponent();
+            foreach (IAmAbility ability in abilities.Values)
             {
-                abilities[typeof(T)].TriggerPerform();
+                ability.UpdateAbility();
             }
         }
 
-        public void UpdateAbilities()
+        public override void FixedUpdateComponent()
         {
             foreach (IAmAbility ability in abilities.Values)
             {
-                ability.UpdateContinuous();
-            }
-        }
-
-        public void FixedUpdateAbilities()
-        {
-            foreach (IAmAbility ability in abilities.Values)
-            {
-                ability.FixedUpdateContinuous();
+                ability.FixedUpdateAbility();
             }
         }
     }

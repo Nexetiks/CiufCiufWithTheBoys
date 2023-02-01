@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Pawelek.Testing.ItWillBeChangeLater
 {
-    public class MoveUnitAbilityArgs : DefaultAbilityEffectArgs
+    public class MoveUnitAbilityArgs : DefaultAbilityArgs
     {
         public Rigidbody2D Rb { get; private set; }
         public Transform Transform { get; private set; }
@@ -13,7 +13,7 @@ namespace Pawelek.Testing.ItWillBeChangeLater
         public Transform player { get; private set; }
         public bool Chasing { get; set; } = false;
 
-        public MoveUnitAbilityArgs(Entity abilityOwner, Rigidbody2D rb, Transform transform, Vector2 nextTarget, float distanceToAttackPlayer, Transform player) : base(abilityOwner)
+        public MoveUnitAbilityArgs(Entity abilityOwner, Rigidbody2D rb, Transform transform, Vector2 nextTarget, float distanceToAttackPlayer, Transform player)
         {
             Rb = rb;
             Transform = transform;

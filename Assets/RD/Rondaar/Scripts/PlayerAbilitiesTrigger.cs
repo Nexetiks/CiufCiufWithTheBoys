@@ -1,5 +1,6 @@
 using EarthEater.Abilities.MoveEngine;
 using Entities;
+using Entities.Abilities;
 using UnityEngine;
 
 public class PlayerAbilitiesTrigger : MonoBehaviour
@@ -31,9 +32,11 @@ public class PlayerAbilitiesTrigger : MonoBehaviour
 
         if (dir != 0)
         {
-            context.Entity.AbilitiesHandler.TryGetAbility(out MoveEngineAbility moveEngineAbility);
-            moveEngineAbility.Args.Dir = -dir;
-            context.Entity.AbilitiesHandler.PerformAbility<MoveEngineAbility>();
+            if (context.Entity.TryGetComponent(out AbilitiesHandler abilitiesHandler))
+            {
+                abilitiesHandler.TryGetAbility(out MoveEngineAbility moveEngineAbility);
+                abilitiesHandler.PerformAbility<MoveEngineAbility>(new MoveEngineAbilityArgs(-dir));
+            }
         }
     }
 }
