@@ -1,6 +1,5 @@
 using System;
 using Entities.Effects;
-using UnityEngine;
 
 // The Ability class represents a single ability that can be performed and
 // affects an Entity by changing its parameters or affecting its Components.
@@ -9,26 +8,18 @@ namespace Entities.Abilities
     //TODO: Add initialization args for gathering references and UpdateArgs i.e. when something changes, for TriggerEffects,
     // like a direction in the MoveEngineTriggerEffect
     [Serializable]
-    public abstract class Ability<T> : IAmAbility where T : DefaultAbilityEffectArgs
+    public abstract class Ability<T> : IAmAbility where T : DefaultAbilityArgs
     {
-        public event Action OnTriggerAbilityPerformed;
+        public event Action OnAbilityPerformed;
+
+        protected Entity abilityOwner;
 
         /// <summary>
         /// Remember to initialize args in the ability constructor, gather necessary references and so on
         /// </summary>
         public T Args { get; protected set; }
 
-        protected Entity abilityOwner;
-        private EffectTrigger<T> entityAbilityEffectTrigger;
-        private ContinuousEffectsUpdater<T> abilityEffectsInUpdate;
-        private ContinuousEffectsUpdater<T> abilityEffectsInFixedUpdate;
-
-        protected abstract TriggeredEffect<T> DefaultTriggeredEffect { get; }
-        protected abstract ContinuousEffect<T> DefaultEffectInUpdate { get; }
-        protected abstract ContinuousEffect<T> DefaultEffectInFixedUpdate { get; }
-
-        public virtual bool IsPerforming => abilityEffectsInUpdate?.ActiveEffects.Count > 0 || abilityEffectsInFixedUpdate?.ActiveEffects.Count > 0;
-
+        public virtual bool IsPerforming => true;
         public virtual bool CanPerform => true;
 
         // The name of the Ability
@@ -38,9 +29,6 @@ namespace Entities.Abilities
         protected Ability(string name)
         {
             Name = name;
-            entityAbilityEffectTrigger = new EffectTrigger<T>();
-            abilityEffectsInUpdate = new ContinuousEffectsUpdater<T>();
-            abilityEffectsInFixedUpdate = new ContinuousEffectsUpdater<T>();
         }
 
         /// <summary>
@@ -50,55 +38,31 @@ namespace Entities.Abilities
         public virtual void Initialize(Entity abilityOwner)
         {
             this.abilityOwner = abilityOwner;
-
-            if (DefaultTriggeredEffect != null)
-            {
-                entityAbilityEffectTrigger.Add(DefaultTriggeredEffect);
-            }
-
-            if (DefaultEffectInUpdate != null)
-            {
-                abilityEffectsInUpdate.AddEffect(DefaultEffectInUpdate);
-            }
-
-            if (DefaultEffectInFixedUpdate != null)
-            {
-                abilityEffectsInFixedUpdate.AddEffect(DefaultEffectInFixedUpdate);
-            }
         }
 
-        public void AddTriggeredEffect(TriggeredEffect<T> triggeredEffect)
-        {
-            entityAbilityEffectTrigger.Add(triggeredEffect);
-        }
-
-        public void RemoveTriggeredEffect(TriggeredEffect<T> triggeredEffect)
-        {
-            entityAbilityEffectTrigger.Remove(triggeredEffect);
-        }
-
-        public void TriggerPerform(EffectArgs args)
-        {
-            this.Args = args as T;
-            TriggerPerform();
-        }
-
-        public void TriggerPerform()
+        public void Perform(DefaultAbilityArgs args)
         {
             if (!CanPerform) return;
-            entityAbilityEffectTrigger.TriggerEffects(Args as T);
-            OnTriggerAbilityPerformed?.Invoke();
-            Debug.Log($"Performed {Name}");
+
+            if (args != null)
+            {
+                Args = args as T;
+            }
+
+            OnPerform();
+            OnAbilityPerformed?.Invoke();
         }
 
-        public void UpdateContinuous()
+        public virtual void UpdateAbility()
         {
-            abilityEffectsInUpdate.UpdateEffects(Args);
         }
 
-        public void FixedUpdateContinuous()
+        public virtual void FixedUpdateAbility()
         {
-            abilityEffectsInFixedUpdate.UpdateEffects(Args);
+        }
+
+        protected virtual void OnPerform()
+        {
         }
 
         public virtual object Clone()
@@ -110,10 +74,9 @@ namespace Entities.Abilities
 
     public interface IAmAbility : ICloneable
     {
-        public void TriggerPerform(EffectArgs args);
-        public void TriggerPerform();
-        public void UpdateContinuous();
-        public void FixedUpdateContinuous();
+        public void Perform(DefaultAbilityArgs args);
+        public void UpdateAbility();
+        public void FixedUpdateAbility();
         public void Initialize(Entity abilityOwner);
     }
 }

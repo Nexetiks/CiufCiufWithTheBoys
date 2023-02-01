@@ -8,9 +8,6 @@ namespace Entities
     public class EntityDefaultData
     {
         [field: SerializeReference, ReferencePicker(TypeGrouping = TypeGrouping.ByFlatName), ReorderableList]
-        public IAmAbility[] StartingAbilities { get; private set; }
-
-        [field: SerializeReference, ReferencePicker(TypeGrouping = TypeGrouping.ByFlatName), ReorderableList]
         public BaseComponent[] Components { get; private set; }
 
         public EntityDefaultData()

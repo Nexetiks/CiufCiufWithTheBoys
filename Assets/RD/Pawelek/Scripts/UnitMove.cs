@@ -1,4 +1,5 @@
 using Entities;
+using Entities.Abilities;
 using UnityEngine;
 
 namespace Pawelek.Testing.ItWillBeChangeLater
@@ -7,11 +8,13 @@ namespace Pawelek.Testing.ItWillBeChangeLater
     {
         [SerializeField]
         private EntityContext context;
-        
+
         public void TestMove()
         {
-            context.Entity.AbilitiesHandler.TryGetAbility(out MoveUnitAbility moveUnitAbility);
-           // moveUnitAbility.Args.
+            if (context.Entity.TryGetComponent(out AbilitiesHandler abilitiesHandler))
+            {
+                abilitiesHandler.TryGetAbility(out MoveUnitAbility moveUnitAbility);
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using Entities.Components;
 using Entities.Effects;
 
 namespace Entities.Abilities
@@ -8,8 +9,11 @@ namespace Entities.Abilities
         {
         }
 
-        protected override TriggeredEffect<DefaultTargetAbilityArgs> DefaultTriggeredEffect => new DamageTriggeredEffect();
-        protected override ContinuousEffect<DefaultTargetAbilityArgs> DefaultEffectInUpdate { get; }
-        protected override ContinuousEffect<DefaultTargetAbilityArgs> DefaultEffectInFixedUpdate { get; }
+        protected override void OnPerform()
+        {
+            base.OnPerform();
+            if (!Args.AbilityTarget.TryGetComponent(out DamageableComponent otherDamageableComponent)) return;
+            otherDamageableComponent.Hp -= 1; //args.AbilityOwner.EntityStatsModel.Strength.Value;
+        }
     }
 }

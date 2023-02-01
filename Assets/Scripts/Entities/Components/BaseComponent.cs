@@ -7,6 +7,14 @@ namespace Entities.Components
     {
         public Entity MyEntity { get; private set; }
 
+        public virtual void UpdateComponent()
+        {
+        }
+
+        public virtual void FixedUpdateComponent()
+        {
+        }
+        
         public virtual void Initialize(Entity myEntity)
         {
             MyEntity = myEntity;

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Entities.Abilities;
 using Entities.Components;
 using Entities.Effects.Statuses;
 using UnityEngine;
@@ -11,14 +10,11 @@ namespace Entities
     {
         private Dictionary<Type, BaseComponent> components;
         public EntityStatusesHandler StatusesHandler { get; private set; }
-        public AbilitiesHandler AbilitiesHandler { get; private set; }
-
         public GameObject GameObject { get; private set; }
 
         public Entity(EntityDefaultData defaultData, GameObject gameObject)
         {
             StatusesHandler = new EntityStatusesHandler(this);
-            AbilitiesHandler = new AbilitiesHandler(this);
             components = new Dictionary<Type, BaseComponent>();
             GameObject = gameObject;
 
@@ -27,9 +23,9 @@ namespace Entities
                 AddComponent((BaseComponent)component.Clone());
             }
 
-            foreach (IAmAbility ability in defaultData.StartingAbilities)
+            foreach (BaseComponent component in components.Values)
             {
-                AbilitiesHandler.AddAbility((IAmAbility)ability.Clone(), this);
+                component.Initialize(this);
             }
         }
 
@@ -52,19 +48,24 @@ namespace Entities
 
         public void AddComponent(BaseComponent component)
         {
-            component.Initialize(this);
             components.Add(component.GetType(), component);
         }
 
         public void Update()
         {
             StatusesHandler.UpdateStatuses();
-            AbilitiesHandler.UpdateAbilities();
+            foreach (BaseComponent component in components.Values)
+            {
+                component.UpdateComponent();
+            }
         }
 
         public void FixedUpdate()
         {
-            AbilitiesHandler.FixedUpdateAbilities();
+            foreach (BaseComponent component in components.Values)
+            {
+                component.FixedUpdateComponent();
+            }
         }
     }
 }

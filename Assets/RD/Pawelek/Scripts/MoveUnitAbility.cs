@@ -7,16 +7,29 @@ namespace Pawelek.Testing.ItWillBeChangeLater
 {
     public class MoveUnitAbility : Ability<MoveUnitAbilityArgs>
     {
-        private MoveUnitTriggerEffect moveUnitTriggerEffect;
-        private MoveUnitContinuousEffect moveUnitContinuousEffect;
-        protected override TriggeredEffect<MoveUnitAbilityArgs> DefaultTriggeredEffect => moveUnitTriggerEffect;
-        protected override ContinuousEffect<MoveUnitAbilityArgs> DefaultEffectInUpdate { get; }
-        protected override ContinuousEffect<MoveUnitAbilityArgs> DefaultEffectInFixedUpdate { get; }
-
         public MoveUnitAbility(string name) : base("Move Unit Ability")
         {
-            moveUnitTriggerEffect = new MoveUnitTriggerEffect();
-            moveUnitContinuousEffect = new MoveUnitContinuousEffect();
+        }
+
+        protected override void OnPerform()
+        {
+            base.OnPerform();
+            Debug.Log("test - dupa");
+            //move unit.
+        }
+
+        public override void FixedUpdateAbility()
+        {
+            base.FixedUpdateAbility();
+            if (Vector2.Distance(Args.Transform.position, Args.player.position) < Args.DistanceToAttackPlayer)
+            {
+                Args.Chasing = true;
+                if (abilityOwner.TryGetComponent(out AbilitiesHandler abilitiesHandler))
+                {
+                    abilitiesHandler.PerformAbility<MoveUnitAbility>(null);
+                    abilitiesHandler.UpdateComponent();
+                }
+            }
         }
 
         public override void Initialize(Entity abilityOwner)
