@@ -12,11 +12,11 @@ namespace EarthEater.Systems
         {
             base.FixedUpdate();
 
-            foreach (KeyValuePair<Entity,MovingEngineSystemArgs> keyValuePair in entityToSystemArgsLut)
+            foreach (KeyValuePair<Entity, MovingEngineSystemArgs> keyValuePair in entityToSystemArgsLut)
             {
                 EngineComponent engineComponent = keyValuePair.Value.EngineComponent;
                 Rigidbody2D rb = keyValuePair.Value.Rb;
-                
+
                 rb.velocity = rb.transform.up * rb.velocity.magnitude;
 
                 if (rb.velocity.magnitude > engineComponent.MaxSpeed.Value)
@@ -29,7 +29,8 @@ namespace EarthEater.Systems
         protected override void Update()
         {
             base.Update();
-            foreach (KeyValuePair<Entity,MovingEngineSystemArgs> keyValuePair in entityToSystemArgsLut)
+
+            foreach (KeyValuePair<Entity, MovingEngineSystemArgs> keyValuePair in entityToSystemArgsLut)
             {
                 EngineComponent engineComponent = keyValuePair.Value.EngineComponent;
                 Rigidbody2D rb = keyValuePair.Value.Rb;
@@ -41,7 +42,8 @@ namespace EarthEater.Systems
                 }
 
                 rb.AddTorque(inputComponent.HorizontalInput * engineComponent.RotationSpeed.Value, ForceMode2D.Impulse);
-                rb.AddForce(rb.transform.up * ( Mathf.Max(engineComponent.ForwardForce.Value, 0) * Mathf.Abs(inputComponent.HorizontalInput)),
+
+                rb.AddForce(rb.transform.up * (Mathf.Max(engineComponent.ForwardForce.Value, 0) * Mathf.Abs(inputComponent.HorizontalInput)),
                     ForceMode2D.Impulse);
 
                 if (inputComponent.HorizontalInput != 0)
@@ -50,7 +52,7 @@ namespace EarthEater.Systems
                 }
             }
         }
-        
+
         public struct MovingEngineSystemArgs
         {
             public Rigidbody2D Rb { get; private set; }

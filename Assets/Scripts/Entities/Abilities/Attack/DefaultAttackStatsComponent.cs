@@ -6,7 +6,6 @@ public class DefaultAttackStatsComponent : BaseComponent
 {
     [field: SerializeField]
     public Stat Cooldown { get; private set; }
-    
 
     public override object Clone()
     {

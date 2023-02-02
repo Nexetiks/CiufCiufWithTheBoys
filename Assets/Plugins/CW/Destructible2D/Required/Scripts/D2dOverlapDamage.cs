@@ -1,99 +1,133 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using System;
 using CW.Common;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace Destructible2D
 {
-	/// <summary>This component increments the attached D2dDamage.Damage value when this object overlaps a trigger.</summary>
-	[RequireComponent(typeof(D2dDamage))]
-	[RequireComponent(typeof(D2dCollisionHandler))]
-	[HelpURL(D2dCommon.HelpUrlPrefix + "D2dOverlapDamage")]
-	[AddComponentMenu(D2dCommon.ComponentMenuPrefix + "Overlap Damage")]
-	public class D2dOverlapDamage : MonoBehaviour
-	{
-		/// <summary>The collision layers you want to listen to.</summary>
-		public LayerMask Mask { set { mask = value; } get { return mask; } } [SerializeField] private LayerMask mask = -1;
+    /// <summary>This component increments the attached D2dDamage.Damage value when this object overlaps a trigger.</summary>
+    [RequireComponent(typeof(D2dDamage))]
+    [RequireComponent(typeof(D2dCollisionHandler))]
+    [HelpURL(D2dCommon.HelpUrlPrefix + "D2dOverlapDamage")]
+    [AddComponentMenu(D2dCommon.ComponentMenuPrefix + "Overlap Damage")]
+    public class D2dOverlapDamage : MonoBehaviour
+    {
+        /// <summary>The collision layers you want to listen to.</summary>
+        public LayerMask Mask
+        {
+            set { mask = value; }
+            get { return mask; }
+        }
 
-		/// <summary>This allows you to control the amount of damage inflicted per second of overlap.</summary>
-		public float DamagePerSecond { set { damagePerSecond = value; } get { return damagePerSecond; } } [SerializeField] private float damagePerSecond = 1.0f;
+        [SerializeField]
+        private LayerMask mask = -1;
 
-		/// <summary>This allows you to control the minimum amount of time between damage in seconds.</summary>
-		public float Delay { set { delay = value; } get { return delay; } } [SerializeField] private float delay = 0.1f;
+        /// <summary>This allows you to control the amount of damage inflicted per second of overlap.</summary>
+        public float DamagePerSecond
+        {
+            set { damagePerSecond = value; }
+            get { return damagePerSecond; }
+        }
 
-		/// <summary>This gets called when the prefab was spawned.</summary>
-		public UnityEvent OnOverlap { get { if (onOverlap == null) onOverlap = new UnityEvent(); return onOverlap; } } [SerializeField] private UnityEvent onOverlap;
+        [SerializeField]
+        private float damagePerSecond = 1.0f;
 
-		[System.NonSerialized]
-		private D2dCollisionHandler cachedCollisionHandler;
+        /// <summary>This allows you to control the minimum amount of time between damage in seconds.</summary>
+        public float Delay
+        {
+            set { delay = value; }
+            get { return delay; }
+        }
 
-		[System.NonSerialized]
-		private D2dDamage cachedDamage;
+        [SerializeField]
+        private float delay = 0.1f;
 
-		[SerializeField]
-		private float cooldown;
+        /// <summary>This gets called when the prefab was spawned.</summary>
+        public UnityEvent OnOverlap
+        {
+            get
+            {
+                if (onOverlap == null) onOverlap = new UnityEvent();
+                return onOverlap;
+            }
+        }
 
-		protected virtual void OnEnable()
-		{
-			if (cachedCollisionHandler == null) cachedCollisionHandler = GetComponent<D2dCollisionHandler>();
-			if (cachedDamage           == null) cachedDamage           = GetComponent<D2dDamage>();
+        [SerializeField]
+        private UnityEvent onOverlap;
 
-			cachedCollisionHandler.OnOverlap += Overlap;
-		}
+        [NonSerialized]
+        private D2dCollisionHandler cachedCollisionHandler;
 
-		protected virtual void Update()
-		{
-			cooldown -= Time.deltaTime;
-		}
+        [NonSerialized]
+        private D2dDamage cachedDamage;
 
-		protected virtual void OnDisable()
-		{
-			cachedCollisionHandler.OnOverlap -= Overlap;
-		}
+        [SerializeField]
+        private float cooldown;
 
-		private void Overlap(Collider2D collider)
-		{
-			if (CwHelper.IndexInMask(collider.gameObject.layer, mask) == true)
-			{
-				cachedDamage.Damage += damagePerSecond * Time.deltaTime;
+        protected virtual void OnEnable()
+        {
+            if (cachedCollisionHandler == null) cachedCollisionHandler = GetComponent<D2dCollisionHandler>();
+            if (cachedDamage == null) cachedDamage = GetComponent<D2dDamage>();
 
-				if (cooldown <= 0.0f)
-				{
-					cooldown = delay;
+            cachedCollisionHandler.OnOverlap += Overlap;
+        }
 
-					if (onOverlap != null)
-					{
-						onOverlap.Invoke();
-					}
-				}
-			}
-		}
-	}
+        protected virtual void Update()
+        {
+            cooldown -= Time.deltaTime;
+        }
+
+        protected virtual void OnDisable()
+        {
+            cachedCollisionHandler.OnOverlap -= Overlap;
+        }
+
+        private void Overlap(Collider2D collider)
+        {
+            if (CwHelper.IndexInMask(collider.gameObject.layer, mask) == true)
+            {
+                cachedDamage.Damage += damagePerSecond * Time.deltaTime;
+
+                if (cooldown <= 0.0f)
+                {
+                    cooldown = delay;
+
+                    if (onOverlap != null)
+                    {
+                        onOverlap.Invoke();
+                    }
+                }
+            }
+        }
+    }
 }
 
 #if UNITY_EDITOR
 namespace Destructible2D.Inspector
 {
-	using UnityEditor;
-	using TARGET = D2dOverlapDamage;
+    using TARGET = D2dOverlapDamage;
 
-	[CanEditMultipleObjects]
-	[CustomEditor(typeof(TARGET))]
-	public class D2dOverlapDamage_Editor : CwEditor
-	{
-		protected override void OnInspector()
-		{
-			TARGET tgt; TARGET[] tgts; GetTargets(out tgt, out tgts);
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(TARGET))]
+    public class D2dOverlapDamage_Editor : CwEditor
+    {
+        protected override void OnInspector()
+        {
+            TARGET tgt;
+            TARGET[] tgts;
+            GetTargets(out tgt, out tgts);
 
-			BeginError(Any(tgts, t => t.Mask == 0));
-				Draw("mask", "The collision layers you want to listen to.");
-			EndError();
-			Draw("damagePerSecond", "This allows you to control the amount of damage inflicted relative to the force of the impact.");
-			Draw("delay", "This allows you to control the minimum amount of time between damage in seconds");
+            BeginError(Any(tgts, t => t.Mask == 0));
+            Draw("mask", "The collision layers you want to listen to.");
+            EndError();
+            Draw("damagePerSecond", "This allows you to control the amount of damage inflicted relative to the force of the impact.");
+            Draw("delay", "This allows you to control the minimum amount of time between damage in seconds");
 
-			Separator();
+            Separator();
 
-			Draw("onOverlap");
-		}
-	}
+            Draw("onOverlap");
+        }
+    }
 }
 #endif

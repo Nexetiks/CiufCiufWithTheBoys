@@ -2,8 +2,8 @@ using System;
 
 namespace Entities.Components
 {
-    [System.Serializable]
-    public abstract class BaseComponent: ICloneable
+    [Serializable]
+    public abstract class BaseComponent : ICloneable
     {
         public Entity MyEntity { get; private set; }
 
@@ -14,7 +14,7 @@ namespace Entities.Components
         public virtual void FixedUpdateComponent()
         {
         }
-        
+
         public virtual void Initialize(Entity myEntity)
         {
             MyEntity = myEntity;

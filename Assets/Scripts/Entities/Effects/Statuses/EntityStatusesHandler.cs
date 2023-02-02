@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Entities.Effects.Statuses
 {
@@ -17,7 +16,7 @@ namespace Entities.Effects.Statuses
             Target = target;
             statusArgs = new EntityStatusArgs(target);
             statusesUpdater = new ContinuousEffectsUpdater<EntityStatusArgs>();
-            
+
             statusesUpdater.OnEffectAdded += StatusesUpdater_OnEffectAdded;
             statusesUpdater.OnEffectRemoved += StatusesUpdater_OnEffectRemoved;
         }
@@ -42,13 +41,13 @@ namespace Entities.Effects.Statuses
         {
             statusesUpdater.UpdateEffects(statusArgs);
         }
-        
+
         public void AddStatus(EntityStatus status)
         {
             statusesUpdater.AddEffect(status);
         }
-        
-        public void RemoveStatus<T>() where T: EntityStatus
+
+        public void RemoveStatus<T>() where T : EntityStatus
         {
             statusesUpdater.RemoveEffect<T>();
         }

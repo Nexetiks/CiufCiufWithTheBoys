@@ -1,15 +1,13 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FrustumObjectCulling : MonoBehaviour
 {
     private Camera cam;
-    
+
     [SerializeField]
     private List<GameObject> objectsToCull = new List<GameObject>();
-    
+
     private void Awake()
     {
         cam = Camera.main;

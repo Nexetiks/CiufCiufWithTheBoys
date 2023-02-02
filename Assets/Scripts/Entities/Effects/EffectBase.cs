@@ -9,7 +9,7 @@ namespace Entities.Effects
         public virtual bool ExpirationConditions { get; }
         /// <summary>The name of the effect.</summary>
         public string Name { get; set; }
-        
+
         /// <summary>
         /// Effect should be triggered using this method, it handles effect expiration. The actual Effect functionality
         /// should be a part of the OnPerform method

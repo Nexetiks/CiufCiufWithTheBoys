@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollower : MonoBehaviour
 {
-    [SerializeField] private Transform objectToFollow;
-    [SerializeField] private float smoothing = .8f;
-    
+    [SerializeField]
+    private Transform objectToFollow;
+    [SerializeField]
+    private float smoothing = .8f;
+
     // Update is called once per frame
     void LateUpdate()
     {

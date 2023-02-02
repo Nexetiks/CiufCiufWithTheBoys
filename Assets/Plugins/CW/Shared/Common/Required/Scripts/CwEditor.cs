@@ -5,515 +5,522 @@ using System.Collections.Generic;
 
 namespace CW.Common
 {
-	/// <summary>This is the base class for all inspectors.</summary>
-	public abstract class CwEditor : UnityEditor.Editor
-	{
-		private static Stack<object> datas = new Stack<object>();
-
-		private static GUIContent customContent = new GUIContent();
-
-		private static List<Color> colors = new List<Color>();
-
-		private static List<float> labelWidths = new List<float>();
-
-		private static List<bool> mixedValues = new List<bool>();
-
-		public void GetTargets<T>(out T tgt, out T[] tgts)
-			where T : Object
-		{
-			tgt  = (T)target;
-			tgts = System.Array.ConvertAll(targets, item => (T)item);
-		}
-
-		public static void BeginData(SerializedObject newData)
-		{
-			datas.Push(newData);
-		}
-
-		public static void BeginData(SerializedProperty newData)
-		{
-			datas.Push(newData);
-		}
-
-		public static void EndData()
-		{
-			datas.Pop();
-		}
-
-		public override void OnInspectorGUI()
-		{
-			BeginData(serializedObject);
-
-			ClearStacks();
-
-			Separator();
-
-			OnInspector();
-
-			Separator();
-
-			serializedObject.ApplyModifiedProperties();
-
-			EndData();
-		}
-
-		protected void Each<T>(T[] tgts, System.Action<T> update, bool dirty = false, bool apply = false, string undo = null)
-			where T : Object
-		{
-			if (string.IsNullOrEmpty(undo) == false)
-			{
-				Undo.RecordObjects(tgts, undo);
-			}
-
-			if (apply == true)
-			{
-				serializedObject.ApplyModifiedProperties();
-			}
-
-			foreach (var t in tgts)
-			{
-				update(t);
-
-				if (dirty == true)
-				{
-					EditorUtility.SetDirty(t);
-				}
-			}
-		}
-
-		protected bool Any<T>(T[] tgts, System.Func<T, bool> check)
-			where T : Object
-		{
-			foreach (var t in tgts)
-			{
-				if (check(t) == true)
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		protected bool All<T>(T[] tgts, System.Func<T, bool> check)
-			where T : Object
-		{
-			foreach (var t in tgts)
-			{
-				if (check(t) == false)
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		public static Rect Reserve(float height = 19.0f)
-		{
-			var rect =
-			EditorGUILayout.BeginVertical();
-				EditorGUILayout.LabelField(string.Empty, GUILayout.Height(height), GUILayout.ExpandWidth(true), GUILayout.MinWidth(0.0f));
-			EditorGUILayout.EndVertical();
-
-			return rect;
-		}
-
-		public static void Info(string message)
-		{
-			EditorGUILayout.HelpBox(StripRichText(message), MessageType.Info); // Help boxes can't display rich text for some reason, so strip it
-		}
-
-		public static void Warning(string message)
-		{
-			EditorGUILayout.HelpBox(StripRichText(message), MessageType.Warning); // Help boxes can't display rich text for some reason, so strip it
-		}
-
-		public static void Error(string message)
-		{
-			EditorGUILayout.HelpBox(StripRichText(message), MessageType.Error); // Help boxes can't display rich text for some reason, so strip it
-		}
-
-		public static void Separator()
-		{
-			EditorGUILayout.Separator();
-		}
-
-		public static void BeginIndent()
-		{
-			EditorGUI.indentLevel += 1;
-		}
-
-		public static void EndIndent()
-		{
-			EditorGUI.indentLevel -= 1;
-		}
-
-		public static bool Button(string text)
-		{
-			return GUILayout.Button(text);
-		}
-
-		public static bool HelpButton(string helpText, UnityEditor.MessageType type, string buttonText, float buttonWidth)
-		{
-			var clicked = false;
-
-			EditorGUILayout.BeginHorizontal();
-			{
-				EditorGUILayout.HelpBox(helpText, type);
-
-				var style = new GUIStyle(GUI.skin.button); style.wordWrap = true;
-
-				clicked = GUILayout.Button(buttonText, style, GUILayout.ExpandHeight(true), GUILayout.Width(buttonWidth));
-			}
-			EditorGUILayout.EndHorizontal();
-
-			return clicked;
-		}
-
-		public static void ClearStacks()
-		{
-			while (colors.Count > 0)
-			{
-				EndColor();
-			}
-
-			while (labelWidths.Count > 0)
-			{
-				EndLabelWidth();
-			}
-
-			while (mixedValues.Count > 0)
-			{
-				EndMixedValue();
-			}
-		}
-
-		public static void BeginMixedValue(bool mixed = true)
-		{
-			mixedValues.Add(EditorGUI.showMixedValue);
+    /// <summary>This is the base class for all inspectors.</summary>
+    public abstract class CwEditor : UnityEditor.Editor
+    {
+        private static Stack<object> datas = new Stack<object>();
+
+        private static GUIContent customContent = new GUIContent();
+
+        private static List<Color> colors = new List<Color>();
+
+        private static List<float> labelWidths = new List<float>();
+
+        private static List<bool> mixedValues = new List<bool>();
+
+        public void GetTargets<T>(out T tgt, out T[] tgts)
+            where T : Object
+        {
+            tgt = (T)target;
+            tgts = System.Array.ConvertAll(targets, item => (T)item);
+        }
+
+        public static void BeginData(SerializedObject newData)
+        {
+            datas.Push(newData);
+        }
+
+        public static void BeginData(SerializedProperty newData)
+        {
+            datas.Push(newData);
+        }
+
+        public static void EndData()
+        {
+            datas.Pop();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            BeginData(serializedObject);
+
+            ClearStacks();
+
+            Separator();
+
+            OnInspector();
+
+            Separator();
+
+            serializedObject.ApplyModifiedProperties();
+
+            EndData();
+        }
+
+        protected void Each<T>(T[] tgts, System.Action<T> update, bool dirty = false, bool apply = false, string undo = null)
+            where T : Object
+        {
+            if (string.IsNullOrEmpty(undo) == false)
+            {
+                Undo.RecordObjects(tgts, undo);
+            }
+
+            if (apply == true)
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
+
+            foreach (var t in tgts)
+            {
+                update(t);
+
+                if (dirty == true)
+                {
+                    EditorUtility.SetDirty(t);
+                }
+            }
+        }
+
+        protected bool Any<T>(T[] tgts, System.Func<T, bool> check)
+            where T : Object
+        {
+            foreach (var t in tgts)
+            {
+                if (check(t) == true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        protected bool All<T>(T[] tgts, System.Func<T, bool> check)
+            where T : Object
+        {
+            foreach (var t in tgts)
+            {
+                if (check(t) == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
-			EditorGUI.showMixedValue = mixed;
-		}
-
-		public static void EndMixedValue()
-		{
-			if (mixedValues.Count > 0)
-			{
-				var index = mixedValues.Count - 1;
+        public static Rect Reserve(float height = 19.0f)
+        {
+            var rect =
+                EditorGUILayout.BeginVertical();
 
-				EditorGUI.showMixedValue = mixedValues[index];
+            EditorGUILayout.LabelField(string.Empty, GUILayout.Height(height), GUILayout.ExpandWidth(true), GUILayout.MinWidth(0.0f));
+            EditorGUILayout.EndVertical();
+
+            return rect;
+        }
+
+        public static void Info(string message)
+        {
+            EditorGUILayout.HelpBox(StripRichText(message), MessageType.Info); // Help boxes can't display rich text for some reason, so strip it
+        }
+
+        public static void Warning(string message)
+        {
+            EditorGUILayout.HelpBox(StripRichText(message), MessageType.Warning); // Help boxes can't display rich text for some reason, so strip it
+        }
+
+        public static void Error(string message)
+        {
+            EditorGUILayout.HelpBox(StripRichText(message), MessageType.Error); // Help boxes can't display rich text for some reason, so strip it
+        }
+
+        public static void Separator()
+        {
+            EditorGUILayout.Separator();
+        }
+
+        public static void BeginIndent()
+        {
+            EditorGUI.indentLevel += 1;
+        }
+
+        public static void EndIndent()
+        {
+            EditorGUI.indentLevel -= 1;
+        }
+
+        public static bool Button(string text)
+        {
+            return GUILayout.Button(text);
+        }
+
+        public static bool HelpButton(string helpText, UnityEditor.MessageType type, string buttonText, float buttonWidth)
+        {
+            var clicked = false;
+
+            EditorGUILayout.BeginHorizontal();
+
+            {
+                EditorGUILayout.HelpBox(helpText, type);
+
+                var style = new GUIStyle(GUI.skin.button);
+                style.wordWrap = true;
+
+                clicked = GUILayout.Button(buttonText, style, GUILayout.ExpandHeight(true), GUILayout.Width(buttonWidth));
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            return clicked;
+        }
+
+        public static void ClearStacks()
+        {
+            while (colors.Count > 0)
+            {
+                EndColor();
+            }
 
-				mixedValues.RemoveAt(index);
-			}
-		}
+            while (labelWidths.Count > 0)
+            {
+                EndLabelWidth();
+            }
+
+            while (mixedValues.Count > 0)
+            {
+                EndMixedValue();
+            }
+        }
 
-		public static void BeginDisabled(bool disabled = true)
-		{
-			EditorGUI.BeginDisabledGroup(disabled);
-		}
+        public static void BeginMixedValue(bool mixed = true)
+        {
+            mixedValues.Add(EditorGUI.showMixedValue);
 
-		public static void EndDisabled()
-		{
-			EditorGUI.EndDisabledGroup();
-		}
+            EditorGUI.showMixedValue = mixed;
+        }
 
-		public static void BeginError(bool error = true)
-		{
-			BeginColor(Color.red, error);
-		}
-
-		public static void EndError()
-		{
-			EndColor();
-		}
-
-		public static void BeginColor(Color color, bool show = true)
-		{
-			colors.Add(GUI.color);
-
-			GUI.color = show == true ? color : colors[0];
-		}
-
-		public static void EndColor()
-		{
-			if (colors.Count > 0)
-			{
-				var index = colors.Count - 1;
-
-				GUI.color = colors[index];
-
-				colors.RemoveAt(index);
-			}
-		}
-
-		public static void BeginLabelWidth(float width)
-		{
-			labelWidths.Add(EditorGUIUtility.labelWidth);
-
-			EditorGUIUtility.labelWidth = width;
-		}
+        public static void EndMixedValue()
+        {
+            if (mixedValues.Count > 0)
+            {
+                var index = mixedValues.Count - 1;
 
-		public static void EndLabelWidth()
-		{
-			if (labelWidths.Count > 0)
-			{
-				var index = labelWidths.Count - 1;
+                EditorGUI.showMixedValue = mixedValues[index];
 
-				EditorGUIUtility.labelWidth = labelWidths[index];
+                mixedValues.RemoveAt(index);
+            }
+        }
 
-				labelWidths.RemoveAt(index);
-			}
-		}
+        public static void BeginDisabled(bool disabled = true)
+        {
+            EditorGUI.BeginDisabledGroup(disabled);
+        }
 
-		public static bool DrawFoldout(string overrideText, string overrideTooltip, string propertyPath = "m_Name")
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+        public static void EndDisabled()
+        {
+            EditorGUI.EndDisabledGroup();
+        }
 
-			property.isExpanded = EditorGUILayout.Foldout(property.isExpanded, customContent);
+        public static void BeginError(bool error = true)
+        {
+            BeginColor(Color.red, error);
+        }
 
-			return property.isExpanded;
-		}
+        public static void EndError()
+        {
+            EndColor();
+        }
+
+        public static void BeginColor(Color color, bool show = true)
+        {
+            colors.Add(GUI.color);
+
+            GUI.color = show == true ? color : colors[0];
+        }
+
+        public static void EndColor()
+        {
+            if (colors.Count > 0)
+            {
+                var index = colors.Count - 1;
 
-		public static bool DrawExpand(string propertyPath, ref bool modified, string overrideTooltip = null, string overrideText = null)
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
-			var rect     = EditorGUILayout.BeginVertical(); EditorGUILayout.LabelField(string.Empty, GUILayout.Height(EditorGUI.GetPropertyHeight(property))); EditorGUILayout.EndVertical();
-			var rectF    = rect; rectF.height = 16;
+                GUI.color = colors[index];
 
-			property.isExpanded = EditorGUI.Foldout(rectF, property.isExpanded, GUIContent.none);
+                colors.RemoveAt(index);
+            }
+        }
 
-			EditorGUI.BeginChangeCheck();
+        public static void BeginLabelWidth(float width)
+        {
+            labelWidths.Add(EditorGUIUtility.labelWidth);
 
-			EditorGUI.PropertyField(rect, property, customContent, true);
+            EditorGUIUtility.labelWidth = width;
+        }
 
-			modified = EditorGUI.EndChangeCheck();
+        public static void EndLabelWidth()
+        {
+            if (labelWidths.Count > 0)
+            {
+                var index = labelWidths.Count - 1;
 
-			return property.isExpanded;
-		}
+                EditorGUIUtility.labelWidth = labelWidths[index];
 
-		public static bool DrawExpand(string propertyPath, string overrideTooltip = null, string overrideText = null)
-		{
-			var modified = false; return DrawExpand(propertyPath, ref modified, overrideTooltip, overrideText);
-		}
+                labelWidths.RemoveAt(index);
+            }
+        }
 
-		public static bool Draw(string propertyPath, string overrideTooltip = null, string overrideText = null)
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+        public static bool DrawFoldout(string overrideText, string overrideTooltip, string propertyPath = "m_Name")
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
 
-			EditorGUI.BeginChangeCheck();
+            property.isExpanded = EditorGUILayout.Foldout(property.isExpanded, customContent);
 
-			EditorGUILayout.PropertyField(property, customContent, true);
+            return property.isExpanded;
+        }
 
-			return EditorGUI.EndChangeCheck();
-		}
+        public static bool DrawExpand(string propertyPath, ref bool modified, string overrideTooltip = null, string overrideText = null)
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+            var rect = EditorGUILayout.BeginVertical();
+            EditorGUILayout.LabelField(string.Empty, GUILayout.Height(EditorGUI.GetPropertyHeight(property)));
+            EditorGUILayout.EndVertical();
+            var rectF = rect;
+            rectF.height = 16;
 
-		public static void Draw(string propertyPath, ref bool dirty, string overrideTooltip = null, string overrideText = null)
-		{
-			if (Draw(propertyPath, overrideTooltip, overrideText) == true)
-			{
-				dirty = true;
-			}
-		}
+            property.isExpanded = EditorGUI.Foldout(rectF, property.isExpanded, GUIContent.none);
 
-		public static void Draw(string propertyPath, ref bool dirty1, ref bool dirty2, string overrideTooltip = null, string overrideText = null)
-		{
-			if (Draw(propertyPath, overrideTooltip, overrideText) == true)
-			{
-				dirty1 = true;
-				dirty2 = true;
-			}
-		}
+            EditorGUI.BeginChangeCheck();
 
-		public static bool DrawSlider(string propertyPath, float min, float max, string overrideTooltip = null, string overrideText = null)
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
-			var value    = property.floatValue;
+            EditorGUI.PropertyField(rect, property, customContent, true);
 
-			EditorGUI.BeginChangeCheck();
+            modified = EditorGUI.EndChangeCheck();
 
-			value = EditorGUILayout.Slider(customContent, value, min, max);
+            return property.isExpanded;
+        }
 
-			if (EditorGUI.EndChangeCheck() == true)
-			{
-				property.floatValue = value;
+        public static bool DrawExpand(string propertyPath, string overrideTooltip = null, string overrideText = null)
+        {
+            var modified = false;
+            return DrawExpand(propertyPath, ref modified, overrideTooltip, overrideText);
+        }
 
-				return true;
-			}
+        public static bool Draw(string propertyPath, string overrideTooltip = null, string overrideText = null)
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
 
-			return false;
-		}
+            EditorGUI.BeginChangeCheck();
 
-		public static bool DrawIntSlider(string propertyPath, int min, int max, string overrideTooltip = null, string overrideText = null)
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
-			var value    = property.intValue;
+            EditorGUILayout.PropertyField(property, customContent, true);
 
-			EditorGUI.BeginChangeCheck();
+            return EditorGUI.EndChangeCheck();
+        }
 
-			value = EditorGUILayout.IntSlider(customContent, value, min, max);
+        public static void Draw(string propertyPath, ref bool dirty, string overrideTooltip = null, string overrideText = null)
+        {
+            if (Draw(propertyPath, overrideTooltip, overrideText) == true)
+            {
+                dirty = true;
+            }
+        }
 
-			if (EditorGUI.EndChangeCheck() == true)
-			{
-				property.intValue = value;
+        public static void Draw(string propertyPath, ref bool dirty1, ref bool dirty2, string overrideTooltip = null, string overrideText = null)
+        {
+            if (Draw(propertyPath, overrideTooltip, overrideText) == true)
+            {
+                dirty1 = true;
+                dirty2 = true;
+            }
+        }
 
-				return true;
-			}
+        public static bool DrawSlider(string propertyPath, float min, float max, string overrideTooltip = null, string overrideText = null)
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+            var value = property.floatValue;
 
-			return false;
-		}
+            EditorGUI.BeginChangeCheck();
 
+            value = EditorGUILayout.Slider(customContent, value, min, max);
 
-		public static bool DrawMinMax(string propertyPath, float min, float max, string overrideTooltip = null, string overrideText = null)
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
-			var value    = property.vector2Value;
+            if (EditorGUI.EndChangeCheck() == true)
+            {
+                property.floatValue = value;
 
-			EditorGUI.BeginChangeCheck();
+                return true;
+            }
 
-			EditorGUILayout.MinMaxSlider(customContent, ref value.x, ref value.y, min, max);
+            return false;
+        }
 
-			if (EditorGUI.EndChangeCheck() == true)
-			{
-				property.vector2Value = value;
+        public static bool DrawIntSlider(string propertyPath, int min, int max, string overrideTooltip = null, string overrideText = null)
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+            var value = property.intValue;
 
-				return true;
-			}
+            EditorGUI.BeginChangeCheck();
 
-			return false;
-		}
+            value = EditorGUILayout.IntSlider(customContent, value, min, max);
 
-		public static bool DrawVector4(string propertyPath, string overrideTooltip = null, string overrideText = null)
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
-			var value    = property.vector4Value;
+            if (EditorGUI.EndChangeCheck() == true)
+            {
+                property.intValue = value;
 
-			EditorGUI.BeginChangeCheck();
+                return true;
+            }
 
-			EditorGUILayout.Vector4Field(customContent, value);
+            return false;
+        }
 
-			if (EditorGUI.EndChangeCheck() == true)
-			{
-				property.vector4Value = value;
+        public static bool DrawMinMax(string propertyPath, float min, float max, string overrideTooltip = null, string overrideText = null)
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+            var value = property.vector2Value;
 
-				return true;
-			}
+            EditorGUI.BeginChangeCheck();
 
-			return false;
-		}
+            EditorGUILayout.MinMaxSlider(customContent, ref value.x, ref value.y, min, max);
 
-		public static bool DrawIntPopup(int[] values, GUIContent[] contents, string propertyPath, string overrideTooltip = null, string overrideText = null)
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+            if (EditorGUI.EndChangeCheck() == true)
+            {
+                property.vector2Value = value;
 
-			EditorGUI.BeginChangeCheck();
+                return true;
+            }
 
-			EditorGUILayout.IntPopup(property, contents, values, customContent);
+            return false;
+        }
 
-			return EditorGUI.EndChangeCheck();
-		}
+        public static bool DrawVector4(string propertyPath, string overrideTooltip = null, string overrideText = null)
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+            var value = property.vector4Value;
 
-		public static void DrawIntPopup(int[] values, GUIContent[] contents, string propertyPath, ref bool modified, string overrideTooltip = null, string overrideText = null)
-		{
-			if (DrawIntPopup(values, contents, propertyPath, overrideTooltip, overrideText) == true)
-			{
-				modified = true;
-			}
-		}
+            EditorGUI.BeginChangeCheck();
 
-		public static bool DrawLayer(string propertyPath, string overrideTooltip = null, string overrideText = null)
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
-			var value    = property.intValue;
+            EditorGUILayout.Vector4Field(customContent, value);
 
-			EditorGUI.BeginChangeCheck();
+            if (EditorGUI.EndChangeCheck() == true)
+            {
+                property.vector4Value = value;
 
-			value = EditorGUILayout.LayerField(customContent, value);
+                return true;
+            }
 
-			if (EditorGUI.EndChangeCheck() == true)
-			{
-				property.intValue = value;
+            return false;
+        }
 
-				return true;
-			}
+        public static bool DrawIntPopup(int[] values, GUIContent[] contents, string propertyPath, string overrideTooltip = null, string overrideText = null)
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
 
-			return false;
-		}
+            EditorGUI.BeginChangeCheck();
 
-		public static bool DrawEulerAngles(string propertyPath, string overrideTooltip = null, string overrideText = null)
-		{
-			var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
-			var value    = property.quaternionValue.eulerAngles;
+            EditorGUILayout.IntPopup(property, contents, values, customContent);
 
-			EditorGUI.BeginChangeCheck();
+            return EditorGUI.EndChangeCheck();
+        }
 
-			BeginMixedValue(property.hasMultipleDifferentValues);
-				value = EditorGUILayout.Vector3Field(customContent, value);
-			EndMixedValue();
+        public static void DrawIntPopup(int[] values, GUIContent[] contents, string propertyPath, ref bool modified, string overrideTooltip = null, string overrideText = null)
+        {
+            if (DrawIntPopup(values, contents, propertyPath, overrideTooltip, overrideText) == true)
+            {
+                modified = true;
+            }
+        }
 
-			if (EditorGUI.EndChangeCheck() == true)
-			{
-				property.quaternionValue = Quaternion.Euler(value);
+        public static bool DrawLayer(string propertyPath, string overrideTooltip = null, string overrideText = null)
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+            var value = property.intValue;
 
-				return true;
-			}
+            EditorGUI.BeginChangeCheck();
 
-			return false;
-		}
+            value = EditorGUILayout.LayerField(customContent, value);
 
-		protected void DirtyAndUpdate()
-		{
-			for (var i = targets.Length - 1; i >= 0; i--)
-			{
-				EditorUtility.SetDirty(targets[i]);
-			}
+            if (EditorGUI.EndChangeCheck() == true)
+            {
+                property.intValue = value;
 
-			serializedObject.Update();
-		}
+                return true;
+            }
 
-		public static SerializedProperty GetProperty(string propertyPath)
-		{
-			var data = datas.Peek();
-			
-			if (data != null)
-			{
-				var dataA = data as SerializedObject;
+            return false;
+        }
 
-				if (dataA != null)
-				{
-					return dataA.FindProperty(propertyPath);
-				}
+        public static bool DrawEulerAngles(string propertyPath, string overrideTooltip = null, string overrideText = null)
+        {
+            var property = GetPropertyAndSetCustomContent(propertyPath, overrideTooltip, overrideText);
+            var value = property.quaternionValue.eulerAngles;
 
-				var dataB = data as SerializedProperty;
+            EditorGUI.BeginChangeCheck();
 
-				if (dataB != null)
-				{
-					return dataB.FindPropertyRelative(propertyPath);
-				}
-			}
+            BeginMixedValue(property.hasMultipleDifferentValues);
+            value = EditorGUILayout.Vector3Field(customContent, value);
+            EndMixedValue();
 
-			return null;
-		}
+            if (EditorGUI.EndChangeCheck() == true)
+            {
+                property.quaternionValue = Quaternion.Euler(value);
 
-		private static SerializedProperty GetPropertyAndSetCustomContent(string propertyPath, string overrideTooltip, string overrideText)
-		{
-			var property = GetProperty(propertyPath);
+                return true;
+            }
 
-			customContent.text    = string.IsNullOrEmpty(overrideText   ) == false ? overrideText    : property.displayName;
-			customContent.tooltip = string.IsNullOrEmpty(overrideTooltip) == false ? overrideTooltip : property.tooltip;
-			customContent.tooltip = StripRichText(customContent.tooltip); // Tooltips can't display rich text for some reason, so strip it
+            return false;
+        }
 
-			return property;
-		}
+        protected void DirtyAndUpdate()
+        {
+            for (var i = targets.Length - 1; i >= 0; i--)
+            {
+                EditorUtility.SetDirty(targets[i]);
+            }
 
-		private static string StripRichText(string s)
-		{
-			return s.Replace("<b>", "").Replace("</b>", "");
-		}
+            serializedObject.Update();
+        }
 
-		protected virtual void OnInspector()
-		{
-		}
-	}
+        public static SerializedProperty GetProperty(string propertyPath)
+        {
+            var data = datas.Peek();
+
+            if (data != null)
+            {
+                var dataA = data as SerializedObject;
+
+                if (dataA != null)
+                {
+                    return dataA.FindProperty(propertyPath);
+                }
+
+                var dataB = data as SerializedProperty;
+
+                if (dataB != null)
+                {
+                    return dataB.FindPropertyRelative(propertyPath);
+                }
+            }
+
+            return null;
+        }
+
+        private static SerializedProperty GetPropertyAndSetCustomContent(string propertyPath, string overrideTooltip, string overrideText)
+        {
+            var property = GetProperty(propertyPath);
+
+            customContent.text = string.IsNullOrEmpty(overrideText) == false ? overrideText : property.displayName;
+            customContent.tooltip = string.IsNullOrEmpty(overrideTooltip) == false ? overrideTooltip : property.tooltip;
+            customContent.tooltip = StripRichText(customContent.tooltip); // Tooltips can't display rich text for some reason, so strip it
+
+            return property;
+        }
+
+        private static string StripRichText(string s)
+        {
+            return s.Replace("<b>", "").Replace("</b>", "");
+        }
+
+        protected virtual void OnInspector()
+        {
+        }
+    }
 }
 #endif

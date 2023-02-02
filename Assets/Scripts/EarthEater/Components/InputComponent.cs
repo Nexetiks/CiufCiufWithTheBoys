@@ -1,5 +1,4 @@
 using Entities.Components;
-using UnityEngine;
 
 namespace EarthEater.Components
 {

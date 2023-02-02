@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using EarthEater.Abilities.FollowWagon;
 using EarthEater.Components;
 using EarthEater.RailwaySystem;
 using Entities;
@@ -12,14 +11,14 @@ namespace EarthEater.Systems
     {
         protected override void FixedUpdate()
         {
-            foreach (KeyValuePair<Entity,FollowWagonArgs> keyValuePair in entityToSystemArgsLut)
+            foreach (KeyValuePair<Entity, FollowWagonArgs> keyValuePair in entityToSystemArgsLut)
             {
                 Entity entity = keyValuePair.Key;
                 CanFollowWagonComponent canFollowWagonComponent = keyValuePair.Value.CanFollowWagonComponent;
                 WagonComponent wagonComponent = keyValuePair.Value.WagonComponent;
                 Rigidbody2D rb = keyValuePair.Value.Rb;
-                
-                if(wagonComponent.NextWagon == null) return;
+
+                if (wagonComponent.NextWagon == null) return;
 
                 Transform target = wagonComponent.NextWagon.MyEntity.GameObject.transform;
                 Vector2 forwardDir = (Vector2)target.position - rb.position;
@@ -27,7 +26,7 @@ namespace EarthEater.Systems
                 rb.MovePosition((Vector2)target.position - forwardDir.normalized);
             }
         }
-        
+
         public struct FollowWagonArgs
         {
             public CanFollowWagonComponent CanFollowWagonComponent { get; private set; }

@@ -11,7 +11,7 @@ namespace EarthEater.RailwaySystem.WagonEffects
         public override void OnAttach(Entity entity)
         {
             MyWagonComponent.WagonHeadEntity.TryGetComponent(out engineComponent);
-            weightModifier = new StatModifier(-MyWagonComponent.Weight*0.1f, "AddWagonWeightModifier");
+            weightModifier = new StatModifier(-MyWagonComponent.Weight * 0.1f, "AddWagonWeightModifier");
             //TODO: Add weightModifier to the EngineComponent's forwardForce
             engineComponent.ForwardForce.AddModifier(weightModifier);
         }

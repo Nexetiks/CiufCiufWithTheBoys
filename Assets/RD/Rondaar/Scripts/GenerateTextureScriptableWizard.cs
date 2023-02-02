@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -47,17 +45,19 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
     {
         // Create the texture
         Texture2D texture = new Texture2D(resolution, resolution);
+
         for (int x = 0; x < resolution; x++)
         {
             for (int y = 0; y < resolution; y++)
             {
                 float perlinValue = Mathf.PerlinNoise((float)x * perlinScale, (float)y * perlinScale);
                 Color col = new Color(1, 1, 1);
+
                 if (perlinValue > .85f)
                 {
                     col = GetPixelFromSprite(goldSprite, x, y);
                 }
-                else if(perlinValue > .6f)
+                else if (perlinValue > .6f)
                 {
                     col = GetPixelFromSprite(rockSprite, x, y);
                 }
@@ -80,7 +80,7 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
         cachedGoldSprite = goldSprite;
         cachedGroundSprite = groundSprite;
     }
-    
+
     private Color GetPixelFromSprite(Sprite sprite, int x, int y)
     {
         return sprite.texture.GetPixel(x % 64 + (int)sprite.rect.x,

@@ -32,13 +32,15 @@ namespace Entities.Effects
         public void TriggerEffects(TriggerArgs args)
         {
             List<int> effectIndexesToRemove = new List<int>();
-            
+
             for (int i = 0; i < effects.Count; i++)
             {
                 TriggeredEffect<TriggerArgs> triggeredEffect = effects[i];
+
                 if (triggeredEffect.Duration != 0)
                 {
                     triggeredEffect.Perform(args);
+
                     if (args != null)
                     {
                         if (args.CancelTrigger)
@@ -51,7 +53,7 @@ namespace Entities.Effects
                 }
             }
 
-            for (int i = effectIndexesToRemove.Count-1; i >= 0; i--)
+            for (int i = effectIndexesToRemove.Count - 1; i >= 0; i--)
             {
                 effects.RemoveAt(effectIndexesToRemove[i]);
             }

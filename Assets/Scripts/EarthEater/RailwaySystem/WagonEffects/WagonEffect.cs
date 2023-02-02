@@ -3,7 +3,7 @@ using Entities;
 
 namespace EarthEater.RailwaySystem.WagonEffects
 {
-    [System.Serializable]
+    [Serializable]
     public abstract class WagonEffect : ICloneable
     {
         public WagonComponent MyWagonComponent { get; private set; }
