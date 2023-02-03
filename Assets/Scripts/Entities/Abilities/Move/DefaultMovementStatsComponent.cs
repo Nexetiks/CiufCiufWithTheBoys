@@ -1,17 +1,19 @@
-using Entities;
 using Entities.Components;
 using UnityEngine;
 
-public class DefaultMovementStatsComponent : BaseComponent
+namespace Entities.Abilities.DefaultMove
 {
-    [field: SerializeField]
-    public Stat Speed { get; private set; }
-
-    public override object Clone()
+    public class DefaultMovementStatsComponent : BaseComponent
     {
-        DefaultMovementStatsComponent wagonComponent = (DefaultMovementStatsComponent)base.Clone();
-        wagonComponent.Speed = new Stat(Speed.BaseValue);
+        [field: SerializeField]
+        public Stat Speed { get; private set; }
 
-        return wagonComponent;
+        public override object Clone()
+        {
+            DefaultMovementStatsComponent wagonComponent = (DefaultMovementStatsComponent)base.Clone();
+            wagonComponent.Speed = new Stat(Speed.BaseValue);
+
+            return wagonComponent;
+        }
     }
 }

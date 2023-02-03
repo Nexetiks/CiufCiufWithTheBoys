@@ -1,17 +1,19 @@
-using Entities;
 using Entities.Components;
 using UnityEngine;
 
-public class DefaultAttackStatsComponent : BaseComponent
+namespace Entities.Abilities.DefaultAttack
 {
-    [field: SerializeField]
-    public Stat Cooldown { get; private set; }
-
-    public override object Clone()
+    public class DefaultAttackStatsComponent : BaseComponent
     {
-        DefaultAttackStatsComponent attckComponent = (DefaultAttackStatsComponent)base.Clone();
-        attckComponent.Cooldown = new Stat(Cooldown.BaseValue);
+        [field: SerializeField]
+        public Stat Cooldown { get; private set; }
 
-        return attckComponent;
+        public override object Clone()
+        {
+            DefaultAttackStatsComponent attckComponent = (DefaultAttackStatsComponent)base.Clone();
+            attckComponent.Cooldown = new Stat(Cooldown.BaseValue);
+
+            return attckComponent;
+        }
     }
 }

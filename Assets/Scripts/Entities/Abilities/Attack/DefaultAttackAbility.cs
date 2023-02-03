@@ -1,73 +1,74 @@
 using System;
-using Entities;
-using Entities.Abilities;
 using Entities.Components;
 using UnityEngine;
 
-[Serializable]
-public class DefaultAttackAbility : Ability<DefaultAttackAbilityArgs>
+namespace Entities.Abilities.DefaultAttack
 {
-    [SerializeField]
-    private float colliderRange;
-    [SerializeField]
-    private float cooldown;
-
-    private float nextAttackTime = 0;
-    private float lastAttackTime = 0;
-
-    public override bool CanPerform
+    [Serializable]
+    public class DefaultAttackAbility : Ability<DefaultAttackAbilityArgs>
     {
-        get
+        [SerializeField]
+        private float colliderRange;
+        [SerializeField]
+        private float cooldown;
+
+        private float nextAttackTime = 0;
+        private float lastAttackTime = 0;
+
+        public override bool CanPerform
         {
-            if (nextAttackTime < Time.time + lastAttackTime)
+            get
             {
-                return true;
+                if (nextAttackTime < Time.time + lastAttackTime)
+                {
+                    return true;
+                }
+
+                return false;
             }
-
-            return false;
-        }
-    }
-
-    public DefaultAttackAbility() : base("DefaultAttackAbility")
-    {
-    }
-
-    protected override void OnPerform()
-    {
-        base.OnPerform();
-
-        if (!CanPerform)
-        {
-            return;
         }
 
-        nextAttackTime = Time.time + cooldown;
-        lastAttackTime = Time.time;
-
-        Collider[] colliders = Physics.OverlapSphere(abilityOwner.GameObject.transform.position, colliderRange);
-
-        foreach (Collider collider in colliders)
+        public DefaultAttackAbility() : base("DefaultAttackAbility")
         {
-            if (!collider.gameObject.TryGetComponent(out EntityContext EntityContext))
+        }
+
+        protected override void OnPerform()
+        {
+            base.OnPerform();
+
+            if (!CanPerform)
             {
                 return;
             }
 
-            if (!EntityContext.Entity.TryGetComponent<DamageableComponent>(out DamageableComponent damageableComponent))
+            nextAttackTime = Time.time + cooldown;
+            lastAttackTime = Time.time;
+
+            Collider[] colliders = Physics.OverlapSphere(abilityOwner.GameObject.transform.position, colliderRange);
+
+            foreach (Collider collider in colliders)
             {
-                return;
+                if (!collider.gameObject.TryGetComponent(out EntityContext EntityContext))
+                {
+                    return;
+                }
+
+                if (!EntityContext.Entity.TryGetComponent<DamageableComponent>(out DamageableComponent damageableComponent))
+                {
+                    return;
+                }
+
+                damageableComponent.Hp -= args.damage;
             }
-
-            damageableComponent.Hp -= args.damage;
         }
-    }
 
-    public override object Clone()
-    {
-        DefaultAttackAbility defaultAttackAbility = (DefaultAttackAbility)base.Clone();
-        defaultAttackAbility.colliderRange = colliderRange;
-        defaultAttackAbility.cooldown = cooldown;
+        public override object Clone()
+        {
+            DefaultAttackAbility defaultAttackAbility = (DefaultAttackAbility)base.Clone();
+            defaultAttackAbility.colliderRange = colliderRange;
+            defaultAttackAbility.cooldown = cooldown;
 
-        return defaultAttackAbility;
+            return defaultAttackAbility;
+        }
     }
 }

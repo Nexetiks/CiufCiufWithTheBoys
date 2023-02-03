@@ -1,21 +1,25 @@
 using Common.AIBase;
 using Entities.Abilities;
+using Entities.Abilities.DefaultMove;
 using UnityEngine;
 
-public class MoveNode : Node
+namespace Entities.AI
 {
-    private AbilitiesHandler abilitiesHandler;
-    private Vector2 destination;
-
-    public MoveNode(AbilitiesHandler abilitiesHandler, Vector2 destination)
+    public class MoveNode : Node
     {
-        this.abilitiesHandler = abilitiesHandler;
-        this.destination = destination;
-    }
+        private AbilitiesHandler abilitiesHandler;
+        private Vector2 destination;
 
-    public override NodeState Evaluate()
-    {
-        abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(destination));
-        return NodeState.Success;
+        public MoveNode(AbilitiesHandler abilitiesHandler, Vector2 destination)
+        {
+            this.abilitiesHandler = abilitiesHandler;
+            this.destination = destination;
+        }
+
+        public override NodeState Evaluate()
+        {
+            abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(destination));
+            return NodeState.Success;
+        }
     }
 }

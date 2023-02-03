@@ -1,13 +1,16 @@
 using System;
 using Entities.Effects;
 
-[Serializable]
-public class DefaultAttackAbilityArgs : DefaultAbilityArgs
+namespace Entities.Abilities.DefaultAttack
 {
-    public float damage { get; private set; }
-
-    public DefaultAttackAbilityArgs(float damage)
+    [Serializable]
+    public class DefaultAttackAbilityArgs : DefaultAbilityArgs
     {
-        this.damage = damage;
+        public float damage { get; private set; }
+
+        public DefaultAttackAbilityArgs(float damage)
+        {
+            this.damage = damage;
+        }
     }
 }

@@ -1,25 +1,29 @@
 using Common.AIBase;
 using Entities.Abilities;
+using Entities.Abilities.DefaultAttack;
 
-public class AttackNode : Node
+namespace Entities.AI
 {
-    private AbilitiesHandler abilitiesHandler;
-    private float damage;
-
-    public AttackNode(AbilitiesHandler abilitiesHandler, float damage)
+    public class AttackNode : Node
     {
-        this.abilitiesHandler = abilitiesHandler;
-        this.damage = damage;
-    }
+        private AbilitiesHandler abilitiesHandler;
+        private float damage;
 
-    public override NodeState Evaluate()
-    {
-        if (abilitiesHandler.TryGetAbility(out DefaultAttackAbility defaultAttackAbility))
+        public AttackNode(AbilitiesHandler abilitiesHandler, float damage)
         {
-            defaultAttackAbility.Perform(new DefaultAttackAbilityArgs(damage));
-            return NodeState.Success;
+            this.abilitiesHandler = abilitiesHandler;
+            this.damage = damage;
         }
 
-        return NodeState.Failure;
+        public override NodeState Evaluate()
+        {
+            if (abilitiesHandler.TryGetAbility(out DefaultAttackAbility defaultAttackAbility))
+            {
+                defaultAttackAbility.Perform(new DefaultAttackAbilityArgs(damage));
+                return NodeState.Success;
+            }
+
+            return NodeState.Failure;
+        }
     }
 }

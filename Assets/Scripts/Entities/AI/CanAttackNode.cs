@@ -1,27 +1,31 @@
 using Common.AIBase;
 using Entities.Abilities;
+using Entities.Abilities.DefaultAttack;
 
-public class CanAttackNode : Node
+namespace Entities.AI
 {
-    private AbilitiesHandler abilitiesHandler;
-
-    public CanAttackNode(AbilitiesHandler abilitiesHandler)
+    public class CanAttackNode : Node
     {
-        this.abilitiesHandler = abilitiesHandler;
-    }
+        private AbilitiesHandler abilitiesHandler;
 
-    public override NodeState Evaluate()
-    {
-        if (abilitiesHandler.TryGetAbility(out DefaultAttackAbility defaultAttackAbility))
+        public CanAttackNode(AbilitiesHandler abilitiesHandler)
         {
-            if (defaultAttackAbility.CanPerform)
+            this.abilitiesHandler = abilitiesHandler;
+        }
+
+        public override NodeState Evaluate()
+        {
+            if (abilitiesHandler.TryGetAbility(out DefaultAttackAbility defaultAttackAbility))
             {
-                return NodeState.Success;
+                if (defaultAttackAbility.CanPerform)
+                {
+                    return NodeState.Success;
+                }
+
+                return NodeState.Failure;
             }
 
             return NodeState.Failure;
         }
-
-        return NodeState.Failure;
     }
 }
