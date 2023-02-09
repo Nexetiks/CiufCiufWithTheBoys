@@ -1,15 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 public class SpawnObjectsManager : MonoBehaviour
 {
     //[EditorButton(nameof(Spawn))]
-    [SerializeField] private GameObject prefab;
-    [SerializeField] private int rows;
-    [SerializeField] private int columns;
-    [SerializeField] private float spacing;
+    [SerializeField]
+    private GameObject prefab;
+    [SerializeField]
+    private int rows;
+    [SerializeField]
+    private int columns;
+    [SerializeField]
+    private float spacing;
 
     public void Spawn()
     {
@@ -17,11 +19,10 @@ public class SpawnObjectsManager : MonoBehaviour
         {
             for (int j = 0; j < rows; j++)
             {
-                GameObject instance = (GameObject) PrefabUtility.InstantiatePrefab(prefab);
+                GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                 instance.transform.SetParent(transform);
                 instance.transform.localPosition = new Vector3(j * spacing, i * spacing);
             }
         }
     }
-
 }

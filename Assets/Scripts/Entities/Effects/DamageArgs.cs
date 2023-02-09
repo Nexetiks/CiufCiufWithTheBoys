@@ -1,4 +1,3 @@
-
 using Entities.Components;
 
 namespace Entities.Effects

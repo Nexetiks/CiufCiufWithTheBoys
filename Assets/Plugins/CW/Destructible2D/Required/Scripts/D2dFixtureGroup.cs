@@ -1,111 +1,142 @@
-using UnityEngine;
-using UnityEngine.Events;
+using System;
 using System.Collections.Generic;
 using CW.Common;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace Destructible2D
 {
-	/// <summary>This component allows you to perform an action when all the specified fixtures all become detached from the current GameObject.</summary>
-	[HelpURL(D2dCommon.HelpUrlPrefix + "D2dFixtureGroup")]
-	[AddComponentMenu(D2dCommon.ComponentMenuPrefix + "Fixture Group")]
-	public class D2dFixtureGroup : MonoBehaviour
-	{
-		/// <summary>Automatically destroy this component if all fixtures are removed?</summary>
-		public bool AutoDestroy { set { autoDestroy = value; } get { return autoDestroy; } } [SerializeField] private bool autoDestroy;
+    /// <summary>This component allows you to perform an action when all the specified fixtures all become detached from the current GameObject.</summary>
+    [HelpURL(D2dCommon.HelpUrlPrefix + "D2dFixtureGroup")]
+    [AddComponentMenu(D2dCommon.ComponentMenuPrefix + "Fixture Group")]
+    public class D2dFixtureGroup : MonoBehaviour
+    {
+        /// <summary>Automatically destroy this component if all fixtures are removed?</summary>
+        public bool AutoDestroy
+        {
+            set { autoDestroy = value; }
+            get { return autoDestroy; }
+        }
 
-		/// <summary>This allows you to set the fixtures that will be tracked by this group.</summary>
-		public List<D2dFixture> Fixtures { set { fixtures = value; } get { if (fixtures == null) fixtures = new List<D2dFixture>(); return fixtures; } } [SerializeField] public List<D2dFixture> fixtures;
+        [SerializeField]
+        private bool autoDestroy;
 
-		/// <summary>This event will be invoked when all entries in the Fixtures list are destroyed.</summary>
-		public UnityEvent OnAllDetached { get { if (onAllDetached == null) onAllDetached = new UnityEvent(); return onAllDetached; } } [SerializeField] public UnityEvent onAllDetached;
+        /// <summary>This allows you to set the fixtures that will be tracked by this group.</summary>
+        public List<D2dFixture> Fixtures
+        {
+            set { fixtures = value; }
+            get
+            {
+                if (fixtures == null) fixtures = new List<D2dFixture>();
+                return fixtures;
+            }
+        }
 
-		[System.NonSerialized]
-		private D2dDestructible cachedDestructible;
+        [SerializeField]
+        public List<D2dFixture> fixtures;
 
-		public void UpdateFixtures()
-		{
-			if (fixtures != null && fixtures.Count > 0)
-			{
-				if (cachedDestructible == null) cachedDestructible = GetComponentInParent<D2dDestructible>();
+        /// <summary>This event will be invoked when all entries in the Fixtures list are destroyed.</summary>
+        public UnityEvent OnAllDetached
+        {
+            get
+            {
+                if (onAllDetached == null) onAllDetached = new UnityEvent();
+                return onAllDetached;
+            }
+        }
 
-				if (cachedDestructible != null)
-				{
-					for (var i = fixtures.Count - 1; i >= 0; i--)
-					{
-						var fixture = fixtures[i];
+        [SerializeField]
+        public UnityEvent onAllDetached;
 
-						if (FixtureIsConnected(fixture) == false)
-						{
-							fixtures.RemoveAt(i);
-						}
-					}
+        [NonSerialized]
+        private D2dDestructible cachedDestructible;
 
-					if (fixtures.Count == 0)
-					{
-						if (OnAllDetached != null)
-						{
-							OnAllDetached.Invoke();
-						}
+        public void UpdateFixtures()
+        {
+            if (fixtures != null && fixtures.Count > 0)
+            {
+                if (cachedDestructible == null) cachedDestructible = GetComponentInParent<D2dDestructible>();
 
-						if (AutoDestroy == true)
-						{
-							CwHelper.Destroy(this);
-						}
-					}
-				}
-			}
-		}
+                if (cachedDestructible != null)
+                {
+                    for (var i = fixtures.Count - 1; i >= 0; i--)
+                    {
+                        var fixture = fixtures[i];
 
-		protected virtual void Update()
-		{
-			UpdateFixtures();
-		}
+                        if (FixtureIsConnected(fixture) == false)
+                        {
+                            fixtures.RemoveAt(i);
+                        }
+                    }
 
-		private bool FixtureIsConnected(D2dFixture fixture)
-		{
-			if (fixture != null)
-			{
-				var checkTransform = fixture.transform;
+                    if (fixtures.Count == 0)
+                    {
+                        if (OnAllDetached != null)
+                        {
+                            OnAllDetached.Invoke();
+                        }
 
-				while (checkTransform != null)
-				{
-					if (checkTransform == cachedDestructible.transform)
-					{
-						return true;
-					}
+                        if (AutoDestroy == true)
+                        {
+                            CwHelper.Destroy(this);
+                        }
+                    }
+                }
+            }
+        }
 
-					checkTransform = checkTransform.parent;
-				}
-			}
+        protected virtual void Update()
+        {
+            UpdateFixtures();
+        }
 
-			return false;
-		}
-	}
+        private bool FixtureIsConnected(D2dFixture fixture)
+        {
+            if (fixture != null)
+            {
+                var checkTransform = fixture.transform;
+
+                while (checkTransform != null)
+                {
+                    if (checkTransform == cachedDestructible.transform)
+                    {
+                        return true;
+                    }
+
+                    checkTransform = checkTransform.parent;
+                }
+            }
+
+            return false;
+        }
+    }
 }
 
 #if UNITY_EDITOR
 namespace Destructible2D.Inspector
 {
-	using UnityEditor;
-	using TARGET = D2dFixtureGroup;
+    using TARGET = D2dFixtureGroup;
 
-	[CanEditMultipleObjects]
-	[CustomEditor(typeof(TARGET))]
-	public class D2dFixtureGroup_Editor : CwEditor
-	{
-		protected override void OnInspector()
-		{
-			TARGET tgt; TARGET[] tgts; GetTargets(out tgt, out tgts);
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(TARGET))]
+    public class D2dFixtureGroup_Editor : CwEditor
+    {
+        protected override void OnInspector()
+        {
+            TARGET tgt;
+            TARGET[] tgts;
+            GetTargets(out tgt, out tgts);
 
-			Draw("autoDestroy", "Automatically destroy this component if all fixtures are removed?");
-			BeginError(Any(tgts, t => t.Fixtures.Count == 0));
-				Draw("fixtures");
-			EndError();
+            Draw("autoDestroy", "Automatically destroy this component if all fixtures are removed?");
+            BeginError(Any(tgts, t => t.Fixtures.Count == 0));
+            Draw("fixtures");
+            EndError();
 
-			Separator();
+            Separator();
 
-			Draw("onAllDetached");
-		}
-	}
+            Draw("onAllDetached");
+        }
+    }
 }
 #endif

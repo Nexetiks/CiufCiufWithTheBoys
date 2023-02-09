@@ -1,3 +1,4 @@
+using System;
 using EarthEater.RailwaySystem.WagonEffects;
 using Entities;
 using Entities.Components;
@@ -5,10 +6,11 @@ using UnityEngine;
 
 namespace EarthEater.RailwaySystem
 {
-    [System.Serializable]
+    [Serializable]
     public class WagonComponent : BaseComponent
     {
-        [field: SerializeField] public float Weight { get; private set; }
+        [field: SerializeField]
+        public float Weight { get; private set; }
 
         [field: SerializeReference, ReferencePicker(TypeGrouping = TypeGrouping.ByFlatName), ReorderableList]
         public WagonEffect[] WagonEffects { get; private set; }
@@ -16,7 +18,7 @@ namespace EarthEater.RailwaySystem
         public WagonComponent PreviousWagon { get; set; }
         public WagonComponent NextWagon { get; set; }
         public Entity WagonHeadEntity { get; set; }
-        
+
         public WagonComponent()
         {
             if (WagonEffects == null) return;
@@ -35,7 +37,7 @@ namespace EarthEater.RailwaySystem
             {
                 effect.Initialize(this);
             }
-            
+
             foreach (WagonEffect wagonEffect in WagonEffects)
             {
                 wagonEffect.OnAttach(MyEntity);
@@ -54,13 +56,14 @@ namespace EarthEater.RailwaySystem
 
         public override object Clone()
         {
-            WagonComponent wagonComponent = (WagonComponent) base.Clone();
+            WagonComponent wagonComponent = (WagonComponent)base.Clone();
             wagonComponent.WagonEffects = new WagonEffect[WagonEffects.Length];
+
             for (int i = 0; i < WagonEffects.Length; i++)
             {
                 wagonComponent.WagonEffects[i] = (WagonEffect)WagonEffects[i].Clone();
             }
-            
+
             return wagonComponent;
         }
     }

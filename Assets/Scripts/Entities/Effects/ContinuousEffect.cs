@@ -6,32 +6,18 @@ namespace Entities.Effects
     {
         private float duration;
 
-        public bool IsInfinite
-        {
-            get;
-            protected set;
-        }
+        public bool IsInfinite { get; protected set; }
 
         public float Duration
         {
-            get
-            {
-                return duration;
-            }
-            set
-            {
-                duration = value;
-            }
-        }
-        
-        public override bool ExpirationConditions
-        {
-            get
-            {
-                return Duration <= 0;
-            }
+            get { return duration; }
+            set { duration = value; }
         }
 
+        public override bool ExpirationConditions
+        {
+            get { return Duration <= 0; }
+        }
 
         public ContinuousEffect(string name, float startingDuration)
         {

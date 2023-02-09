@@ -6,12 +6,15 @@ namespace Entities
     {
         [SerializeField]
         private EntityDefaultDataSO entityDefaultDataSo;
+        [SerializeField]
+        private SpriteRenderer spriteRenderer;
 
         public Entity Entity { get; private set; }
 
         private void Awake()
         {
             Entity = new Entity(entityDefaultDataSo.EntityDefaultData, gameObject);
+            spriteRenderer.sprite = entityDefaultDataSo.EntityDefaultData.Sprite;
         }
 
         private void Update()

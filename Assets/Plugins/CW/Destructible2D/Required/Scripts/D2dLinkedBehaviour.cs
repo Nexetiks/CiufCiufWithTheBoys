@@ -1,66 +1,67 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Destructible2D
 {
-	/// <summary>This class allows for quick registering and unregistering of class instances that can then be quickly looped through.</summary>
-	public abstract class D2dLinkedBehaviour<T> : MonoBehaviour
-		where T : D2dLinkedBehaviour<T>
-	{
-		[System.NonSerialized]
-		public static T FirstInstance;
+    /// <summary>This class allows for quick registering and unregistering of class instances that can then be quickly looped through.</summary>
+    public abstract class D2dLinkedBehaviour<T> : MonoBehaviour
+        where T : D2dLinkedBehaviour<T>
+    {
+        [NonSerialized]
+        public static T FirstInstance;
 
-		[System.NonSerialized]
-		public static int InstanceCount;
+        [NonSerialized]
+        public static int InstanceCount;
 
-		[System.NonSerialized]
-		public T PrevInstance;
+        [NonSerialized]
+        public T PrevInstance;
 
-		[System.NonSerialized]
-		public T NextInstance;
+        [NonSerialized]
+        public T NextInstance;
 
-		protected virtual void OnEnable()
-		{
-			var t = (T)this;
+        protected virtual void OnEnable()
+        {
+            var t = (T)this;
 
-			if (FirstInstance != null)
-			{
-				FirstInstance.PrevInstance = t;
+            if (FirstInstance != null)
+            {
+                FirstInstance.PrevInstance = t;
 
-				PrevInstance = null;
-				NextInstance = FirstInstance;
-			}
-			else
-			{
-				PrevInstance = null;
-				NextInstance = null;
-			}
+                PrevInstance = null;
+                NextInstance = FirstInstance;
+            }
+            else
+            {
+                PrevInstance = null;
+                NextInstance = null;
+            }
 
-			FirstInstance  = t;
-			InstanceCount += 1;
-		}
+            FirstInstance = t;
+            InstanceCount += 1;
+        }
 
-		protected virtual void OnDisable()
-		{
-			if (FirstInstance == this)
-			{
-				FirstInstance = NextInstance;
+        protected virtual void OnDisable()
+        {
+            if (FirstInstance == this)
+            {
+                FirstInstance = NextInstance;
 
-				if (NextInstance != null)
-				{
-					NextInstance.PrevInstance = null;
-				}
-			}
-			else
-			{
-				if (NextInstance != null)
-				{
-					NextInstance.PrevInstance = PrevInstance;
-				}
+                if (NextInstance != null)
+                {
+                    NextInstance.PrevInstance = null;
+                }
+            }
+            else
+            {
+                if (NextInstance != null)
+                {
+                    NextInstance.PrevInstance = PrevInstance;
+                }
 
-				PrevInstance.NextInstance = NextInstance;
-			}
+                PrevInstance.NextInstance = NextInstance;
+            }
 
-			InstanceCount -= 1;
-		}
-	}
+            InstanceCount -= 1;
+        }
+    }
 }

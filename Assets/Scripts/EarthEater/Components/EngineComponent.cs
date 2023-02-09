@@ -6,10 +6,13 @@ namespace EarthEater.Components
 {
     public class EngineComponent : BaseComponent
     {
-        [SerializeField] private float initialMaxSpeed;
-        [SerializeField] private float initialForwardForce;
-        [SerializeField] private float initialRotationSpeed;
-        
+        [SerializeField]
+        private float initialMaxSpeed;
+        [SerializeField]
+        private float initialForwardForce;
+        [SerializeField]
+        private float initialRotationSpeed;
+
         public Stat MaxSpeed { get; private set; }
         public Stat ForwardForce { get; private set; }
         public Stat RotationSpeed { get; private set; }

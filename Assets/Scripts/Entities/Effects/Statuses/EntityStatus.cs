@@ -1,5 +1,3 @@
-using System;
-
 namespace Entities.Effects.Statuses
 {
     public class EntityStatus : ContinuousEffect<EntityStatusArgs>
@@ -7,7 +5,6 @@ namespace Entities.Effects.Statuses
         public EntityStatus(string name, int startingDuration) : base(name, startingDuration)
         {
         }
-
 
         protected override void OnPerform(EntityStatusArgs entityArgs)
         {

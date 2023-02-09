@@ -54,6 +54,7 @@ namespace Entities
         public void Update()
         {
             StatusesHandler.UpdateStatuses();
+
             foreach (BaseComponent component in components.Values)
             {
                 component.UpdateComponent();

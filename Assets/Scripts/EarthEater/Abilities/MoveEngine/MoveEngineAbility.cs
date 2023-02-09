@@ -21,16 +21,16 @@ namespace EarthEater.Abilities.MoveEngine
         {
             base.OnPerform();
 
-            if (Args.Dir != 0 && lastDir != Args.Dir) rb.angularVelocity = 0;
+            if (args.Dir != 0 && lastDir != args.Dir) rb.angularVelocity = 0;
 
-            rb.AddTorque(Args.Dir * engineComponent.RotationSpeed.Value, ForceMode2D.Impulse);
+            rb.AddTorque(args.Dir * engineComponent.RotationSpeed.Value, ForceMode2D.Impulse);
 
-            rb.AddForce(transform.up * (Mathf.Max(engineComponent.ForwardForce.Value, 0) * Mathf.Abs(Args.Dir)),
+            rb.AddForce(transform.up * (Mathf.Max(engineComponent.ForwardForce.Value, 0) * Mathf.Abs(args.Dir)),
                 ForceMode2D.Impulse);
 
-            if (Args.Dir != 0)
+            if (args.Dir != 0)
             {
-                lastDir = Args.Dir;
+                lastDir = args.Dir;
             }
         }
 
