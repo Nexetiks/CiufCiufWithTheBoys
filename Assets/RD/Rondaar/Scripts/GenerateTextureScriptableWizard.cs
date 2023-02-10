@@ -7,10 +7,19 @@ using UnityEngine;
 public class GenerateTextureScriptableWizard : ScriptableWizard
 {
     [SerializeField]
-    private int resolution = 512;
+    private int resolution = 1024;
 
     [SerializeField]
     private float perlinScale = .005f;
+
+    [SerializeField]
+    private int veinThickness = 10;
+    
+    [SerializeField]
+    private int veinLength = 70;
+
+    [SerializeField] 
+    private float maxPerlinWormAngle = 180;
 
     [SerializeField]
     private BiomeDeclarationSO biomeDeclarationSo;
@@ -20,7 +29,7 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
 
     private static SpriteRenderer cachedRenderer;
     private static BiomeDeclarationSO cachedBiomeDeclarationSo;
-    private static int cachedResolution;
+    private static int cachedResolution = 1024;
 
     [MenuItem("Tools/Generate Perlin Noise Sprite")]
     private static void CreateWizard()
@@ -41,6 +50,7 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
         // Create the texture
         Texture2D texture = new Texture2D(resolution, resolution);
         GenerateGround(texture);
+        GenerateOreVeins(texture, 5, veinLength, veinThickness);
 
         texture.Apply();
 
@@ -72,6 +82,29 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
         }
     }
 
+    private void GenerateOreVeins(Texture2D texture, int amountOfVeins, int veinSize, int veinLength)
+    {
+        WeightedRandomObjectsPicker<MaterialDeclaration> oresPicker =
+            new WeightedRandomObjectsPicker<MaterialDeclaration>();
+        foreach (GroundDeclaration groundDeclaration in biomeDeclarationSo.OresDeclarations)
+        {
+            oresPicker.AddObject(groundDeclaration.MaterialDeclaration, groundDeclaration.OccurenceWeight);
+        }
+        
+        for (int i = 0; i < amountOfVeins; i++)
+        {
+            Vector2 startPos = new Vector2(Random.Range(0, resolution), Random.Range(0, resolution));
+            PerlinWorm perlinWorm = new PerlinWorm(startPos, maxPerlinWormAngle);
+            MaterialDeclaration selectedOre = oresPicker.GetObjectByChanceValue(Random.value);
+
+            for (int j = 0; j < veinSize; j++)
+            {
+                Vector2 pos = perlinWorm.Move();
+                SetPixelWithThickness(texture, (int) pos.x, (int) pos.y, veinLength, selectedOre.Sprite);
+            }
+        }
+    }
+
     private void SaveCache()
     {
         cachedRenderer = spriteRenderer;
@@ -79,9 +112,35 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
         cachedBiomeDeclarationSo = biomeDeclarationSo;
     }
 
-    private Color GetPixelFromSprite(Sprite sprite, int x, int y)
+    private static Color GetPixelFromSprite(Sprite sprite, int x, int y)
     {
         return sprite.texture.GetPixel(x % 64 + (int)sprite.rect.x,
             y % 64 + (int)sprite.rect.y);
+    }
+
+    public static void SetPixelWithThickness(Texture2D texture, int x, int y, int thickness, Sprite sprite)
+    {
+        int radius = (thickness - 1) / 2;
+        for (int i = -radius; i <= radius; i++)
+        {
+            for (int j = -radius; j <= radius; j++)
+            {
+                int xCoord = x + i;
+                int yCoord = y + j;
+                if (xCoord < 0 || xCoord >= texture.width || yCoord < 0 || yCoord >= texture.height)
+                {
+                    continue;
+                }
+
+                if (xCoord >= 0 && xCoord < texture.width && yCoord >= 0 && yCoord < texture.height)
+                {
+                    float distance = Mathf.Sqrt(i * i + j * j);
+                    if (distance <= radius)
+                    {
+                        texture.SetPixel(xCoord, yCoord,GetPixelFromSprite(sprite, xCoord, yCoord));
+                    }
+                }
+            }
+        }
     }
 }

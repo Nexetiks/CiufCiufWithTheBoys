@@ -9,6 +9,9 @@ namespace TerrainGeneration
     {
         [field: SerializeField, ReorderableList]
         public List<GroundDeclaration> GroundDeclarations { get; private set; }
+        [field: SerializeField, ReorderableList]
+        public List<GroundDeclaration> OresDeclarations { get; private set; }
+        
         [field: SerializeField]
         public uint Depth { get; private set; }
     }
