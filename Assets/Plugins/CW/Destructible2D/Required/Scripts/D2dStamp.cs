@@ -19,15 +19,41 @@ namespace Destructible2D
 
         public static void All(D2dDestructible.PaintType paint, Vector2 position, Vector2 size, float angle, Texture2D shape, Color color, int layerMask = -1)
         {
-            All(paint, CalculateMatrix(position, size, angle), shape, color, layerMask);
+            AllOptimized(paint, CalculateMatrix(position, size, angle), shape, color, layerMask, position);
         }
 
+        //TODO: optimize - not all the destructibles should be painted - only the ones in a certain proximity to the stamp
         public static void All(D2dDestructible.PaintType paint, Matrix4x4 matrix, Texture2D shape, Color color, int layerMask = -1)
         {
             var destructible = D2dDestructible.FirstInstance;
 
             for (var i = D2dDestructible.InstanceCount - 1; i >= 0; i--)
             {
+
+                if (CwHelper.IndexInMask(destructible.gameObject.layer, layerMask) == true)
+                {
+                    destructible.Paint(paint, matrix, shape, color);
+                }
+
+                destructible = destructible.NextInstance;
+            }
+        }
+
+        public static void AllOptimized(D2dDestructible.PaintType paint, Matrix4x4 matrix, Texture2D shape, Color color,
+            int layerMask, Vector2 position)
+        {
+            var destructible = D2dDestructible.FirstInstance;
+
+            for (var i = D2dDestructible.InstanceCount - 1; i >= 0; i--)
+            {
+                //TODO: Rondaar - change 16 to a dynamic variable
+                if (Vector2.Distance(destructible.transform.position, position) > 16)
+                {
+                    destructible = destructible.NextInstance;
+                    continue;
+                }
+                    
+                
                 if (CwHelper.IndexInMask(destructible.gameObject.layer, layerMask) == true)
                 {
                     destructible.Paint(paint, matrix, shape, color);

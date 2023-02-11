@@ -210,7 +210,11 @@ namespace Destructible2D
 
 					pixel.a = pixel.a > 127 ? (byte)255 : (byte)0;
 
-					alphaData[i] = pixel;
+					if (!alphaData[i].Equals(pixel))
+					{
+						alphaData[i] = pixel;
+						alphaModified = true;
+					}
 				}
 
 				NotifyRebuilt();
@@ -224,7 +228,7 @@ namespace Destructible2D
 			if (ready == true)
 			{
 				D2dHalve.Halve(ref alphaData, ref alphaWidth, ref alphaHeight, ref alphaOffset, ref alphaScale);
-
+				alphaModified = true;
 				alphaSharpness    *= 2;
 				originalAlphaCount = CalculateAlphaCount();
 
@@ -241,6 +245,7 @@ namespace Destructible2D
 				D2dTrim.Trim(this);
 				D2dBlur.Blur(this);
 				D2dHalve.Halve(ref alphaData, ref alphaWidth, ref alphaHeight, ref alphaOffset, ref alphaScale);
+				alphaModified = true;
 				D2dTrim.Trim(this);
 
 				alphaSharpness    *= 2;
@@ -258,6 +263,7 @@ namespace Destructible2D
 			alphaSharpness     = 0.0f;
 			alphaTex           = CwHelper.Destroy(alphaTex);
 			alphaData          = null;
+			alphaModified = true;
 			alphaWidth         = 0;
 			alphaHeight        = 0;
 			alphaCount         = 0;
@@ -457,11 +463,16 @@ namespace Destructible2D
 			if (alphaData == null || alphaData.Length != newAlphaTotal)
 			{
 				alphaData = new Color32[newAlphaTotal];
+				alphaModified = true;
 			}
 
 			for (var i = newAlphaTotal - 1; i >= 0; i--)
 			{
-				alphaData[i] = newAlphaData[i];
+				if (!alphaData[i].Equals(newAlphaData[i]))
+				{
+					alphaModified = true;
+					alphaData[i] = newAlphaData[i];
+				}
 			}
 
 			alphaWidth  = newAlphaWidth;
@@ -481,6 +492,7 @@ namespace Destructible2D
 			}
 
 			alphaData = null;
+			alphaModified = true;
 		}
 
 		public D2dDestructible SplitNext(bool isLast)
@@ -614,8 +626,11 @@ namespace Destructible2D
 			return hit;
 		}
 
+		public bool TestOptimize;
 		protected virtual void LateUpdate()
 		{
+			if (TestOptimize) return;
+
 			if (ready == true && AlphaModified.IsSet == true && alphaTex != null)
 			{
 				var w = AlphaModified.SizeX;
@@ -648,7 +663,11 @@ namespace Destructible2D
 					alphaTex.Apply();
 				}
 
-				NotifyModified(AlphaModified);
+				if (alphaModified)
+				{
+					NotifyModified(AlphaModified);
+					alphaModified = false;
+				}
 			}
 		}
 

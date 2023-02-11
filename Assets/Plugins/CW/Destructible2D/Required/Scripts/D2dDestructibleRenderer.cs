@@ -233,6 +233,7 @@ namespace Destructible2D
 
             ready = true;
             alphaData = buffer.GetPixels32();
+            alphaModified = true;
             alphaWidth = width;
             alphaHeight = height;
             alphaOffset.x = offset.x;
@@ -255,6 +256,7 @@ namespace Destructible2D
                 {
                     var alphaPixel = alphaData[i];
                     alphaData[i] = new Color32(255, 255, 255, alphaPixel.a);
+                    alphaModified = true;
                 }
             }
 

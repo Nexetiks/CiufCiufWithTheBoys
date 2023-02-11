@@ -56,6 +56,9 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
 
         // Create a new sprite from the texture
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, resolution, resolution), Vector2.one * .5f, resolution);
+        AssetDatabase.CreateAsset(sprite, "Assets/Resources/userPic.asset");
+        
+
         spriteRenderer.sprite = sprite;
         SaveCache();
     }

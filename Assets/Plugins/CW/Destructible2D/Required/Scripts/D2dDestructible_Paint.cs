@@ -6,6 +6,8 @@ namespace Destructible2D
 	// This class handles the various ways to modify the destruction state of a D2dDestructible.
 	public partial class D2dDestructible
 	{
+		protected bool alphaModified;
+		
 		public enum PaintType
 		{
 			Cut,
@@ -288,7 +290,11 @@ namespace Destructible2D
 				}
 			}
 
-			alphaData[index] = alphaNew;
+			if (!alphaData[index].Equals(alphaNew))
+			{
+				alphaData[index] = alphaNew;
+				alphaModified    = true;
+			}
 		}
 
 		private void EndCommon()

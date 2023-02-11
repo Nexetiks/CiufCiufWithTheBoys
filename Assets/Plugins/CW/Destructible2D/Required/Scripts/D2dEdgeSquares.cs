@@ -14,7 +14,7 @@ namespace Destructible2D
             N
         }
 
-        class Square
+        public class Square
         {
             public int X;
             public int Y;
@@ -25,7 +25,7 @@ namespace Destructible2D
             public Point PointN;
         }
 
-        struct Point
+        public struct Point
         {
             public int x;
             public int y;
@@ -642,6 +642,7 @@ namespace Destructible2D
             return D2dCache.CachedList<Vector2>.ToArray(weldedPoints);
         }
 
+        //TODO: Optimize this
         public static void Build(D2dEdgeCollider.Cell cell, D2dEdgeCollider edgeCollider)
         {
             D2dCache.CachedList<Vector2>.Clear();

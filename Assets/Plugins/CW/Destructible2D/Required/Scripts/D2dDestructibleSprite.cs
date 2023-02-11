@@ -222,6 +222,7 @@ namespace Destructible2D
 
                 ready = true;
                 alphaData = D2dCommon.ReadPixels(shape.texture, shapeRect.x, shapeRect.y, shapeRect.width, shapeRect.height);
+                alphaModified = true;
                 alphaWidth = shapeRect.width;
                 alphaHeight = shapeRect.height;
                 alphaOffset.x = (shape.textureRectOffset.x - shape.pivot.x) / ppu;
@@ -460,7 +461,8 @@ namespace Destructible2D.Inspector
             Draw("overrideTexture", "This allows you to override the sprite texture with any Texture.");
             Draw("channels", ref rebuild, "This allows you to set which color channels you want the destructible texture to use.");
             Draw("solidRange", "This allows you to make it so some pixels are harder to destroy than others, based on their alpha value (0 .. 255).\n\n0 = Every pixel is equally easy to destroy.\n\n1 = Values between 0 and 254 receive normal damage, but 255 receives no damage.\n\n10 = Values between 0 and 245 receive normal damage, but 246 receives 90% damage, 247 receives 80%, etc.");
-
+            Draw("TestOptimize");
+            
             if (Any(tgts, t => t.SolidRange > 0))
             {
                 BeginIndent();
