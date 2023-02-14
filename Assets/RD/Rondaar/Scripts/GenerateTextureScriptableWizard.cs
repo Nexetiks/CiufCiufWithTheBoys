@@ -1,3 +1,4 @@
+using System.IO;
 using Common.Util;
 using TerrainGeneration;
 using UnityEditor;
@@ -7,7 +8,7 @@ using UnityEngine;
 public class GenerateTextureScriptableWizard : ScriptableWizard
 {
     [SerializeField]
-    private int resolution = 1024;
+    private int resolution = 64;
 
     [SerializeField]
     private float perlinScale = .005f;
@@ -20,6 +21,9 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
 
     [SerializeField] 
     private float maxPerlinWormAngle = 180;
+
+    [SerializeField]
+    private int amountOfVeins = 3;
 
     [SerializeField]
     private BiomeDeclarationSO biomeDeclarationSo;
@@ -50,14 +54,14 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
         // Create the texture
         Texture2D texture = new Texture2D(resolution, resolution);
         GenerateGround(texture);
-        GenerateOreVeins(texture, 5, veinLength, veinThickness);
+        GenerateOreVeins(texture, amountOfVeins, veinLength, veinThickness);
 
         texture.Apply();
 
         // Create a new sprite from the texture
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, resolution, resolution), Vector2.one * .5f, resolution);
-        AssetDatabase.CreateAsset(sprite, "Assets/Resources/userPic.asset");
-        
+        byte[] bytes = texture.EncodeToPNG();
+        File.WriteAllBytes(Application.dataPath + "/testPic.png", bytes);
 
         spriteRenderer.sprite = sprite;
         SaveCache();

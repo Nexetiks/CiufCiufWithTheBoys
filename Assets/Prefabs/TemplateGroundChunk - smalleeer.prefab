@@ -9102,7 +9102,7 @@ MonoBehaviour:
   cropSprite: 1
   rebuildInGame: 0
   rebuildOptimizeCount: 0
-  originalSprite: {fileID: 21300000, guid: 54238626bdaeeaf45bb8df4160c26a2e, type: 2}
+  originalSprite: {fileID: 21300000, guid: 2d38497ad00ceab4c8b1916d290b3ee6, type: 3}
   clonedSprite: {fileID: 0}
 --- !u!114 &7787865711449090090
 MonoBehaviour:
