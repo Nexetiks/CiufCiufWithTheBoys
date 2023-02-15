@@ -19,7 +19,7 @@ MonoBehaviour:
     - rid: 1118481545141157892
     - rid: 8908244349059858432
     - rid: 8908244576538984448
-    <Sprite>k__BackingField: {fileID: 21300000, guid: 6ab5b6d6ad9121b4a95522fa12c43627, type: 3}
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 14f07d57f94b7d041bf0fdd53fe21a20, type: 3}
   references:
     version: 2
     RefIds:

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Ground Biome Declaration SO
   m_EditorClassIdentifier: 
   <GroundDeclarations>k__BackingField:
-  - <MaterialDeclaration>k__BackingField: {fileID: 11400000, guid: 9b9245f7eea51744783c60bfd29e85bd, type: 2}
+  - <TerrainDeclaration>k__BackingField: {fileID: 11400000, guid: 9b9245f7eea51744783c60bfd29e85bd, type: 2}
     <OccurenceWeight>k__BackingField: 60
-  - <MaterialDeclaration>k__BackingField: {fileID: 11400000, guid: 1e6c802f069ef0a4ba38bebcb9512a22, type: 2}
+  - <TerrainDeclaration>k__BackingField: {fileID: 11400000, guid: 1e6c802f069ef0a4ba38bebcb9512a22, type: 2}
     <OccurenceWeight>k__BackingField: 40
   <OresDeclarations>k__BackingField:
-  - <MaterialDeclaration>k__BackingField: {fileID: 11400000, guid: 5a62b9f31f602c14787bf282a06ecec8, type: 2}
+  - <TerrainDeclaration>k__BackingField: {fileID: 11400000, guid: 5a62b9f31f602c14787bf282a06ecec8, type: 2}
     <OccurenceWeight>k__BackingField: 100
   <Depth>k__BackingField: 0

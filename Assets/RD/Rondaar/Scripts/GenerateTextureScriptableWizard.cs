@@ -61,7 +61,7 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
         // Create a new sprite from the texture
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, resolution, resolution), Vector2.one * .5f, resolution);
         byte[] bytes = texture.EncodeToPNG();
-        File.WriteAllBytes(Application.dataPath + "/testPic.png", bytes);
+        File.WriteAllBytes(Application.dataPath + "/testPic2.png", bytes);
 
         spriteRenderer.sprite = sprite;
         SaveCache();
@@ -69,12 +69,12 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
 
     private void GenerateGround(Texture2D texture)
     {
-        WeightedRandomObjectsPicker<MaterialDeclaration> materialsPicker =
-            new WeightedRandomObjectsPicker<MaterialDeclaration>();
+        WeightedRandomObjectsPicker<TerrainDeclaration> materialsPicker =
+            new WeightedRandomObjectsPicker<TerrainDeclaration>();
 
         foreach (GroundDeclaration groundDeclaration in biomeDeclarationSo.GroundDeclarations)
         {
-            materialsPicker.AddObject(groundDeclaration.MaterialDeclaration, groundDeclaration.OccurenceWeight);
+            materialsPicker.AddObject(groundDeclaration.TerrainDeclaration, groundDeclaration.OccurenceWeight);
         }
 
         for (int x = 0; x < resolution; x++)
@@ -82,7 +82,7 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
             for (int y = 0; y < resolution; y++)
             {
                 float perlinValue = Mathf.PerlinNoise((float)x * perlinScale, (float)y * perlinScale);
-                Sprite groundSprite = materialsPicker.GetObjectByChanceValue(perlinValue).Sprite;
+                Sprite groundSprite = materialsPicker.GetObjectByChanceValue(perlinValue).TerrainData.Sprite;
                 Color col = GetPixelFromSprite(groundSprite, x, y);
                 texture.SetPixel(x, y, col);
             }
@@ -91,23 +91,23 @@ public class GenerateTextureScriptableWizard : ScriptableWizard
 
     private void GenerateOreVeins(Texture2D texture, int amountOfVeins, int veinSize, int veinLength)
     {
-        WeightedRandomObjectsPicker<MaterialDeclaration> oresPicker =
-            new WeightedRandomObjectsPicker<MaterialDeclaration>();
+        WeightedRandomObjectsPicker<TerrainDeclaration> oresPicker =
+            new WeightedRandomObjectsPicker<TerrainDeclaration>();
         foreach (GroundDeclaration groundDeclaration in biomeDeclarationSo.OresDeclarations)
         {
-            oresPicker.AddObject(groundDeclaration.MaterialDeclaration, groundDeclaration.OccurenceWeight);
+            oresPicker.AddObject(groundDeclaration.TerrainDeclaration, groundDeclaration.OccurenceWeight);
         }
         
         for (int i = 0; i < amountOfVeins; i++)
         {
             Vector2 startPos = new Vector2(Random.Range(0, resolution), Random.Range(0, resolution));
             PerlinWorm perlinWorm = new PerlinWorm(startPos, maxPerlinWormAngle);
-            MaterialDeclaration selectedOre = oresPicker.GetObjectByChanceValue(Random.value);
+            TerrainDeclaration selectedOre = oresPicker.GetObjectByChanceValue(Random.value);
 
             for (int j = 0; j < veinSize; j++)
             {
                 Vector2 pos = perlinWorm.Move();
-                SetPixelWithThickness(texture, (int) pos.x, (int) pos.y, veinLength, selectedOre.Sprite);
+                SetPixelWithThickness(texture, (int) pos.x, (int) pos.y, veinLength, selectedOre.TerrainData.Sprite);
             }
         }
     }

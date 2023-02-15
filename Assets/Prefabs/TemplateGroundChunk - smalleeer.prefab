@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7787865711449090092}
   - component: {fileID: 7787865711449090091}
   - component: {fileID: 7787865711449090090}
+  - component: {fileID: 2485818161432818915}
   m_Layer: 7
   m_Name: TemplateGroundChunk - smalleeer
   m_TagString: Untagged
@@ -101,10 +102,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healSnapshot: {fileID: 0}
-  overrideSharpness: 0
+  overrideSharpness: 3
   paintMultiplier: 1
   solidRange: 0
-  pixels: 0
+  pixels: 1
   indestructible: 0
   monitorPixels: 0
   ready: 1
@@ -9138,6 +9139,22 @@ MonoBehaviour:
     - {fileID: 1429433716088009578}
   - Colliders:
     - {fileID: 4633628784456590306}
+--- !u!114 &2485818161432818915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7787865711449090089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83f063082edc0a4fae5042e0617730d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunkTerrainData:
+    <Rows>k__BackingField: 0
+    <Columns>k__BackingField: 0
+  spriteRenderer: {fileID: 7787865711449090092}
 --- !u!1 &7787865712171348500
 GameObject:
   m_ObjectHideFlags: 0
@@ -9338,7 +9355,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 485132263, guid: a08eadaf855af72498593e5b1dd47499, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9346,6 +9363,6 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
