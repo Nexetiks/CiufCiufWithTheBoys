@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Entities
 {
+    [Serializable]
     public class Entity
     {
         private Dictionary<Type, BaseComponent> components;

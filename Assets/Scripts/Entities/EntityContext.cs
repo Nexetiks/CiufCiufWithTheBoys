@@ -11,8 +11,11 @@ namespace Entities
 
         public Entity Entity { get; private set; }
 
+        static int i =0;
         private void Awake()
         {
+            Debug.Log(i);
+            i++;
             Entity = new Entity(entityDefaultDataSo.EntityDefaultData, gameObject);
             spriteRenderer.sprite = entityDefaultDataSo.EntityDefaultData.Sprite;
         }

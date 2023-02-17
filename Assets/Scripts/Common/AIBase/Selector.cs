@@ -7,14 +7,14 @@ namespace Common.AIBase
     /// </summary>
     public class Selector : Node
     {
-        protected List<Node> Nodes = new List<Node>();
+        private List<Node> Nodes = new List<Node>();
 
         /// <summary>
         /// Constructor that allow you to set all required data for script to run correctly. 
         /// </summary>
-        public Selector(List<Node> Nodes)
+        public Selector(List<Node> nodes)
         {
-            this.Nodes = Nodes;
+            this.Nodes = nodes;
         }
 
         /// <summary>

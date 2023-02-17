@@ -8,11 +8,12 @@ namespace Entities.Abilities
 {
 // The AbilitiesHandler class manages a collection of Ability classes and allows
 // for performing abilities that affect Entities.
+    [Serializable]
     public class AbilitiesHandler : BaseComponent
     {
         [SerializeReference, ReferencePicker(TypeGrouping = TypeGrouping.ByFlatName), ReorderableList]
         private IAmAbility[] startingAbilities;
-        
+
         // A dictionary mapping Ability types to the Ability objects
         private Dictionary<Type, IAmAbility> abilities;
 
@@ -20,7 +21,7 @@ namespace Entities.Abilities
         {
             base.Initialize(myEntity);
             abilities = new Dictionary<Type, IAmAbility>();
-            
+
             foreach (IAmAbility ability in startingAbilities)
             {
                 AddAbility((IAmAbility)ability.Clone(), myEntity);
@@ -65,6 +66,7 @@ namespace Entities.Abilities
         public override void UpdateComponent()
         {
             base.UpdateComponent();
+
             foreach (IAmAbility ability in abilities.Values)
             {
                 ability.UpdateAbility();
