@@ -15,8 +15,8 @@ MonoBehaviour:
   <EntityDefaultData>k__BackingField:
     <Components>k__BackingField:
     - rid: 5925613812201291779
-    - rid: 5925613812201291780
-    - rid: 5925613812201291784
+    - rid: 5925613832278638592
+    - rid: 5925613832278638593
     <Sprite>k__BackingField: {fileID: 21300000, guid: 289f7f4484d558d4c93c19c5b4029220, type: 3}
   references:
     version: 2
@@ -25,13 +25,22 @@ MonoBehaviour:
       type: {class: AbilitiesHandler, ns: Entities.Abilities, asm: Assembly-CSharp}
       data:
         startingAbilities:
-        - rid: 5925613812201291782
-        - rid: 5925613812201291783
-    - rid: 5925613812201291780
+        - rid: 5925613832278638595
+        - rid: 5925613832278638594
+    - rid: 5925613832278638592
       type: {class: DefaultMovementStatsComponent, ns: Entities.Abilities.DefaultMove, asm: Assembly-CSharp}
-    - rid: 5925613812201291782
-      type: {class: AttackAbility, ns: Entities.Abilities, asm: Assembly-CSharp}
-    - rid: 5925613812201291783
-      type: {class: DefaultMoveAbility, ns: Entities.Abilities.DefaultMove, asm: Assembly-CSharp}
-    - rid: 5925613812201291784
+      data:
+        speed: 10
+    - rid: 5925613832278638593
       type: {class: DefaultAttackStatsComponent, ns: Entities.Abilities.DefaultAttack, asm: Assembly-CSharp}
+      data:
+        cooldown: 1
+    - rid: 5925613832278638594
+      type: {class: DefaultAttackAbility, ns: Entities.Abilities.DefaultAttack, asm: Assembly-CSharp}
+      data:
+        colliderRange: 10
+        cooldown: 1
+    - rid: 5925613832278638595
+      type: {class: DefaultMoveAbility, ns: Entities.Abilities.DefaultMove, asm: Assembly-CSharp}
+      data:
+        rb: {fileID: 0}
