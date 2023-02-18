@@ -9,23 +9,26 @@ namespace Entities.AI
     {
         private AbilitiesHandler abilitiesHandler;
         private Rigidbody2D rb;
-        private EntityContext target;
+        private IsInRangeNode isInRangeNode;
 
-        public MoveNode(AbilitiesHandler abilitiesHandler, Rigidbody2D rb, EntityContext target)
+        public MoveNode(AbilitiesHandler abilitiesHandler, Rigidbody2D rb, IsInRangeNode isInRangeNode)
         {
             this.abilitiesHandler = abilitiesHandler;
             this.rb = rb;
-            this.target = target;
+            this.isInRangeNode = isInRangeNode;
         }
 
         public override NodeState Evaluate()
         {
-            if (target == null)
+            if (isInRangeNode == null || isInRangeNode.GetTarget() == null)
             {
+                Debug.Log("nul");
                 return NodeState.Failure;
             }
 
-            abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(target.gameObject.transform.position, rb));
+            Debug.Log("perf");
+            Vector2 position = isInRangeNode.GetTarget().Entity.GameObject.transform.position;
+            abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(position, rb));
             return NodeState.Success;
         }
     }

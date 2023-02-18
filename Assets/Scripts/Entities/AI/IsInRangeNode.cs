@@ -21,9 +21,11 @@ namespace Entities.AI
             {
                 if (Vector2.Distance(target.gameObject.transform.position, ai.position) < radius)
                 {
+                    Debug.Log("succ");
                     return NodeState.Success;
                 }
 
+                Debug.Log("f");
                 return NodeState.Failure;
             }
 
@@ -36,11 +38,14 @@ namespace Entities.AI
                     if (entityContext.EntityTag == EntityTag.Player)
                     {
                         target = entityContext;
+
+                        Debug.Log("suc");
                         return NodeState.Success;
                     }
                 }
             }
 
+            Debug.Log("f");
             return NodeState.Failure;
         }
 
