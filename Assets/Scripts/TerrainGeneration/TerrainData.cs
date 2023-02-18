@@ -1,3 +1,4 @@
+using EarthEater.WorldGeneration;
 using UnityEngine;
 
 namespace TerrainGeneration
@@ -9,5 +10,7 @@ namespace TerrainGeneration
         public Sprite Sprite { get; private set; }
         [field: SerializeField]
         public int Durability { get; private set; }
+        [field: SerializeField]
+        public DestroyedTerrainFragment DestroyedTerrainFragment { get; set; }
     }
 }

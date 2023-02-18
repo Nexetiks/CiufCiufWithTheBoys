@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TerrainGeneration;
@@ -40,7 +41,14 @@ public class WorldGeneratorController : MonoBehaviour
     [SerializeField]
     private int veinsAmount = 1;
 
+    [SerializeField, HideInInspector]
     private WorldData worldData;
+
+    private void Awake()
+    {
+        GenerateWorld();
+        UpdateChunks();
+    }
 
     public void GenerateWorld()
     {
@@ -71,6 +79,14 @@ public class WorldGeneratorController : MonoBehaviour
                 chunk.InitializeChunk(worldData, x, y, chunkResolution);
             }
         }
+    }
+    
+    // WARNING: this is dependent on the Alpha resolution of the Destructible2D sprite. Alpha res can be smaller than the actual sprite!!!
+    // then we'll have to refactor this
+    public Vector2 TerrainDataPixelToWorldPosition(int x, int y)
+    {
+        return new Vector2((float) x / 16 + transform.position.x - 4,
+            (float) y / 16 + transform.position.y - 4);
     }
     
     private void ClearChunks()
