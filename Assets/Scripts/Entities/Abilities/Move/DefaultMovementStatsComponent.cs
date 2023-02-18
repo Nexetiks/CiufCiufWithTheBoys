@@ -5,8 +5,16 @@ namespace Entities.Abilities.DefaultMove
 {
     public class DefaultMovementStatsComponent : BaseComponent
     {
-        [field: SerializeField]
+        [SerializeField]
+        private float speed;
+
         public Stat Speed { get; private set; }
+
+        public override void Initialize(Entity myEntity)
+        {
+            base.Initialize(myEntity);
+            Speed = new Stat(speed);
+        }
 
         public override object Clone()
         {

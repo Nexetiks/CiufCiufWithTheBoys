@@ -8,17 +8,24 @@ namespace Entities.AI
     public class MoveNode : Node
     {
         private AbilitiesHandler abilitiesHandler;
-        private Transform destination;
+        private Rigidbody2D rb;
+        private EntityContext target;
 
-        public MoveNode(AbilitiesHandler abilitiesHandler, Transform destination)
+        public MoveNode(AbilitiesHandler abilitiesHandler, Rigidbody2D rb, EntityContext target)
         {
             this.abilitiesHandler = abilitiesHandler;
-            this.destination = destination;
+            this.rb = rb;
+            this.target = target;
         }
 
         public override NodeState Evaluate()
         {
-            abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(destination.position));
+            if (target == null)
+            {
+                return NodeState.Failure;
+            }
+
+            abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(target.gameObject.transform.position, rb));
             return NodeState.Success;
         }
     }

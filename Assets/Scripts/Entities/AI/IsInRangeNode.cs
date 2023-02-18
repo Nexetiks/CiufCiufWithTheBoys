@@ -5,25 +5,48 @@ namespace Entities.AI
 {
     public class IsInRangeNode : Node
     {
-        private Entity targetEntity;
-        private Entity sourceEntity;
-        private float range;
+        private float radius;
+        private Transform ai;
+        private EntityContext target;
 
-        public IsInRangeNode(Entity targetEntity, Entity sourceEntity, float range)
+        public IsInRangeNode(float radius, Transform ai)
         {
-            this.targetEntity = targetEntity;
-            this.sourceEntity = sourceEntity;
-            this.range = range;
+            this.radius = radius;
+            this.ai = ai;
         }
 
         public override NodeState Evaluate()
         {
-            if (Vector2.Distance(targetEntity.GameObject.transform.position, sourceEntity.GameObject.transform.position) < range)
+            if (target != null)
             {
-                return NodeState.Success;
+                if (Vector2.Distance(target.gameObject.transform.position, ai.position) < radius)
+                {
+                    return NodeState.Success;
+                }
+
+                return NodeState.Failure;
+            }
+
+            RaycastHit2D[] allColliders = Physics2D.CircleCastAll(ai.position, 360, Vector2.zero, radius);
+
+            foreach (RaycastHit2D collider in allColliders)
+            {
+                if (collider.transform.gameObject.TryGetComponent(out EntityContext entityContext))
+                {
+                    if (entityContext.EntityTag == EntityTag.Player)
+                    {
+                        target = entityContext;
+                        return NodeState.Success;
+                    }
+                }
             }
 
             return NodeState.Failure;
+        }
+
+        public EntityContext GetTarget()
+        {
+            return target;
         }
     }
 }

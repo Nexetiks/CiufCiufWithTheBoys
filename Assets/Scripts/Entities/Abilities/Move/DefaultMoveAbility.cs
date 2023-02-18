@@ -4,7 +4,9 @@ namespace Entities.Abilities.DefaultMove
 {
     public class DefaultMoveAbility : Ability<DefaultMoveAbilityArgs>
     {
+        [SerializeField]
         private Rigidbody2D rb;
+        [SerializeField]
         private DefaultMovementStatsComponent ability;
 
         public DefaultMoveAbility() : base("DefaultMoveAbility")
@@ -13,6 +15,11 @@ namespace Entities.Abilities.DefaultMove
 
         public override void FixedUpdateAbility()
         {
+            if (args == null)
+            {
+                return;
+            }
+            
             Vector2 direction = rb.position - args.PositionToMoveAt;
             rb.velocity = direction * ability.Speed.Value * Time.fixedDeltaTime;
         }
@@ -21,7 +28,7 @@ namespace Entities.Abilities.DefaultMove
         {
             base.Initialize(abilityOwner);
             rb = abilityOwner.GameObject.GetComponent<Rigidbody2D>();
-            ability = abilityOwner.GameObject.GetComponent<DefaultMovementStatsComponent>();
+            ability = abilityOwner.GetComponent<DefaultMovementStatsComponent>();
         }
     }
 }

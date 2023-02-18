@@ -7,9 +7,12 @@ namespace Entities.Abilities.DefaultMove
     {
         public Vector2 PositionToMoveAt { get; private set; }
 
-        public DefaultMoveAbilityArgs(Vector2 positionToMoveAt)
+        public Rigidbody2D Rb { get; private set; }
+
+        public DefaultMoveAbilityArgs(Vector2 positionToMoveAt, Rigidbody2D rb)
         {
             PositionToMoveAt = positionToMoveAt;
+            Rb = rb;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Entities
 {
+    [Serializable]
     public class Stat
     {
         public Action<float> OnModifiersChanged;

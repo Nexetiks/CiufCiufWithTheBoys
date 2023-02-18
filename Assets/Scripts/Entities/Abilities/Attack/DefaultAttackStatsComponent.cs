@@ -5,8 +5,16 @@ namespace Entities.Abilities.DefaultAttack
 {
     public class DefaultAttackStatsComponent : BaseComponent
     {
-        [field: SerializeField]
+        [SerializeField]
+        private float cooldown;
+
         public Stat Cooldown { get; private set; }
+
+        public override void Initialize(Entity myEntity)
+        {
+            base.Initialize(myEntity);
+            Cooldown = new Stat(cooldown);
+        }
 
         public override object Clone()
         {
