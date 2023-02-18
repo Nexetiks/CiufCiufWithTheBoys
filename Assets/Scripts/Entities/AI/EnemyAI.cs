@@ -43,11 +43,11 @@ namespace Entities.AI
             MoveNode chasePlayerNode = new MoveNode(aiHandler, rb, isInSightNode);
             MoveNode patrolNode = new MoveNode(aiHandler, rb, isInAttackRangeNode); // TODO fix it should patrol insted of chasing all the time
 
-            //Sequence attackSequence = new Sequence(new List<Node> { isInAttackRangeNode, attackNode });
+            Sequence attackSequence = new Sequence(new List<Node> { isInAttackRangeNode, attackNode });
             Sequence chaseSequence = new Sequence(new List<Node> { isInSightNode, chasePlayerNode });
             Sequence patrolSequence = new Sequence(new List<Node> { patrolNode });
 
-            topNode = new Selector(new List<Node> { /*attackSequence,*/ chaseSequence, patrolSequence });
+            topNode = new Selector(new List<Node> { attackSequence, chaseSequence, patrolSequence });
         }
     }
 }

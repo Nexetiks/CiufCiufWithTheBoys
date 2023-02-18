@@ -38,7 +38,7 @@ MonoBehaviour:
     - rid: 5925613832278638594
       type: {class: DefaultAttackAbility, ns: Entities.Abilities.DefaultAttack, asm: Assembly-CSharp}
       data:
-        colliderRange: 1
+        colliderRange: 10
         cooldown: 1
     - rid: 5925613832278638595
       type: {class: DefaultMoveAbility, ns: Entities.Abilities.DefaultMove, asm: Assembly-CSharp}

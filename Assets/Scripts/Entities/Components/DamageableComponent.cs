@@ -3,19 +3,23 @@ using UnityEngine;
 
 namespace Entities.Components
 {
-    [System.Serializable]
+    [Serializable]
     public class DamageableComponent : BaseComponent
     {
         public event Action OnDie;
         public event Action<float> OnHpChanged;
         public event Action<float> OnMaxHpChanged;
 
-        [SerializeField] private float startVitality;
-        
+        [SerializeField]
+        private float startVitality;
+
         public Stat Vitality { get; private set; }
 
+        [SerializeField]
         private float hp;
+        [SerializeField]
         private float maxHp;
+
         public float Hp
         {
             get { return hp; }
@@ -25,7 +29,9 @@ namespace Entities.Components
                 {
                     return;
                 }
+
                 value = Mathf.Clamp(value, 0, MaxHp);
+
                 if (value != hp)
                 {
                     hp = value;
@@ -38,6 +44,7 @@ namespace Entities.Components
                 }
             }
         }
+
         public float MaxHp
         {
             get { return maxHp; }
@@ -46,10 +53,12 @@ namespace Entities.Components
                 if (maxHp == value) return;
 
                 maxHp = value;
+
                 if (value < hp)
                 {
                     Hp = value;
                 }
+
                 OnMaxHpChanged?.Invoke(value);
             }
         }

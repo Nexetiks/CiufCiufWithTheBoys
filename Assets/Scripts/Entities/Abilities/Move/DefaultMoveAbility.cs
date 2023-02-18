@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace Entities.Abilities.DefaultMove
 {
+    [Serializable]
     public class DefaultMoveAbility : Ability<DefaultMoveAbilityArgs>
     {
         [SerializeField]

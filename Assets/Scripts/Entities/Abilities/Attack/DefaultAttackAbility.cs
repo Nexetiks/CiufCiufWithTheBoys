@@ -44,18 +44,18 @@ namespace Entities.Abilities.DefaultAttack
             nextAttackTime = Time.time + cooldown;
             lastAttackTime = Time.time;
 
-            Collider[] colliders = Physics.OverlapSphere(abilityOwner.GameObject.transform.position, colliderRange);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(abilityOwner.GameObject.transform.position, colliderRange);
 
-            foreach (Collider collider in colliders)
+            foreach (Collider2D collider in colliders)
             {
                 if (!collider.gameObject.TryGetComponent(out EntityContext EntityContext))
                 {
-                    return;
+                    continue;
                 }
 
                 if (!EntityContext.Entity.TryGetComponent<DamageableComponent>(out DamageableComponent damageableComponent))
                 {
-                    return;
+                    continue;
                 }
 
                 damageableComponent.Hp -= args.damage;

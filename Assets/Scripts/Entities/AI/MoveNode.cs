@@ -22,11 +22,9 @@ namespace Entities.AI
         {
             if (isInRangeNode == null || isInRangeNode.GetTarget() == null)
             {
-                Debug.Log("nul");
                 return NodeState.Failure;
             }
 
-            Debug.Log("perf");
             Vector2 position = isInRangeNode.GetTarget().Entity.GameObject.transform.position;
             abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(position, rb));
             return NodeState.Success;
