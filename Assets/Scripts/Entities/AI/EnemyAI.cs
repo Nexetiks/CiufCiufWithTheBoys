@@ -19,6 +19,8 @@ namespace Entities.AI
         private EntityContext ai;
         [SerializeField]
         private EntityContext player;
+        [SerializeField]
+        private Vector2 nextPositionToMoveAt = Vector2.zero;
 
         private Selector topNode;
 
@@ -40,8 +42,8 @@ namespace Entities.AI
             AttackNode attackNode = new AttackNode(aiHandler, damage);
             IsInRangeNode isInSightNode = new IsInRangeNode(sightRange, ai.gameObject.transform);
             Rigidbody2D rb = ai.gameObject.GetComponent<Rigidbody2D>();
-            MoveNode chasePlayerNode = new MoveNode(aiHandler, rb, isInSightNode);
-            MoveNode patrolNode = new MoveNode(aiHandler, rb, isInAttackRangeNode); // TODO fix it should patrol insted of chasing all the time
+            FollowNode chasePlayerNode = new FollowNode(aiHandler, rb, isInSightNode);
+            MoveNode patrolNode = new MoveNode(aiHandler, rb,ref nextPositionToMoveAt);
 
             Sequence attackSequence = new Sequence(new List<Node> { isInAttackRangeNode, attackNode });
             Sequence chaseSequence = new Sequence(new List<Node> { isInSightNode, chasePlayerNode });
