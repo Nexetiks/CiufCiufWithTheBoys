@@ -30,7 +30,7 @@ MonoBehaviour:
     - rid: 5925613832278638592
       type: {class: DefaultMovementStatsComponent, ns: Entities.Abilities.DefaultMove, asm: Assembly-CSharp}
       data:
-        speed: 10
+        speed: 20
     - rid: 5925613832278638593
       type: {class: DefaultAttackStatsComponent, ns: Entities.Abilities.DefaultAttack, asm: Assembly-CSharp}
       data:

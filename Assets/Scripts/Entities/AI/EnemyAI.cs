@@ -10,17 +10,13 @@ namespace Entities.AI
         [SerializeField]
         private float damage = 0;
         [SerializeField]
-        private float speed = 0;
-        [SerializeField]
         private float attackRange = 0;
         [SerializeField]
         private float sightRange = 0;
         [SerializeField]
         private EntityContext ai;
         [SerializeField]
-        private EntityContext player;
-        [SerializeField]
-        private Vector2 nextPositionToMoveAt = Vector2.zero;
+        private List<Vector2> localPositionToMoveAt = new List<Vector2>();
 
         private Selector topNode;
 
@@ -43,7 +39,7 @@ namespace Entities.AI
             IsInRangeNode isInSightNode = new IsInRangeNode(sightRange, ai.gameObject.transform);
             Rigidbody2D rb = ai.gameObject.GetComponent<Rigidbody2D>();
             FollowNode chasePlayerNode = new FollowNode(aiHandler, rb, isInSightNode);
-            MoveNode patrolNode = new MoveNode(aiHandler, rb,ref nextPositionToMoveAt);
+            PatrolNode patrolNode = new PatrolNode(aiHandler, rb, localPositionToMoveAt);
 
             Sequence attackSequence = new Sequence(new List<Node> { isInAttackRangeNode, attackNode });
             Sequence chaseSequence = new Sequence(new List<Node> { isInSightNode, chasePlayerNode });

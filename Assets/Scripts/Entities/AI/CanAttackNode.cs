@@ -1,6 +1,7 @@
 using Common.AIBase;
 using Entities.Abilities;
 using Entities.Abilities.DefaultAttack;
+using UnityEngine;
 
 namespace Entities.AI
 {
@@ -19,12 +20,12 @@ namespace Entities.AI
             {
                 if (defaultAttackAbility.CanPerform)
                 {
+                    Debug.Log("AI : CanAttackNode  :: Success");
                     return NodeState.Success;
                 }
-
-                return NodeState.Failure;
             }
 
+            Debug.Log("AI : CanAttackNode  :: Failure");
             return NodeState.Failure;
         }
     }

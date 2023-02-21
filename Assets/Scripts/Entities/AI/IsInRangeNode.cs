@@ -21,9 +21,13 @@ namespace Entities.AI
             {
                 if (Vector2.Distance(target.gameObject.transform.position, ai.position) < radius)
                 {
+                    Debug.Log(Vector2.Distance(target.gameObject.transform.position, ai.position));
+                    Debug.Log("AI : IsInRangeNode  :: Success");
                     return NodeState.Success;
                 }
 
+                Debug.Log("AI : IsInRangeNode  :: Failure");
+                target = null;
                 return NodeState.Failure;
             }
 
@@ -37,11 +41,14 @@ namespace Entities.AI
                     {
                         target = entityContext;
 
+                        Debug.Log("AI : IsInRangeNode  :: Success");
                         return NodeState.Success;
                     }
                 }
             }
 
+            Debug.Log("AI : IsInRangeNode  :: Failure");
+            target = null;
             return NodeState.Failure;
         }
 
