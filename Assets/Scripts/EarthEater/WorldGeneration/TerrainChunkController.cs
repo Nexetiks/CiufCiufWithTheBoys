@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Common.Util;
 using Destructible2D;
 using EarthEater.WorldGeneration;
 using TerrainGeneration;
@@ -50,7 +51,7 @@ public class TerrainChunkController : MonoBehaviour
                 int worldCoordY = chunkY * chunkSize + y;
                 if (worldData.TryGetTerrain(out TerrainData terrainData, worldCoordX,worldCoordY))
                 {
-                    color = GetPixelFromSprite(terrainData.Sprite,worldCoordX,  worldCoordY);
+                    color = SpritesUtil.GetPixelFromSprite(terrainData.Sprite,worldCoordX,  worldCoordY);
                 }
 
                 chunkTerrainData.SetTerrain(x, y, terrainData);
@@ -62,12 +63,6 @@ public class TerrainChunkController : MonoBehaviour
         spriteRenderer.sprite = sprite;
     }
 
-    private static Color GetPixelFromSprite(Sprite sprite, int x, int y)
-    {
-        return sprite.texture.GetPixel(x% 64 + (int)sprite.rect.x,
-            y % 64 + (int)sprite.rect.y);
-    }
-    
     private void Destructible_OnModifiedPixels(List<int> pixelIndexes)
     {
         List<TerrainDestructionData> destroyedTerrainData = new List<TerrainDestructionData>();
