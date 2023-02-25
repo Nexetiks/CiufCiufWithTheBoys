@@ -1,19 +1,21 @@
 using Common.Util;
+using Plugins.FastNoiseLite;
 using UnityEngine;
 
 namespace TerrainGeneration
 {
     public class WorldFactory
     {
-        public static WorldData GenerateWorld(int rows, int columns, BiomeDeclarationSO biomeDeclarationSo, int veinsAmount, float perlinScale = 0.005f)
+        public static WorldData GenerateWorld(int rows, int columns, BiomeDeclarationSO biomeDeclarationSo, int veinsAmount, float noiseFrequency = 0.005f, float wormNoiseFrequency = 0.005f, int veinSize = 5, int veinLength = 70, float maxPerlinAngle = 180, int terrainNoiseOctaves = 1)
         {
             WorldData worldData = new WorldData(rows, columns);
-            GenerateGround(ref worldData, biomeDeclarationSo);
-            GenerateOreVeins(ref worldData, biomeDeclarationSo, veinsAmount, 5, 70, 180);
+            NoiseValueProvider noiseValueProvider = new NoiseValueProvider(FastNoiseLite.NoiseType.Perlin,seed: Random.Range(0, int.MaxValue), frequency:noiseFrequency);
+            GenerateGround(ref worldData, biomeDeclarationSo, noiseValueProvider);
+            GenerateOreVeins(ref worldData, biomeDeclarationSo, veinsAmount, veinSize, veinLength, maxPerlinAngle);
             return worldData;
         }
         
-        private static void GenerateGround(ref WorldData worldData, BiomeDeclarationSO biomeDeclarationSo, float perlinScale = 0.005f)
+        private static void GenerateGround(ref WorldData worldData, BiomeDeclarationSO biomeDeclarationSo, NoiseValueProvider noiseValueProvider)
         {
             WeightedRandomObjectsPicker<TerrainDeclaration> materialsPicker =
                 new WeightedRandomObjectsPicker<TerrainDeclaration>();
@@ -27,7 +29,7 @@ namespace TerrainGeneration
             {
                 for (int y = 0; y < worldData.Columns; y++)
                 {
-                    float perlinValue = Mathf.PerlinNoise((float)x * perlinScale, (float)y * perlinScale);
+                    float perlinValue = noiseValueProvider.GetNoise01((float)x, (float)y);
                     perlinValue = Mathf.Clamp01(perlinValue);
                     TerrainData selectedTerrainData = materialsPicker.GetObjectByChanceValue(perlinValue).TerrainData;
                     worldData.SetTerrain(x,y , selectedTerrainData);

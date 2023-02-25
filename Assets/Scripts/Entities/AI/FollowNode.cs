@@ -26,8 +26,9 @@ namespace Entities.AI
                 return NodeState.Failure;
             }
 
-            Vector2 position = isInRangeNode.GetTarget().Entity.GameObject.transform.position;
-            abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(position, rb));
+            Vector2 playerPosition = isInRangeNode.GetTarget().Entity.GameObject.transform.position;
+            Vector2 direction = (playerPosition - (Vector2)rb.gameObject.transform.position).normalized;
+            abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(direction));
             Debug.Log("AI : FollowNode  :: Success");
             return NodeState.Success;
         }

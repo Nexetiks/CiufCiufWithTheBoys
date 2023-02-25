@@ -41,6 +41,20 @@ public class WorldGeneratorController : MonoBehaviour
     [SerializeField]
     private int veinsAmount = 1;
 
+    [SerializeField]
+    private float noiseFrequency = 0.005f;
+
+    [SerializeField]
+    private float wormNoiseFrequency = 0.005f;
+    [SerializeField]
+    private int veinSize = 5;
+    [SerializeField]
+    private int veinLength = 70;
+    [SerializeField]
+    private float maxPerlinWormAngle = 180;
+    [SerializeField]
+    private int terrainNoiseOctaves = 1;
+
     [SerializeField, HideInInspector]
     private WorldData worldData;
 
@@ -52,7 +66,7 @@ public class WorldGeneratorController : MonoBehaviour
 
     public void GenerateWorld()
     {
-        worldData = WorldFactory.GenerateWorld(worldRows, worldColumns, biomeDeclarationSo, veinsAmount);
+        worldData = WorldFactory.GenerateWorld(worldRows, worldColumns, biomeDeclarationSo, veinsAmount, noiseFrequency, wormNoiseFrequency, veinSize, veinLength, maxPerlinWormAngle, terrainNoiseOctaves);
     }
 
     public void SpawnChunks()

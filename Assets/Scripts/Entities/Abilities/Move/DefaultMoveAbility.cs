@@ -22,8 +22,7 @@ namespace Entities.Abilities.DefaultMove
                 return;
             }
 
-            Vector2 direction = args.PositionToMoveAt - rb.position;
-            rb.velocity = direction * ability.Speed.Value * Time.fixedDeltaTime;
+            rb.velocity = args.Direction * ability.Speed.Value * Time.fixedDeltaTime;
         }
 
         public override void Initialize(Entity abilityOwner)

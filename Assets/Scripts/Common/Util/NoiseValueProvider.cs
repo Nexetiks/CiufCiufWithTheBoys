@@ -11,9 +11,12 @@ namespace Common.Util
 
         public float ScrollSpeed { get; set; }
 
-        public NoiseValueProvider(FastNoiseLite.NoiseType noiseType, float scrollSpeed)
+        public NoiseValueProvider(FastNoiseLite.NoiseType noiseType, int seed = 0, float frequency = 0.01f, float scrollSpeed = 0, int noiseOctaves = 1)
         {
             noise = new FastNoiseLite();
+            noise.SetSeed(seed);
+            noise.SetFrequency(frequency);
+            noise.SetFractalOctaves(noiseOctaves);
             noise.SetNoiseType(noiseType);
             this.ScrollSpeed = scrollSpeed;
         }
@@ -25,6 +28,11 @@ namespace Common.Util
 
             float noiseValue = noise.GetNoise(x, y);
             return noiseValue;
+        }
+
+        public float GetNoise01(float x, float y)
+        {
+            return (GetNoise(x, y)+1)*.5f;
         }
 
         public float Evaluate()

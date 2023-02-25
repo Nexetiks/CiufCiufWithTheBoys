@@ -28,7 +28,7 @@ namespace RD.Pawelek
         {
             startingPoint = gameObject.transform.position;
             direction = transform.up;
-            noiseValueProvider = new NoiseValueProvider(FastNoiseLite.NoiseType.OpenSimplex2, noiseScrollSpeed);
+            noiseValueProvider = new NoiseValueProvider(FastNoiseLite.NoiseType.OpenSimplex2, scrollSpeed : noiseScrollSpeed);
         }
 
         private void Update()

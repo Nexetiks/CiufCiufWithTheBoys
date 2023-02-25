@@ -7,6 +7,7 @@ namespace Entities.AI
 {
     public class EnemyAI : MonoBehaviour
     {
+        //TODO add longer range to escape.
         [SerializeField]
         private float damage = 0;
         [SerializeField]
@@ -15,8 +16,17 @@ namespace Entities.AI
         private float sightRange = 0;
         [SerializeField]
         private EntityContext ai;
+
         [SerializeField]
-        private List<Vector2> localPositionToMoveAt = new List<Vector2>();
+        private float noiseScrollSpeed;
+        [SerializeField]
+        private float maxAngle = 10f;
+        [SerializeField]
+        private float movementSpeed = 1;
+        [SerializeField]
+        private float minDistanceToStartGoingBack;
+        [SerializeField]
+        private float maxDistanceFromStartingPoint;
 
         private Selector topNode;
 
@@ -39,7 +49,7 @@ namespace Entities.AI
             IsInRangeNode isInSightNode = new IsInRangeNode(sightRange, ai.gameObject.transform);
             Rigidbody2D rb = ai.gameObject.GetComponent<Rigidbody2D>();
             FollowNode chasePlayerNode = new FollowNode(aiHandler, rb, isInSightNode);
-            PatrolNode patrolNode = new PatrolNode(aiHandler, rb, localPositionToMoveAt);
+            PatrolNode patrolNode = new PatrolNode(ai, rb, noiseScrollSpeed, maxAngle, movementSpeed, minDistanceToStartGoingBack, maxDistanceFromStartingPoint, aiHandler);
 
             Sequence attackSequence = new Sequence(new List<Node> { isInAttackRangeNode, attackNode });
             Sequence chaseSequence = new Sequence(new List<Node> { isInSightNode, chasePlayerNode });
