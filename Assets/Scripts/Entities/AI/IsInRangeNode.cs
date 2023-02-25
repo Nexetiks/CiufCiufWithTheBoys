@@ -31,20 +31,18 @@ namespace Entities.AI
                 return NodeState.Failure;
             }
 
-            RaycastHit2D[] allColliders = Physics2D.CircleCastAll(ai.position, 360, Vector2.zero, radius);
+            Collider2D[] allColliders = Physics2D.OverlapCircleAll(ai.position, radius);
 
-            foreach (RaycastHit2D collider in allColliders)
+            foreach (Collider2D collider in allColliders)
             {
-                if (collider.transform.gameObject.TryGetComponent(out EntityContext entityContext))
-                {
-                    if (entityContext.EntityTag == EntityTag.Player)
-                    {
-                        target = entityContext;
+                if (!collider.transform.gameObject.TryGetComponent(out EntityContext entityContext)) continue;
 
-                        Debug.Log("AI : IsInRangeNode  :: Success");
-                        return NodeState.Success;
-                    }
-                }
+                if (entityContext.EntityTag != EntityTag.Player) continue;
+
+                target = entityContext;
+
+                Debug.Log("AI : IsInRangeNode  :: Success");
+                return NodeState.Success;
             }
 
             Debug.Log("AI : IsInRangeNode  :: Failure");
