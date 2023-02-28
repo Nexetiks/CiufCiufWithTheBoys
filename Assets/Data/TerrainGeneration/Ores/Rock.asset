@@ -15,4 +15,5 @@ MonoBehaviour:
   <TerrainData>k__BackingField:
     <Sprite>k__BackingField: {fileID: -886435156, guid: a08eadaf855af72498593e5b1dd47499, type: 3}
     <Durability>k__BackingField: 0
+    <SpawnProbability>k__BackingField: 0.001
     <DestroyedTerrainFragment>k__BackingField: {fileID: 2539329155636396394, guid: 336e62194406d1d408e95201463f37b7, type: 3}
