@@ -9,7 +9,7 @@ namespace Entities.Abilities.DefaultMove
         [SerializeField]
         private Rigidbody2D rb;
         [SerializeField]
-        private DefaultMovementStatsComponent ability;
+        private DefaultMoveStatsComponent ability;
 
         public DefaultMoveAbility() : base("DefaultMoveAbility")
         {
@@ -29,7 +29,7 @@ namespace Entities.Abilities.DefaultMove
         {
             base.Initialize(abilityOwner);
             rb = abilityOwner.GameObject.GetComponent<Rigidbody2D>();
-            ability = abilityOwner.GetComponent<DefaultMovementStatsComponent>();
+            ability = abilityOwner.GetComponent<DefaultMoveStatsComponent>();
         }
     }
 }

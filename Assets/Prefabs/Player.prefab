@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 611144010902140067}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 611144010183597283}
@@ -192,6 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityDefaultDataSo: {fileID: 11400000, guid: e76783f1b90def84c92c5b729a752ff0, type: 2}
   spriteRenderer: {fileID: 611144010183597282}
+  <EntityTag>k__BackingField: 0
 --- !u!114 &1478488986
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,9 +1,12 @@
+using System;
 using Entities.Components;
 using UnityEngine;
 
 namespace Entities.Abilities.DefaultMove
+
 {
-    public class DefaultMovementStatsComponent : BaseComponent
+    [Serializable]
+    public class DefaultMoveStatsComponent : BaseComponent
     {
         [SerializeField]
         private float speed;
@@ -18,10 +21,10 @@ namespace Entities.Abilities.DefaultMove
 
         public override object Clone()
         {
-            DefaultMovementStatsComponent wagonComponent = (DefaultMovementStatsComponent)base.Clone();
-            wagonComponent.Speed = new Stat(Speed.BaseValue);
+            DefaultMoveStatsComponent defaultMoveStatsComponent = (DefaultMoveStatsComponent)base.Clone();
+            defaultMoveStatsComponent.Speed = new Stat(Speed.BaseValue);
 
-            return wagonComponent;
+            return defaultMoveStatsComponent;
         }
     }
 }

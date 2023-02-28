@@ -5,13 +5,15 @@ namespace Entities.AI
 {
     public class IsInRangeNode : Node
     {
-        private float radius;
+        private float detectionRadius;
+        private float detectionRadiusFallout;
         private Transform ai;
         private EntityContext target;
 
-        public IsInRangeNode(float radius, Transform ai)
+        public IsInRangeNode(float detectionRadius, float detectionRadiusFallout, Transform ai)
         {
-            this.radius = radius;
+            this.detectionRadius = detectionRadius;
+            this.detectionRadiusFallout = detectionRadiusFallout;
             this.ai = ai;
         }
 
@@ -19,7 +21,7 @@ namespace Entities.AI
         {
             if (target != null)
             {
-                if (Vector2.Distance(target.gameObject.transform.position, ai.position) < radius)
+                if (Vector2.Distance(target.gameObject.transform.position, ai.position) < detectionRadiusFallout)
                 {
                     Debug.Log(Vector2.Distance(target.gameObject.transform.position, ai.position));
                     Debug.Log("AI : IsInRangeNode  :: Success");
@@ -31,7 +33,7 @@ namespace Entities.AI
                 return NodeState.Failure;
             }
 
-            Collider2D[] allColliders = Physics2D.OverlapCircleAll(ai.position, radius);
+            Collider2D[] allColliders = Physics2D.OverlapCircleAll(ai.position, detectionRadius);
 
             foreach (Collider2D collider in allColliders)
             {
