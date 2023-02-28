@@ -11,6 +11,8 @@ namespace TerrainGeneration
         [field: SerializeField]
         public int Durability { get; private set; }
         [field: SerializeField]
+        public float SpawnProbability { get; private set; }
+        [field: SerializeField]
         public DestroyedTerrainFragment DestroyedTerrainFragment { get; set; }
     }
 }
