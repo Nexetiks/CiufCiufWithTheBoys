@@ -28,7 +28,7 @@ namespace RD.Pawelek
         {
             startingPoint = gameObject.transform.position;
             direction = transform.up;
-            noiseValueProvider = new NoiseValueProvider(FastNoiseLite.NoiseType.OpenSimplex2, scrollSpeed : noiseScrollSpeed);
+            noiseValueProvider = new NoiseValueProvider(FastNoiseLite.NoiseType.OpenSimplex2, scrollSpeed: noiseScrollSpeed);
         }
 
         private void Update()
@@ -57,7 +57,7 @@ namespace RD.Pawelek
             Vector2 distanceToSpawnPoint = startingPoint - (Vector2)transform.position;
             Vector2 directionToSpawnPoint = distanceToSpawnPoint.normalized;
 
-            float angleBetweenSpawnPointDirAndDir = Mathf.Clamp(Vector2.SignedAngle(direction, directionToSpawnPoint), -maxAngle, maxAngle);
+            float angleBetweenSpawnPointDirAndDir = Vector2.SignedAngle(direction, directionToSpawnPoint);
             Vector2 actualSpawnDirectionForce = Quaternion.Euler(new Vector3(0f, 0f, angleBetweenSpawnPointDirAndDir)) * direction;
             distanceFromSpawnPoint = distanceToSpawnPoint.magnitude;
             return actualSpawnDirectionForce;
