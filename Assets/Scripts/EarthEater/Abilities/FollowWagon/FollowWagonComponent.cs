@@ -23,7 +23,7 @@ namespace EarthEater.Abilities.FollowWagon
             Transform target = wagonComponent.NextWagon.MyEntity.GameObject.transform;
             Vector2 forwardDir = (Vector2)target.position - rb.position;
             rb.transform.up = forwardDir.normalized;
-            rb.MovePosition((Vector2)target.position - forwardDir.normalized);
+            rb.MovePosition((Vector2)target.position - forwardDir.normalized*1.75f);
         }
 
         public override void Initialize(Entity abilityOwner)

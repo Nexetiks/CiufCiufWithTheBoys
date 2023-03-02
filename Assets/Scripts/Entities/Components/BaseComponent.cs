@@ -11,6 +11,10 @@ namespace Entities.Components
         {
         }
 
+        public virtual void LateUpdateComponent()
+        {
+        }
+        
         public virtual void FixedUpdateComponent()
         {
         }

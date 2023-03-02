@@ -21,8 +21,15 @@ namespace Entities
 
         private void Awake()
         {
-            Entity = new Entity(entityDefaultDataSo.EntityDefaultData, gameObject);
-            spriteRenderer.sprite = entityDefaultDataSo.EntityDefaultData.Sprite;
+            if(entityDefaultDataSo == null) return;
+            Initialize(entityDefaultDataSo);
+        }
+        
+        public void Initialize(EntityDefaultDataSO entityDefaultDataSo)
+        {
+            this.entityDefaultDataSo = entityDefaultDataSo;
+            Entity = new Entity(this.entityDefaultDataSo.EntityDefaultData, gameObject);
+            spriteRenderer.sprite = this.entityDefaultDataSo.EntityDefaultData.Sprite;
         }
 
         private void Update()
@@ -33,6 +40,11 @@ namespace Entities
         private void FixedUpdate()
         {
             Entity.FixedUpdate();
+        }
+        
+        private void LateUpdate()
+        {
+            Entity.LateUpdate();
         }
     }
 }

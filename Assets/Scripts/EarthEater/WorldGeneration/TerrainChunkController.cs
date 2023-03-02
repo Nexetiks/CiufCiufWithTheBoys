@@ -58,6 +58,8 @@ public class TerrainChunkController : MonoBehaviour
                 texture.SetPixel(x, y, color);
             }
         }
+        texture.filterMode = FilterMode.Point;
+
         texture.Apply();
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, chunkSize, chunkSize), Vector2.one * .5f, 128);
         spriteRenderer.sprite = sprite;

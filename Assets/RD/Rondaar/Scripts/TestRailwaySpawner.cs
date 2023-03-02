@@ -9,8 +9,8 @@ public class TestRailwaySpawner : MonoBehaviour
     private EntityContext frontPrefab;
     [SerializeField]
     private EntityContext wagonPrefab;
-    [SerializeField]
-    private int wagonsAmount;
+    [SerializeField, ReorderableList]
+    private EntityDefaultDataSO[] wagonDefaultData;
 
     private List<WagonComponent> wagons = new List<WagonComponent>();
 
@@ -40,9 +40,10 @@ public class TestRailwaySpawner : MonoBehaviour
 
         WagonComponent frontalWagon = frontWagonComponent;
 
-        for (int i = 0; i < wagonsAmount; i++)
+        for (int i = 0; i < wagonDefaultData.Length; i++)
         {
             EntityContext wagonInstance = Instantiate(wagonPrefab);
+            wagonInstance.Initialize(wagonDefaultData[i]);
             wagonInstance.gameObject.name += i.ToString();
             WagonComponent wagonComponent = wagonInstance.Entity.GetComponent<WagonComponent>();
             wagonComponent.WagonHeadEntity = frontInstance.Entity;

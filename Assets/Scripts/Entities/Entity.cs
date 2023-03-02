@@ -69,5 +69,13 @@ namespace Entities
                 component.FixedUpdateComponent();
             }
         }
+        
+        public void LateUpdate()
+        {
+            foreach (BaseComponent component in components.Values)
+            {
+                component.LateUpdateComponent();
+            }
+        }
     }
 }
