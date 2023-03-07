@@ -6,6 +6,7 @@ namespace Entities
     {
         Player,
         Enemy,
+        Environment
     }
 
     public class EntityContext : MonoBehaviour
@@ -29,6 +30,9 @@ namespace Entities
         {
             this.entityDefaultDataSo = entityDefaultDataSo;
             Entity = new Entity(this.entityDefaultDataSo.EntityDefaultData, gameObject);
+
+            if (this.entityDefaultDataSo.EntityDefaultData.Sprite == null) return;
+            
             spriteRenderer.sprite = this.entityDefaultDataSo.EntityDefaultData.Sprite;
         }
 

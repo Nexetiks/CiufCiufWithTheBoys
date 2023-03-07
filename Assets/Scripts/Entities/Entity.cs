@@ -12,6 +12,7 @@ namespace Entities
         private Dictionary<Type, BaseComponent> components;
         public EntityStatusesHandler StatusesHandler { get; private set; }
         public GameObject GameObject { get; private set; }
+        public Transform Transform => GameObject.transform;
 
         public Entity(EntityDefaultData defaultData, GameObject gameObject)
         {

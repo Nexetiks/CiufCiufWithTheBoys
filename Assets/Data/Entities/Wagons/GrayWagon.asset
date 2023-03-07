@@ -17,6 +17,7 @@ MonoBehaviour:
     - rid: 1118481545141157888
     - rid: 1118481545141157889
     - rid: 8908244349059858434
+    - rid: 4118926864281763841
     <Sprite>k__BackingField: {fileID: 21300000, guid: 0f0c7f6609759b9428ea50bf4c691b2d, type: 3}
   references:
     version: 2
@@ -35,5 +36,14 @@ MonoBehaviour:
         maxHp: 0
     - rid: 1118481566548885504
       type: {class: AddWagonWeightEffect, ns: EarthEater.RailwaySystem.WagonEffects, asm: Assembly-CSharp}
+    - rid: 4118926864281763841
+      type: {class: ResourcesGathererComponent, ns: EarthEater.Components, asm: Assembly-CSharp}
+      data:
+        resourceLayerMask:
+          serializedVersion: 2
+          m_Bits: 256
+        detectionRadius: 3
+        pickupRadius: 0.2
+        pullForce: 15
     - rid: 8908244349059858434
       type: {class: FollowWagonComponent, ns: EarthEater.Abilities.FollowWagon, asm: Assembly-CSharp}

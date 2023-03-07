@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Entities.Components
 {
@@ -6,6 +7,8 @@ namespace Entities.Components
     public abstract class BaseComponent : ICloneable
     {
         public Entity MyEntity { get; private set; }
+        
+        public Transform Transform => MyEntity.Transform;
 
         public virtual void UpdateComponent()
         {

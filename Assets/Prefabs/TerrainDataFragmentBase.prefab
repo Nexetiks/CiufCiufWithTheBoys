@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8144860932346808448}
   - component: {fileID: 8144860932346808449}
   - component: {fileID: 528693577016622682}
+  - component: {fileID: 2154819681367162147}
   m_Layer: 8
   m_Name: TerrainDataFragmentBase
   m_TagString: Untagged
@@ -136,3 +137,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a660947c97efa4e9bc8b0542771100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2154819681367162147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8144860932346808450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: febff11261914634aa3872591a0305fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityDefaultDataSo: {fileID: 11400000, guid: d8329dbebb7371b41a044b774e61237c, type: 2}
+  spriteRenderer: {fileID: 0}
+  <EntityTag>k__BackingField: 0
