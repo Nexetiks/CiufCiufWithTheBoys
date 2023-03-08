@@ -42,8 +42,8 @@ MonoBehaviour:
         resourceLayerMask:
           serializedVersion: 2
           m_Bits: 256
-        detectionRadius: 3
-        pickupRadius: 0.2
-        pullForce: 15
+        detectionRadius: 1.5
+        pickupRadius: 0.5
+        pullForce: 10
     - rid: 8908244349059858434
       type: {class: FollowWagonComponent, ns: EarthEater.Abilities.FollowWagon, asm: Assembly-CSharp}

@@ -20,7 +20,7 @@ namespace EarthEater.Components
         public override void UpdateComponent()
         {
             base.UpdateComponent();
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(MyEntity.Transform.position, pickupRadius, resourceLayerMask);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(MyEntity.Transform.position, detectionRadius, resourceLayerMask);
             if (colliders.Length <= 0) return;
             
             foreach (Collider2D collider in colliders)
@@ -30,7 +30,7 @@ namespace EarthEater.Components
                     continue;
                 }
 
-                Vector2 distanceVector = (Vector2)pickableResourceComponent.Transform.position - (Vector2) Transform.position;
+                Vector2 distanceVector = (Vector2) Transform.position - (Vector2)pickableResourceComponent.Transform.position;
                 
                 if (TryPickup(distanceVector, pickableResourceComponent))
                 {
@@ -64,6 +64,7 @@ namespace EarthEater.Components
         {
             Rigidbody2D rb = pickableResourceComponent.Rb;
             rb.AddForce(distanceVector.normalized * Time.deltaTime * pullForce);
+            Debug.Log($"{rb.name} + pulling");
         }
     }
 }
