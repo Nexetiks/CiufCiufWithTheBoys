@@ -11,6 +11,8 @@ public class WorldGeneratorController : MonoBehaviour
     [EditorButton(nameof(SpawnChunks))]
     [EditorButton(nameof(ClearChunks))]
     [EditorButton(nameof(UpdateChunks))]
+    [EditorButton(nameof(SpawnEmptyChunksOnLeft))]
+    [EditorButton(nameof(DestroyEmptyChunks))]
     [SerializeField]
     private BiomeDeclarationSO biomeDeclarationSo;
     
@@ -19,6 +21,9 @@ public class WorldGeneratorController : MonoBehaviour
 
     [SerializeField]
     private TerrainChunkController chunkPrefab;
+
+    [SerializeField]
+    private GameObject emptyChunkPrefab;
 
     [SerializeField]
     private int worldRows = 3840;
@@ -55,6 +60,11 @@ public class WorldGeneratorController : MonoBehaviour
     [SerializeField]
     private int terrainNoiseOctaves = 1;
 
+    [SerializeField]
+    private int emptyChunkColumns = 8;
+    [SerializeField]
+    private List<GameObject> emptyChunks = new List<GameObject>();
+
     [SerializeField, HideInInspector]
     private WorldData worldData;
 
@@ -71,9 +81,9 @@ public class WorldGeneratorController : MonoBehaviour
 
     public void SpawnChunks()
     {
-        for(int x = 0; x < chunkRows; x++)
+        for(int x = 0; x < chunkColumns; x++)
         {
-            for(int y = 0; y < chunkColumns; y++)
+            for(int y = 0; y < chunkRows; y++)
             {
                 TerrainChunkController chunk = Instantiate(chunkPrefab, transform);
                 chunk.InitializeChunk(worldData, x, y, chunkResolution);
@@ -83,11 +93,26 @@ public class WorldGeneratorController : MonoBehaviour
         }
     }
 
+    public void SpawnEmptyChunksOnLeft()
+    {
+        DestroyEmptyChunks();
+
+        for(int x = emptyChunkColumns-1; x >= 0; x--)
+        {
+            for(int y = 0; y < chunkRows; y++)
+            {
+                GameObject chunk = Instantiate(emptyChunkPrefab, transform);
+                emptyChunks.Add(chunk);
+                chunk.transform.localPosition = new Vector3(-x * distanceBetweenChunks- distanceBetweenChunks, y * distanceBetweenChunks, 0);
+            }
+        }
+    }
+
     public void UpdateChunks()
     {
-        for (int x = 0; x < chunkRows; x++)
+        for (int x = 0; x < chunkColumns; x++)
         {
-            for(int y = 0; y < chunkColumns; y++)
+            for(int y = 0; y < chunkRows; y++)
             {
                 TerrainChunkController chunk = terrainChunkControllers[x * chunkColumns + y];
                 chunk.InitializeChunk(worldData, x, y, chunkResolution);
@@ -110,5 +135,18 @@ public class WorldGeneratorController : MonoBehaviour
             DestroyImmediate(chunk.gameObject);
         }
         terrainChunkControllers.Clear();
+    }
+    
+    private void DestroyEmptyChunks()
+    {
+        if (emptyChunks != null)
+        {
+            foreach (GameObject emptyChunk in emptyChunks)
+            {
+                DestroyImmediate(emptyChunk);
+            }
+
+            emptyChunks.Clear();
+        }
     }
 }
