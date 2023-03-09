@@ -11,7 +11,7 @@ public class WorldGeneratorController : MonoBehaviour
     [EditorButton(nameof(SpawnChunks))]
     [EditorButton(nameof(ClearChunks))]
     [EditorButton(nameof(UpdateChunks))]
-    [EditorButton(nameof(SpawnEmptyChunksOnLeft))]
+    [EditorButton(nameof(SpawnEmptyChunks))]
     [EditorButton(nameof(DestroyEmptyChunks))]
     [SerializeField]
     private BiomeDeclarationSO biomeDeclarationSo;
@@ -93,10 +93,16 @@ public class WorldGeneratorController : MonoBehaviour
         }
     }
 
-    public void SpawnEmptyChunksOnLeft()
+    public void SpawnEmptyChunks()
     {
         DestroyEmptyChunks();
+        SpawnEmptyChunksOnLeft();
+        SpawnEmptyChunksOnRight();
+        SpawnEmptyChunksBottom();
+    }
 
+    private void SpawnEmptyChunksOnLeft()
+    {
         for(int x = emptyChunkColumns-1; x >= 0; x--)
         {
             for(int y = 0; y < chunkRows; y++)
@@ -104,6 +110,33 @@ public class WorldGeneratorController : MonoBehaviour
                 GameObject chunk = Instantiate(emptyChunkPrefab, transform);
                 emptyChunks.Add(chunk);
                 chunk.transform.localPosition = new Vector3(-x * distanceBetweenChunks- distanceBetweenChunks, y * distanceBetweenChunks, 0);
+            }
+        }
+    }
+    
+
+    private void SpawnEmptyChunksOnRight()
+    {
+        for(int x = 0; x < emptyChunkColumns; x++)
+        {
+            for(int y = 0; y < chunkRows; y++)
+            {
+                GameObject chunk = Instantiate(emptyChunkPrefab, transform);
+                emptyChunks.Add(chunk);
+                chunk.transform.localPosition = new Vector3((x + chunkRows) * distanceBetweenChunks, y * distanceBetweenChunks, 0);
+            }
+        }
+    }
+
+    private void SpawnEmptyChunksBottom()
+    {
+        for(int x = -emptyChunkColumns; x < chunkRows + emptyChunkColumns; x++)
+        {
+            for(int y = 0; y < chunkRows; y++)
+            {
+                GameObject chunk = Instantiate(emptyChunkPrefab, transform);
+                emptyChunks.Add(chunk);
+                chunk.transform.localPosition = new Vector3(x * distanceBetweenChunks, -(y+1) * distanceBetweenChunks, 0);
             }
         }
     }

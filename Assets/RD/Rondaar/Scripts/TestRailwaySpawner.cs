@@ -33,6 +33,7 @@ public class TestRailwaySpawner : MonoBehaviour
     private void Spawn()
     {
         EntityContext frontInstance = Instantiate(frontPrefab);
+        frontInstance.transform.position = transform.position;
         WagonComponent frontWagonComponent = frontInstance.Entity.GetComponent<WagonComponent>();
         frontWagonComponent.WagonHeadEntity = frontInstance.Entity;
 
@@ -43,6 +44,7 @@ public class TestRailwaySpawner : MonoBehaviour
         for (int i = 0; i < wagonDefaultData.Length; i++)
         {
             EntityContext wagonInstance = Instantiate(wagonPrefab);
+            wagonInstance.transform.position = transform.position;
             wagonInstance.Initialize(wagonDefaultData[i]);
             wagonInstance.gameObject.name += i.ToString();
             WagonComponent wagonComponent = wagonInstance.Entity.GetComponent<WagonComponent>();

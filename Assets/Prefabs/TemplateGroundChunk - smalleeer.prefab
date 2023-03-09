@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7787865711449090091}
   - component: {fileID: 7787865711449090090}
   - component: {fileID: 2485818161432818915}
+  - component: {fileID: 5557646886316823425}
   m_Layer: 7
   m_Name: TemplateGroundChunk - smalleeer
   m_TagString: Untagged
@@ -32941,6 +32942,18 @@ MonoBehaviour:
   chunkTerrainData:
     <Rows>k__BackingField: 0
     <Columns>k__BackingField: 0
+--- !u!114 &5557646886316823425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7787865711449090089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022366680e822774a95b60e7ca91fa52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7787865712171348500
 GameObject:
   m_ObjectHideFlags: 0
