@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EarthEater.Components
 {
-    public class PickableResourceComponent : BaseComponent
+    public class PickableResourceComponent : BaseComponent, IAmPickable
     {
         public Rigidbody2D Rb { get; private set; }
         
@@ -14,7 +14,7 @@ namespace EarthEater.Components
             Rb = myEntity.GameObject.GetComponent<Rigidbody2D>();
         }
 
-        public void Pickup()
+        public void OnPickUp()
         {
             GameObject.Destroy(MyEntity.GameObject);
         }

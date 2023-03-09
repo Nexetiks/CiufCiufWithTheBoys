@@ -31,6 +31,22 @@ namespace Entities
             }
         }
 
+        public bool TryGetInterface<T>(out T interfaceComponent)
+        {
+            interfaceComponent = default;
+            
+            foreach (BaseComponent baseComponent in components.Values)
+            {
+                if (baseComponent is T returnComponent)
+                {
+                    interfaceComponent = returnComponent;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public bool TryGetComponent<T>(out T component) where T : BaseComponent
         {
             component = null;

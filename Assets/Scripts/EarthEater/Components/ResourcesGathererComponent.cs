@@ -25,46 +25,44 @@ namespace EarthEater.Components
             
             foreach (Collider2D collider in colliders)
             {
-                if (!CheckIfIsPickable(collider, out PickableResourceComponent pickableResourceComponent))
+                if (!CheckIfIsPickable(collider, out IAmPickable pickable))
                 {
                     continue;
                 }
 
-                Vector2 distanceVector = (Vector2) Transform.position - (Vector2)pickableResourceComponent.Transform.position;
+                Vector2 distanceVector = (Vector2) Transform.position - (Vector2)pickable.Rb.transform.position;
                 
-                if (TryPickup(distanceVector, pickableResourceComponent))
+                if (TryPickup(distanceVector, pickable))
                 {
                     continue;
                 }
                 
-                ApplyPullForce(pickableResourceComponent, distanceVector);
+                ApplyPullForce(pickable, distanceVector);
             }
         }
 
-        private static bool CheckIfIsPickable(Collider2D collider, out PickableResourceComponent pickableResourceComponent)
+        private static bool CheckIfIsPickable(Collider2D collider, out IAmPickable pickable)
         {
-            pickableResourceComponent = null;
+            pickable = null;
             
             if (!collider.TryGetComponent(out EntityContext context)) return false;
-            if (!context.Entity.TryGetComponent(out pickableResourceComponent)) return false;
+            if (!context.Entity.TryGetInterface(out pickable)) return false;
             
             return true;
         }
 
-        private bool TryPickup(Vector2 distanceVector, PickableResourceComponent pickableResourceComponent)
+        private bool TryPickup(Vector2 distanceVector, IAmPickable pickable)
         {
             if (distanceVector.magnitude > pickupRadius) return false;
             
-            pickableResourceComponent.Pickup();
+            pickable.OnPickUp();
             return true;
-
         }
 
-        private void ApplyPullForce(PickableResourceComponent pickableResourceComponent, Vector2 distanceVector)
+        private void ApplyPullForce(IAmPickable pickable, Vector2 distanceVector)
         {
-            Rigidbody2D rb = pickableResourceComponent.Rb;
+            Rigidbody2D rb = pickable.Rb;
             rb.AddForce(distanceVector.normalized * Time.deltaTime * pullForce);
-            Debug.Log($"{rb.name} + pulling");
         }
     }
 }
