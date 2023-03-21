@@ -27,6 +27,7 @@ namespace Entities.Components
             {
                 if (hp <= 0)
                 {
+                    Debug.Log("Died");
                     return;
                 }
 

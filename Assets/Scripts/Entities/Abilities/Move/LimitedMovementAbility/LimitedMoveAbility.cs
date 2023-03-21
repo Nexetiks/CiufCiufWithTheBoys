@@ -8,7 +8,6 @@ namespace Entities.Abilities.LimitedMove
     {
         [SerializeField]
         private Rigidbody2D rb;
-        [SerializeField]
         private LimitedMoveStatsComponent ability;
         private Vector2 direction;
 
@@ -23,10 +22,8 @@ namespace Entities.Abilities.LimitedMove
                 return;
             }
 
-            Quaternion rotationAngle = Quaternion.Euler(new Vector3(args.Direction.X, args.Direction.Y, args.Direction.Z * ability.MaxAngle.Value));
-            direction = rotationAngle * direction;
-            abilityOwner.GameObject.transform.up = direction;
-            rb.velocity = direction * ability.Speed.Value;
+            rb.velocity = args.Direction * (ability.Speed.Value * Time.fixedDeltaTime);
+            rb.gameObject.transform.up = args.Direction;
         }
 
         public override void Initialize(Entity abilityOwner)

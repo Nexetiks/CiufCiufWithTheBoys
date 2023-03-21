@@ -1,9 +1,11 @@
+using System;
 using Entities;
 using Entities.Components;
 using UnityEngine;
 
 namespace EarthEater.Components
 {
+    [Serializable]
     public class EngineComponent : BaseComponent
     {
         [SerializeField]

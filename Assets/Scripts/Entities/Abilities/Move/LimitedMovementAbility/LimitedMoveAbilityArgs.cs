@@ -1,13 +1,13 @@
-using System.Numerics;
 using Entities.Effects;
+using UnityEngine;
 
 namespace Entities.Abilities.LimitedMove
 {
     public class LimitedMoveAbilityArgs : DefaultAbilityArgs
     {
-        public Vector3 Direction { get; private set; }
+        public Vector2 Direction { get; private set; }
 
-        public LimitedMoveAbilityArgs(Vector3 direction)
+        public LimitedMoveAbilityArgs(Vector2 direction)
         {
             Direction = direction;
         }

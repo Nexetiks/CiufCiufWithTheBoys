@@ -8,7 +8,6 @@ namespace Entities.Abilities.DefaultMove
     {
         [SerializeField]
         private Rigidbody2D rb;
-        [SerializeField]
         private DefaultMoveStatsComponent ability;
 
         public DefaultMoveAbility() : base("DefaultMoveAbility")
@@ -22,7 +21,8 @@ namespace Entities.Abilities.DefaultMove
                 return;
             }
 
-            rb.velocity = args.Direction * ability.Speed.Value * Time.fixedDeltaTime;
+            rb.velocity = args.Direction * (ability.Speed.Value * Time.fixedDeltaTime);
+            rb.gameObject.transform.up = args.Direction;
         }
 
         public override void Initialize(Entity abilityOwner)

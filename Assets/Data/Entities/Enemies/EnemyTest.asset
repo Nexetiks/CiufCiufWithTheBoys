@@ -15,22 +15,32 @@ MonoBehaviour:
   <EntityDefaultData>k__BackingField:
     <Components>k__BackingField:
     - rid: 5925613812201291779
-    - rid: 5925613832278638592
+    - rid: 5222523041320534017
     - rid: 5925613832278638593
+    - rid: 5222523470856323072
     <Sprite>k__BackingField: {fileID: 21300000, guid: 289f7f4484d558d4c93c19c5b4029220, type: 3}
   references:
     version: 2
     RefIds:
+    - rid: 5222523041320534016
+      type: {class: LimitedMoveAbility, ns: Entities.Abilities.LimitedMove, asm: Assembly-CSharp}
+      data:
+        rb: {fileID: 0}
+    - rid: 5222523041320534017
+      type: {class: LimitedMoveStatsComponent, ns: Entities.Abilities.LimitedMove, asm: Assembly-CSharp}
+      data:
+        speed: 269
+        maxAngle: 1
+    - rid: 5222523470856323072
+      type: {class: AIDataComponent, ns: EarthEater.Components, asm: Assembly-CSharp}
+      data:
+        Target: {fileID: 0}
     - rid: 5925613812201291779
       type: {class: AbilitiesHandler, ns: Entities.Abilities, asm: Assembly-CSharp}
       data:
         startingAbilities:
-        - rid: 5925613832278638595
+        - rid: 5222523041320534016
         - rid: 5925613832278638594
-    - rid: 5925613832278638592
-      type: {class: DefaultMovementStatsComponent, ns: Entities.Abilities.DefaultMove, asm: Assembly-CSharp}
-      data:
-        speed: 150
     - rid: 5925613832278638593
       type: {class: DefaultAttackStatsComponent, ns: Entities.Abilities.DefaultAttack, asm: Assembly-CSharp}
       data:
@@ -40,7 +50,3 @@ MonoBehaviour:
       data:
         colliderRange: 10
         cooldown: 1
-    - rid: 5925613832278638595
-      type: {class: DefaultMoveAbility, ns: Entities.Abilities.DefaultMove, asm: Assembly-CSharp}
-      data:
-        rb: {fileID: 0}

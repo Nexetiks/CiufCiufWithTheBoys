@@ -8,12 +8,14 @@ namespace Entities.AI
     public class AttackNode : Node
     {
         private AbilitiesHandler abilitiesHandler;
+        private EntityContext ai;
         private float damage;
 
-        public AttackNode(AbilitiesHandler abilitiesHandler, float damage)
+        public AttackNode(EntityContext ai, float damage)
         {
-            this.abilitiesHandler = abilitiesHandler;
+            this.ai = ai;
             this.damage = damage;
+            abilitiesHandler = ai.Entity.GetComponent<AbilitiesHandler>();
         }
 
         public override NodeState Evaluate()

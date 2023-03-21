@@ -2,7 +2,7 @@ using System;
 using Common.AIBase;
 using Common.Util;
 using Entities.Abilities;
-using Entities.Abilities.DefaultMove;
+using Entities.Abilities.LimitedMove;
 using Plugins.FastNoiseLite;
 using UnityEngine;
 
@@ -11,28 +11,25 @@ namespace Entities.AI
     public class PatrolNode : Node
     {
         private EntityContext ai;
-        private Rigidbody2D rb;
         private float noiseScrollSpeed;
         private float maxAngle = 10f;
-        private float movementSpeed = 1;
         private float minDistanceToStartGoingBack;
-        private float maxDistanceFromStartingPoint;
+        float maxDistanceFromStartingPoint;
 
         private AbilitiesHandler abilitiesHandler;
         private Vector2 direction;
         private Vector2 startingPoint;
         private NoiseValueProvider noiseValueProvider;
 
-        public PatrolNode(EntityContext ai, Rigidbody2D rb, float noiseScrollSpeed, float maxAngle, float movementSpeed, float minDistanceToStartGoingBack, float maxDistanceFromStartingPoint, AbilitiesHandler abilitiesHandler)
+        public PatrolNode(EntityContext ai, float noiseScrollSpeed, float maxAngle, float minDistanceToStartGoingBack, float maxDistanceFromStartingPoint)
         {
             this.ai = ai;
-            this.rb = rb;
             this.noiseScrollSpeed = noiseScrollSpeed;
             this.maxAngle = maxAngle;
-            this.movementSpeed = movementSpeed;
             this.minDistanceToStartGoingBack = minDistanceToStartGoingBack;
             this.maxDistanceFromStartingPoint = maxDistanceFromStartingPoint;
-            this.abilitiesHandler = abilitiesHandler;
+
+            abilitiesHandler = ai.Entity.GetComponent<AbilitiesHandler>();
 
             startingPoint = ai.Entity.GameObject.transform.position;
             direction = ai.Entity.GameObject.transform.up;
@@ -49,10 +46,7 @@ namespace Entities.AI
             Vector2 actualSpawnDirectionForce = CalculateSpawnDirectionForce(out float distanceFromSpawnPoint);
             direction = CalculateFinalDirection(distanceFromSpawnPoint, noiseDirection, actualSpawnDirectionForce);
 
-            abilitiesHandler.PerformAbility<DefaultMoveAbility>(new DefaultMoveAbilityArgs(direction));
-
-            //ai.Entity.GameObject.transform.up = direction;
-            // rb.velocity = direction * (movementSpeed * Time.deltaTime);
+            abilitiesHandler.PerformAbility<LimitedMoveAbility>(new LimitedMoveAbilityArgs(direction));
 
             return NodeState.Running;
         }

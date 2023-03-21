@@ -59,6 +59,7 @@ namespace Entities.Abilities.DefaultAttack
                 }
 
                 damageableComponent.Hp -= args.damage;
+                Debug.Log( damageableComponent.Hp);
             }
         }
 

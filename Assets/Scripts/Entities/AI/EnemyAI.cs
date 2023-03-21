@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Common.AIBase;
-using Entities.Abilities;
 using UnityEngine;
 
 namespace Entities.AI
@@ -46,14 +45,11 @@ namespace Entities.AI
 
         private void SetUpAiTree()
         {
-            AbilitiesHandler aiHandler = ai.Entity.GetComponent<AbilitiesHandler>();
-
             IsInRangeNode isInAttackRangeNode = new IsInRangeNode(attackRange, attackRangeFallout, ai.gameObject.transform);
-            AttackNode attackNode = new AttackNode(aiHandler, damage);
+            AttackNode attackNode = new AttackNode(ai, damage);
             IsInRangeNode isInSightNode = new IsInRangeNode(sightRange, sightRangeFallout, ai.gameObject.transform);
-            Rigidbody2D rb = ai.gameObject.GetComponent<Rigidbody2D>();
-            FollowNode chasePlayerNode = new FollowNode(aiHandler, rb, isInSightNode);
-            PatrolNode patrolNode = new PatrolNode(ai, rb, noiseScrollSpeed, maxAngle, movementSpeed, minDistanceToStartGoingBack, maxDistanceFromStartingPoint, aiHandler);
+            FollowNode chasePlayerNode = new FollowNode(ai);
+            PatrolNode patrolNode = new PatrolNode(ai, noiseScrollSpeed, maxAngle, minDistanceToStartGoingBack, maxDistanceFromStartingPoint);
 
             Sequence attackSequence = new Sequence(new List<Node> { isInAttackRangeNode, attackNode });
             Sequence chaseSequence = new Sequence(new List<Node> { isInSightNode, chasePlayerNode });
