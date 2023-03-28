@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5680053391012643239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5680053391012643241}
+  - component: {fileID: 5680053391012643240}
+  - component: {fileID: 5680053391012643242}
+  m_Layer: 0
+  m_Name: WorldGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5680053391012643241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680053391012643239}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5680053391012643240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680053391012643239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1adc9ddfabf605547bbc90c86fa466d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  biomeDeclarationSo: {fileID: 11400000, guid: 692a5793900bcc940989d23e56a5c110, type: 2}
+  terrainChunkControllers: []
+  chunkPrefab: {fileID: 2485818161432818915, guid: ef337c0790c4bee4a935300caa8452ed, type: 3}
+  emptyChunkPrefab: {fileID: 1004083361500677648, guid: 5e0b8466c2c605348b149c685947b6a4, type: 3}
+  worldRows: 2048
+  worldColumns: 2048
+  chunkRows: 16
+  chunkColumns: 16
+  chunkResolution: 128
+  distanceBetweenChunks: 8
+  veinsAmount: 20
+  noiseFrequency: 0.005
+  wormNoiseFrequency: 0.0005
+  veinSize: 10
+  veinLength: 70
+  maxPerlinWormAngle: 180
+  terrainNoiseOctaves: 15
+  emptyChunkColumns: 8
+  emptyChunks: []
+  worldData:
+    <Rows>k__BackingField: 2048
+    <Columns>k__BackingField: 2048
+--- !u!114 &5680053391012643242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680053391012643239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1e74ef97a8cf884581bce79862b42a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldGeneratorController: {fileID: 5680053391012643240}
