@@ -18,6 +18,7 @@ namespace EarthEater.RailwaySystem
         public WagonComponent PreviousWagon { get; set; }
         public WagonComponent NextWagon { get; set; }
         public Entity WagonHeadEntity { get; set; }
+        public RailwayComponent RailwayComponent { get; set; }
 
         public WagonComponent()
         {

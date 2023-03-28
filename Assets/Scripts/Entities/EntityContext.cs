@@ -4,9 +4,9 @@ namespace Entities
 {
     public enum EntityTag
     {
+        Environment,
         Player,
-        Enemy,
-        Environment
+        Enemy
     }
 
     public class EntityContext : MonoBehaviour

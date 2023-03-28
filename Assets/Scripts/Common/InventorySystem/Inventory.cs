@@ -1,5 +1,4 @@
 using System;
-using Common.InventorySystem.Items;
 
 namespace Common.InventorySystem
 {
@@ -13,7 +12,6 @@ namespace Common.InventorySystem
     public class Inventory
     {
         private readonly InventoryItemsManager itemsManager;
-        private readonly CurrenciesManager currenciesManager;
 
         public event Action<IAmInventoryItem> ItemAdded
         {
@@ -36,7 +34,6 @@ namespace Common.InventorySystem
         public Inventory()
         {
             itemsManager = new InventoryItemsManager();
-            currenciesManager = new CurrenciesManager();
         }
 
         public bool TryAddItem(IAmInventoryItem item)
@@ -57,37 +54,6 @@ namespace Common.InventorySystem
         public bool TryGetItemHolder<T>(out T holder) where T : IAmItemHolder
         {
             return itemsManager.TryGetItemHolder(out holder);
-        }
-
-        public void AddCurrency(CurrencyType currencyType, int amount)
-        {
-            currenciesManager.AddCurrency(currencyType, amount);
-        }
-
-        public bool TrySpendCurrency(CurrencyType currencyType, int amount)
-        {
-            return currenciesManager.TrySpendCurrency(currencyType, amount);
-        }
-
-        public int GetCurrencyAmount(CurrencyType currencyType)
-        {
-            return currenciesManager.GetCurrencyAmount(currencyType);
-        }
-
-        public bool TryExchangeValuableForCurrencies(ValuableItem valuableItem)
-        {
-            if (!itemsManager.TryRemoveItem(valuableItem)) return false;
-
-            foreach (CurrencyType currencyType in Enum.GetValues(typeof(CurrencyType)))
-            {
-                int currencyValue = valuableItem.GetValue(currencyType);
-                if (currencyValue > 0)
-                {
-                    currenciesManager.AddCurrency(currencyType, currencyValue);
-                }
-            }
-
-            return true;
         }
     }
 }

@@ -151,4 +151,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityDefaultDataSo: {fileID: 11400000, guid: d8329dbebb7371b41a044b774e61237c, type: 2}
   spriteRenderer: {fileID: 0}
-  <EntityTag>k__BackingField: 0
+  <EntityTag>k__BackingField: 2

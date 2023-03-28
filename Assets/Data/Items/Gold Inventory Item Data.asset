@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c2425991bd7cf488616aafc8ee7d4e, type: 3}
+  m_Name: Gold Inventory Item Data
+  m_EditorClassIdentifier: 
+  InventoryItem:
+    rid: 4118927337687351296
+  references:
+    version: 2
+    RefIds:
+    - rid: 4118927337687351296
+      type: {class: StackableItem, ns: Common.InventorySystem, asm: Assembly-CSharp}
+      data:
+        <Name>k__BackingField: Gold
+        <Icon>k__BackingField: {fileID: 1392507382, guid: a08eadaf855af72498593e5b1dd47499, type: 3}
+        <StackAmount>k__BackingField: 1

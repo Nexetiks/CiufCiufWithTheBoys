@@ -1,3 +1,5 @@
+using Common.InventorySystem;
+using EarthEater.RailwaySystem;
 using Entities;
 using Entities.Components;
 using UnityEngine;
@@ -17,6 +19,29 @@ namespace EarthEater.Components
 
         [SerializeField]
         private float pullForce = 15f;
+
+        private WagonComponent wagonComponent;
+        private InventoryItemsManager inventory;
+
+        public InventoryItemsManager Inventory
+        {
+            get
+            {
+                if (inventory == null)
+                {
+                    inventory = wagonComponent.RailwayComponent.MyEntity.GetComponent<InventoryComponent>().Inventory;
+                }
+
+                return inventory;
+            }
+        }
+        
+        public override void Initialize(Entity myEntity)
+        {
+            base.Initialize(myEntity);
+            wagonComponent = myEntity.GetComponent<WagonComponent>();
+        }
+        
         public override void UpdateComponent()
         {
             base.UpdateComponent();
@@ -55,7 +80,7 @@ namespace EarthEater.Components
         {
             if (distanceVector.magnitude > pickupRadius) return false;
             
-            pickable.OnPickUp();
+            pickable.OnPickUp(this);
             return true;
         }
 

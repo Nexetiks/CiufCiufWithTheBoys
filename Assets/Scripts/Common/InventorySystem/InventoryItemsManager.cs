@@ -12,7 +12,11 @@ namespace Common.InventorySystem
     {
         private readonly Dictionary<Type, IAmItemHolder> holders;
         private readonly List<IAmInventoryItem> items;
+        private readonly Dictionary<Type, IAmStackableItem> stackableItems;
         private readonly Dictionary<IAmInventoryItem, List<IAmItemHolder>> itemToHoldersMap;
+
+        public List<IAmInventoryItem> Items => items;
+        public Dictionary<Type, IAmStackableItem> StackableItems => stackableItems;
 
         public event Action<IAmInventoryItem> ItemAdded;
         public event Action<IAmInventoryItem> ItemRemoved;
@@ -23,11 +27,28 @@ namespace Common.InventorySystem
             holders = new Dictionary<Type, IAmItemHolder>();
             items = new List<IAmInventoryItem>();
             itemToHoldersMap = new Dictionary<IAmInventoryItem, List<IAmItemHolder>>();
+            stackableItems = new Dictionary<Type, IAmStackableItem>();
         }
 
         public bool TryAddItem(IAmInventoryItem item)
         {
-            items.Add(item);
+            if (item is IAmStackableItem iAmStackableItem)
+            {
+                if(stackableItems.TryGetValue(iAmStackableItem.GetType(), out IAmStackableItem stackableItem))
+                {
+                    stackableItem.StackAmount += iAmStackableItem.StackAmount;
+                }
+                else
+                {
+                    stackableItems.Add(iAmStackableItem.GetType(), iAmStackableItem);
+                    items.Add(item);
+                }
+            }
+            else
+            {
+                items.Add(item);
+            }
+            
             ItemAdded?.Invoke(item);
             InventoryChanged?.Invoke();
 
@@ -49,6 +70,10 @@ namespace Common.InventorySystem
             if (!items.Contains(item)) return false;
 
             items.Remove(item);
+            if (item is IAmStackableItem iAmStackableItem)
+            {
+                stackableItems.Remove(iAmStackableItem.GetType());
+            }
             ItemRemoved?.Invoke(item);
             InventoryChanged?.Invoke();
 
@@ -67,26 +92,22 @@ namespace Common.InventorySystem
         {
             Type holderType = holder.GetType();
 
-            if (!holders.ContainsKey(holderType))
+            if (holders.ContainsKey(holderType)) return false;
+            
+            holders.Add(holderType, holder);
+
+            foreach (IAmInventoryItem item in items)
             {
-                holders.Add(holderType, holder);
-
-                foreach (var item in items)
+                if (!holder.CanHold(item)) continue;
+                
+                holder.TryAdd(item);
+                if (itemToHoldersMap.TryGetValue(item, out List<IAmItemHolder> itemHolders))
                 {
-                    if (holder.CanHold(item))
-                    {
-                        holder.TryAdd(item);
-                        if (itemToHoldersMap.TryGetValue(item, out List<IAmItemHolder> itemHolders))
-                        {
-                            itemHolders.Add(holder);
-                        }
-                    }
+                    itemHolders.Add(holder);
                 }
-
-                return true;
             }
 
-            return false;
+            return true;
         }
 
         public bool TryGetItemHolder<T>(out T holder) where T : IAmItemHolder

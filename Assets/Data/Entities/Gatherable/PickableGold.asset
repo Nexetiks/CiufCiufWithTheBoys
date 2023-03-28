@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8d3fd05f5cbb64e88b156783abb35a, type: 3}
+  m_Name: PickableGold
+  m_EditorClassIdentifier: 
+  <EntityDefaultData>k__BackingField:
+    <Components>k__BackingField:
+    - rid: 4118927337687351297
+    <Sprite>k__BackingField: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 4118927337687351297
+      type: {class: PickableResourceComponent, ns: EarthEater.Components, asm: Assembly-CSharp}
+      data:
+        inventoryItem: {fileID: 11400000, guid: 9ec180942ba47684ab58dc3d90a79d4e, type: 2}

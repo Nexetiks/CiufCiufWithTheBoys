@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using EarthEater.Components;
 using EarthEater.RailwaySystem;
 using Entities;
 using UnityEngine;
@@ -6,27 +7,32 @@ using UnityEngine;
 public class TestRailwaySpawner : MonoBehaviour
 {
     [SerializeField]
+    private EntityDefaultDataSO railwayData;
+    [SerializeField]
     private EntityContext frontPrefab;
     [SerializeField]
     private EntityContext wagonPrefab;
     [SerializeField, ReorderableList]
     private EntityDefaultDataSO[] wagonDefaultData;
-
-    private List<WagonComponent> wagons = new List<WagonComponent>();
+    [SerializeField]
+    private TestGoldCounter goldCounter;
+    
+    private Entity railwayEntity;
+    private RailwayComponent railwayComponent;
 
     private void Awake()
     {
+        railwayEntity = new Entity(railwayData.EntityDefaultData, gameObject);
+        railwayComponent = railwayEntity.GetComponent<RailwayComponent>();
+        goldCounter.Initialize(railwayComponent.MyEntity.GetComponent<InventoryComponent>().Inventory);
         Spawn();
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && wagons.Count > 0)
+        if (Input.GetMouseButtonDown(0))
         {
-            WagonComponent lastWagon = wagons[wagons.Count - 1];
-            wagons.RemoveAt(wagons.Count - 1);
-            lastWagon.OnDetach();
-            lastWagon.NextWagon = null;
+            railwayComponent.DetachLast();
         }
     }
 
@@ -36,7 +42,7 @@ public class TestRailwaySpawner : MonoBehaviour
         frontInstance.transform.position = transform.position;
         WagonComponent frontWagonComponent = frontInstance.Entity.GetComponent<WagonComponent>();
         frontWagonComponent.WagonHeadEntity = frontInstance.Entity;
-
+        frontWagonComponent.RailwayComponent = railwayComponent;
         frontWagonComponent.OnAttached();
 
         WagonComponent frontalWagon = frontWagonComponent;
@@ -49,7 +55,8 @@ public class TestRailwaySpawner : MonoBehaviour
             wagonInstance.gameObject.name += i.ToString();
             WagonComponent wagonComponent = wagonInstance.Entity.GetComponent<WagonComponent>();
             wagonComponent.WagonHeadEntity = frontInstance.Entity;
-            wagons.Add(wagonComponent);
+            wagonComponent.RailwayComponent = railwayComponent;
+            railwayComponent.Wagons.Add(wagonComponent);
             frontalWagon.PreviousWagon = wagonComponent;
             wagonComponent.NextWagon = frontalWagon;
             frontalWagon = wagonComponent;
