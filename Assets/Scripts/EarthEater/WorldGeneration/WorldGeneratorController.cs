@@ -81,16 +81,29 @@ public class WorldGeneratorController : MonoBehaviour
 
     public void SpawnChunks()
     {
+#if UNITY_EDITOR
+        UnityEditor.Undo.RecordObject(this, nameof(SpawnChunks));
+#endif
+        if (terrainChunkControllers == null)
+        {
+            terrainChunkControllers = new List<TerrainChunkController>();
+        }
+        
         for(int x = 0; x < chunkColumns; x++)
         {
             for(int y = 0; y < chunkRows; y++)
             {
                 TerrainChunkController chunk = Instantiate(chunkPrefab, transform);
+#if UNITY_EDITOR
+                UnityEditor.Undo.RegisterCreatedObjectUndo(chunk, $"Chunk x: {x} y: {y}");
+                EditorUtility.SetDirty(chunk);
+#endif
                 chunk.InitializeChunk(worldData, x, y, chunkResolution);
                 terrainChunkControllers.Add(chunk);
                 chunk.transform.localPosition = new Vector3(x * distanceBetweenChunks, y * distanceBetweenChunks, 0);
             }
         }
+        
     }
 
     public void SpawnEmptyChunks()
@@ -143,6 +156,16 @@ public class WorldGeneratorController : MonoBehaviour
 
     public void UpdateChunks()
     {
+        if (terrainChunkControllers == null || terrainChunkControllers.Count == 0)
+        {
+            SpawnChunks();
+        }
+
+        if (emptyChunks == null || emptyChunks.Count == 0)
+        {
+            SpawnEmptyChunks();
+        }
+        
         for (int x = 0; x < chunkColumns; x++)
         {
             for(int y = 0; y < chunkRows; y++)
@@ -181,5 +204,10 @@ public class WorldGeneratorController : MonoBehaviour
 
             emptyChunks.Clear();
         }
+        else
+        {
+            emptyChunks = new List<GameObject>();
+        }
+        
     }
 }

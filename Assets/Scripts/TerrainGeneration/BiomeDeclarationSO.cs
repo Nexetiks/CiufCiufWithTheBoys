@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +10,7 @@ namespace TerrainGeneration
         public List<GroundDeclaration> GroundDeclarations { get; private set; }
         [field: SerializeField, ReorderableList]
         public List<GroundDeclaration> OresDeclarations { get; private set; }
-        
+
         [field: SerializeField]
         public uint Depth { get; private set; }
     }

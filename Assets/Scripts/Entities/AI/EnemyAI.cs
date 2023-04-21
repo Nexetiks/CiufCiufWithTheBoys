@@ -45,17 +45,22 @@ namespace Entities.AI
 
         private void SetUpAiTree()
         {
-            IsInRangeNode isInAttackRangeNode = new IsInRangeNode(attackRange, attackRangeFallout, ai.gameObject.transform);
+            IsInRangeNode isInAttackRangeNode = new IsInRangeNode(attackRange, attackRangeFallout, ai);
             AttackNode attackNode = new AttackNode(ai, damage);
-            IsInRangeNode isInSightNode = new IsInRangeNode(sightRange, sightRangeFallout, ai.gameObject.transform);
+            IsInRangeNode isInSightNode = new IsInRangeNode(sightRange, sightRangeFallout, ai);
             FollowNode chasePlayerNode = new FollowNode(ai);
             PatrolNode patrolNode = new PatrolNode(ai, noiseScrollSpeed, maxAngle, minDistanceToStartGoingBack, maxDistanceFromStartingPoint);
+            EscapeNode escapeNode = new EscapeNode(ai, noiseScrollSpeed, maxAngle, minDistanceToStartGoingBack, maxDistanceFromStartingPoint);
+            IsEscapingNode isEscapingNode = new IsEscapingNode();
+            Inverter isPatrollingNode = new Inverter(isEscapingNode);
 
             Sequence attackSequence = new Sequence(new List<Node> { isInAttackRangeNode, attackNode });
             Sequence chaseSequence = new Sequence(new List<Node> { isInSightNode, chasePlayerNode });
-            Sequence patrolSequence = new Sequence(new List<Node> { patrolNode });
+            Sequence patrolSequence = new Sequence(new List<Node> { isPatrollingNode, patrolNode });
+            Sequence escapeSequence = new Sequence(new List<Node> { isEscapingNode, escapeNode });
+            Sequence moveSequence = new Sequence(new List<Node> { escapeSequence, patrolSequence });
 
-            topNode = new Selector(new List<Node> { attackSequence, chaseSequence, patrolSequence });
+            topNode = new Selector(new List<Node> { attackSequence, chaseSequence, moveSequence });
         }
     }
 }

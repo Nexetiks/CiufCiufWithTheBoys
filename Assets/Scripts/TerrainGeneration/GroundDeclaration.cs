@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace TerrainGeneration
 {
-    [System.Serializable]
+    [Serializable]
     public class GroundDeclaration
     {
         private const string OccurenceWeightTooltipInfo =

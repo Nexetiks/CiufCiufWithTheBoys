@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Common.Util;
 using Plugins.FastNoiseLite;
 using UnityEngine;
@@ -10,7 +8,7 @@ public class PerlinWorm
     private Vector2 currentPosition;
     private float maxAngle;
     private NoiseValueProvider noiseValueProvider;
-    
+
     public PerlinWorm(Vector2 startPosition, float maxAngle)
     {
         currentPosition = startPosition;

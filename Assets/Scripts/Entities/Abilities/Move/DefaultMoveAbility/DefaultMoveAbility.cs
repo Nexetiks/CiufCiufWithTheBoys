@@ -1,4 +1,5 @@
 using System;
+using EarthEater.Components;
 using UnityEngine;
 
 namespace Entities.Abilities.DefaultMove
@@ -8,7 +9,8 @@ namespace Entities.Abilities.DefaultMove
     {
         [SerializeField]
         private Rigidbody2D rb;
-        private DefaultMoveStatsComponent ability;
+        private DefaultMoveStatsComponent moveStatsComponent;
+        private AIDataComponent aiDataComponent;
 
         public DefaultMoveAbility() : base("DefaultMoveAbility")
         {
@@ -21,7 +23,12 @@ namespace Entities.Abilities.DefaultMove
                 return;
             }
 
-            rb.velocity = args.Direction * (ability.Speed.Value * Time.fixedDeltaTime);
+            if (aiDataComponent.IsEscaping)
+            {
+                moveStatsComponent.Speed.AddModifier(new StatModifier(10, nameof(DefaultMoveAbility)));
+            }
+
+            rb.velocity = args.Direction * (moveStatsComponent.Speed.Value * Time.fixedDeltaTime);
             rb.gameObject.transform.up = args.Direction;
         }
 
@@ -29,7 +36,7 @@ namespace Entities.Abilities.DefaultMove
         {
             base.Initialize(abilityOwner);
             rb = abilityOwner.GameObject.GetComponent<Rigidbody2D>();
-            ability = abilityOwner.GetComponent<DefaultMoveStatsComponent>();
+            moveStatsComponent = abilityOwner.GetComponent<DefaultMoveStatsComponent>();
         }
     }
 }

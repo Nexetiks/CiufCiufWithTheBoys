@@ -34,7 +34,10 @@ MonoBehaviour:
     - rid: 5222523470856323072
       type: {class: AIDataComponent, ns: EarthEater.Components, asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        <Target>k__BackingField: {fileID: 0}
+        <IsEscaping>k__BackingField: 0
+        <AfterHowManyAttemptsTryToEscape>k__BackingField: 0
+        <AfterHowMuchTimeInSecondOneStackDisappear>k__BackingField: 0
     - rid: 5925613812201291779
       type: {class: AbilitiesHandler, ns: Entities.Abilities, asm: Assembly-CSharp}
       data:

@@ -1,6 +1,7 @@
 using System;
 using Common.AIBase;
 using Common.Util;
+using EarthEater.Components;
 using Entities.Abilities;
 using Entities.Abilities.LimitedMove;
 using Plugins.FastNoiseLite;
@@ -20,6 +21,7 @@ namespace Entities.AI
         private Vector2 direction;
         private Vector2 startingPoint;
         private NoiseValueProvider noiseValueProvider;
+        private AIDataComponent aiDataComponent;
 
         public PatrolNode(EntityContext ai, float noiseScrollSpeed, float maxAngle, float minDistanceToStartGoingBack, float maxDistanceFromStartingPoint)
         {
@@ -34,6 +36,7 @@ namespace Entities.AI
             startingPoint = ai.Entity.GameObject.transform.position;
             direction = ai.Entity.GameObject.transform.up;
             noiseValueProvider = new NoiseValueProvider(FastNoiseLite.NoiseType.OpenSimplex2, scrollSpeed: noiseScrollSpeed);
+            aiDataComponent = ai.Entity.GetComponent<AIDataComponent>();
         }
 
         public override NodeState Evaluate()

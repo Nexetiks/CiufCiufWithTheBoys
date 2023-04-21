@@ -1,9 +1,10 @@
+using System;
 using EarthEater.WorldGeneration;
 using UnityEngine;
 
 namespace TerrainGeneration
 {
-    [System.Serializable]
+    [Serializable]
     public struct TerrainData
     {
         [field: SerializeField, InLineEditor]
